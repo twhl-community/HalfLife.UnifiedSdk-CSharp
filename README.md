@@ -4,6 +4,10 @@ Tools for the [Half-Life Unified SDK](https://github.com/SamVanheer/halflife-uni
 
 Note: the Unified SDK itself is written in C++.
 
+## Install using NuGet
+
+[![Nuget](https://img.shields.io/nuget/v/HalfLife.UnifiedSdk.Utilities?color=fcba03&label=HalfLife.UnifiedSdk.Utilities&logo=nuget)](https://www.nuget.org/packages/HalfLife.UnifiedSdk.Utilities/)
+
 ## HalfLife.UnifiedSdk.Utilities
 
 This library contains utility functionality for opening, analyzing, modifying, converting and upgrading Half-Life 1 maps made for the GoldSource engine.
