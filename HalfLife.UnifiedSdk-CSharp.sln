@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9C75E792-781D-49B7-B7BC-AFF4FB9A0DC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Utilities", "src\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj", "{B3175D52-B32F-486F-AE3F-E17C4E48EC44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Utilities.Tests", "src\HalfLife.UnifiedSdk.Utilities.Tests\HalfLife.UnifiedSdk.Utilities.Tests.csproj", "{8F4B38E4-BCFC-4188-A10C-A7F9BD165EBA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3175D52-B32F-486F-AE3F-E17C4E48EC44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3175D52-B32F-486F-AE3F-E17C4E48EC44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3175D52-B32F-486F-AE3F-E17C4E48EC44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3175D52-B32F-486F-AE3F-E17C4E48EC44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F4B38E4-BCFC-4188-A10C-A7F9BD165EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F4B38E4-BCFC-4188-A10C-A7F9BD165EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F4B38E4-BCFC-4188-A10C-A7F9BD165EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F4B38E4-BCFC-4188-A10C-A7F9BD165EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8F4B38E4-BCFC-4188-A10C-A7F9BD165EBA} = {9C75E792-781D-49B7-B7BC-AFF4FB9A0DC4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A8903C6-2AEF-4B94-8DBD-C978E383F5C4}
+	EndGlobalSection
+EndGlobal
