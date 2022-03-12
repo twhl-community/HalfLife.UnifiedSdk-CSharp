@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>SamVanheer</Authors>
     <Description>Contains utility functionality for opening, analyzing, modifying, converting and upgrading Half-Life 1 maps made for the GoldSource engine.</Description>
     <Copyright>2022 Sam Vanheer</Copyright>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>halflife;half-life;valve;bsp</PackageTags>
-    <PackageReleaseNotes>Fixed Blue Shift BSP files being saved using the Blue Shift BSP format instead of the standard BSP format.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated Sledge.Formats.Bsp to version 1.0.4.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
@@ -28,7 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="semver" Version="2.0.6" />
-    <PackageReference Include="Sledge.Formats.Bsp" Version="1.0.3" />
+    <PackageReference Include="Sledge.Formats.Bsp" Version="1.0.4" />
     <PackageReference Include="Sledge.Formats.Map" Version="1.0.1" />
   </ItemGroup>
 
