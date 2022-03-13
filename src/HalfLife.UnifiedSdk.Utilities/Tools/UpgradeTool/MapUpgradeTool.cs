@@ -64,10 +64,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// <exception cref="ArgumentNullException"><paramref name="actions"/> is <see langword="null"/>.</exception>
         public MapUpgradeTool(IEnumerable<MapUpgradeAction> actions)
         {
-            if (actions is null)
-            {
-                throw new ArgumentNullException(nameof(actions));
-            }
+            ArgumentNullException.ThrowIfNull(actions);
 
             Actions = actions.ToImmutableList().Sort();
 
@@ -101,15 +98,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// </exception>
         public (SemVersion From, SemVersion To) Upgrade(MapUpgrade mapUpgrade)
         {
-            if (mapUpgrade is null)
-            {
-                throw new ArgumentNullException(nameof(mapUpgrade));
-            }
-
-            if (mapUpgrade.Map is null)
-            {
-                throw new ArgumentNullException(nameof(mapUpgrade));
-            }
+            ArgumentNullException.ThrowIfNull(mapUpgrade);
 
             var currentVersion = GetVersion(mapUpgrade.Map);
 
@@ -146,10 +135,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// <remarks>Uses <see cref="GameVersionKey"/> to get the version.</remarks>
         public bool TryGetVersion(Map map, [MaybeNullWhen(false)] out SemVersion version)
         {
-            if (map is null)
-            {
-                throw new ArgumentNullException(nameof(map));
-            }
+            ArgumentNullException.ThrowIfNull(map);
 
             if (map.Entities.Worldspawn.TryGetValue(GameVersionKey, out var currentVersionString))
             {
@@ -179,15 +165,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// <remarks>Uses <see cref="GameVersionKey"/> to set the version.</remarks>
         public void SetVersion(Map map, SemVersion version)
         {
-            if (map is null)
-            {
-                throw new ArgumentNullException(nameof(map));
-            }
-
-            if (version is null)
-            {
-                throw new ArgumentNullException(nameof(version));
-            }
+            ArgumentNullException.ThrowIfNull(map);
+            ArgumentNullException.ThrowIfNull(version);
 
             map.Entities.Worldspawn[GameVersionKey] = version.ToString();
         }

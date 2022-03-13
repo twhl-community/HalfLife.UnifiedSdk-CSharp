@@ -83,11 +83,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="ArgumentNullException"><paramref name="gameDirectory"/> is <see langword="null"/>.</exception>
         public static IEnumerable<string> EnumerateMods(string gameDirectory)
         {
-            if (gameDirectory is null)
-            {
-                throw new ArgumentNullException(nameof(gameDirectory));
-            }
-
+            ArgumentNullException.ThrowIfNull(gameDirectory);
             return EnumerateModsCore();
 
             IEnumerable<string> EnumerateModsCore()
@@ -113,15 +109,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// </exception>
         public static Liblist? TryLoadLiblist(string gameDirectory, string modDirectory)
         {
-            if (gameDirectory is null)
-            {
-                throw new ArgumentNullException(nameof(gameDirectory));
-            }
-
-            if (modDirectory is null)
-            {
-                throw new ArgumentNullException(nameof(modDirectory));
-            }
+            ArgumentNullException.ThrowIfNull(gameDirectory);
+            ArgumentNullException.ThrowIfNull(modDirectory);
 
             var path = Path.Combine(gameDirectory, modDirectory, LiblistFileName);
 

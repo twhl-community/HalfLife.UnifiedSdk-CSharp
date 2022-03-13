@@ -14,15 +14,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public static IEnumerable<Entity> OfClass(this IEnumerable<Entity> entityList, string className)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (className is null)
-            {
-                throw new ArgumentNullException(nameof(className));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(className);
 
             return entityList.Where(e => e.ClassName == className);
         }
@@ -33,20 +26,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public static IEnumerable<Entity> WhereString(this IEnumerable<Entity> entityList, string key, string value)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (key is null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(key);
+            ArgumentNullException.ThrowIfNull(value);
 
             return entityList.Where(e => e.HasKeyValueCore(key, value));
         }
@@ -73,10 +55,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentNullException"><paramref name="entityList"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Entity> WithoutWorldspawn(this IEnumerable<Entity> entityList)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
 
             //Don't assume worldspawn is the first entity (in case of lists that have been reorganized).
             //There could be multiple instances of it in the list.

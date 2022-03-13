@@ -78,10 +78,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="ArgumentException"><paramref name="value"/> does not contain a <see cref="Vector2"/>.</exception>
         public static Vector2 ParseVector2(string value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             var values = ParseVectorValues(value, stackalloc float[2]);
 
@@ -103,10 +100,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="ArgumentException"><paramref name="value"/> does not contain a <see cref="Vector3"/>.</exception>
         public static Vector3 ParseVector3(string value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             var values = ParseVectorValues(value, stackalloc float[3]);
 
@@ -128,10 +122,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="ArgumentException"><paramref name="value"/> does not contain a <see cref="Vector4"/>.</exception>
         public static Vector4 ParseVector4(string value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             var values = ParseVectorValues(value, stackalloc float[4]);
 

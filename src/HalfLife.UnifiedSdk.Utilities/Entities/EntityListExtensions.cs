@@ -12,10 +12,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentNullException"><paramref name="entityList"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Entity> WithoutWorldspawn(this EntityList entityList)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
 
             //This is the actual entity list, so the first entity is always worldspawn
             //The API forbids the creation of new worldspawn entities and renaming them is also forbidden, so this isn't an issue here
@@ -30,20 +27,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public static void RenameClass(this EntityList entityList, string oldClassName, string newClassName)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (oldClassName is null)
-            {
-                throw new ArgumentNullException(nameof(oldClassName));
-            }
-
-            if (newClassName is null)
-            {
-                throw new ArgumentNullException(nameof(newClassName));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(oldClassName);
+            ArgumentNullException.ThrowIfNull(newClassName);
 
             if (oldClassName == newClassName)
             {
@@ -64,15 +50,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentException"><paramref name="className"/> is <c>worldspawn</c>.</exception>
         public static EntityList RemoveAllOfClass(this EntityList entityList, string className)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (className is null)
-            {
-                throw new ArgumentNullException(nameof(className));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(className);
 
             if (className == KeyValueUtilities.WorldspawnClassName)
             {
@@ -102,15 +81,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentNullException"><paramref name="entityList"/> or <paramref name="predicate"/> are <see langword="null"/>.</exception>
         public static EntityList RemoveAll(this EntityList entityList, Predicate<Entity> predicate)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (predicate is null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(predicate);
 
             for (int i = 1; i < entityList.Count;)
             {
@@ -137,20 +109,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public static void ForEachClass(this EntityList entityList, string className, Action<Entity> callback)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (className is null)
-            {
-                throw new ArgumentNullException(nameof(className));
-            }
-
-            if (callback is null)
-            {
-                throw new ArgumentNullException(nameof(callback));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(className);
+            ArgumentNullException.ThrowIfNull(callback);
 
             foreach (var entity in entityList.ToList())
             {
@@ -174,15 +135,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public static EntityList ReplaceWith(this EntityList entityList, EntityList other)
         {
-            if (entityList is null)
-            {
-                throw new ArgumentNullException(nameof(entityList));
-            }
-
-            if (other is null)
-            {
-                throw new ArgumentNullException(nameof(other));
-            }
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(other);
 
             if (entityList == other)
             {

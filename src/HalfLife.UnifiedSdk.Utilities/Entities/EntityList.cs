@@ -61,11 +61,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         public int IndexOf(Entity entity)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
+            ArgumentNullException.ThrowIfNull(entity);
             return _entities.IndexOf(entity);
         }
 
@@ -73,11 +69,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         public bool Contains(Entity entity)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
+            ArgumentNullException.ThrowIfNull(entity);
             return _entities.Contains(entity);
         }
 
@@ -112,10 +104,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentException"><paramref name="entity"/>is <c>worldspawn</c>.</exception>
         public Entity CloneEntity(Entity entity)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
+            ArgumentNullException.ThrowIfNull(entity);
 
             if (entity.IsWorldspawn)
             {
@@ -138,10 +127,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public void Add(Entity entity)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
+            ArgumentNullException.ThrowIfNull(entity);
 
             if (entity.Entities != this)
             {
@@ -167,10 +153,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentException"><paramref name="entity"/> is worldspawn.</exception>
         public bool Remove(Entity entity)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
+            ArgumentNullException.ThrowIfNull(entity);
 
             if (entity.IsWorldspawn)
             {

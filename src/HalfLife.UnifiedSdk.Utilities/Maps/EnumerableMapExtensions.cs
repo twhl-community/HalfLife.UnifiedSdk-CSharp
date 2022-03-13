@@ -13,11 +13,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsMap(this IEnumerable<Map> maps)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => ValveGames.IsMap(m.BaseName));
         }
 
@@ -26,11 +22,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsMap(this IEnumerable<Map> maps, MapCategory category)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => ValveGames.IsMap(m.BaseName, category));
         }
 
@@ -39,11 +31,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsCampaignMap(this IEnumerable<Map> maps)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => ValveGames.IsCampaignMap(m.BaseName));
         }
 
@@ -52,11 +40,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsCampaignMap(this IEnumerable<Map> maps, GameInfo game)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => game.IsCampaignMap(m.BaseName));
         }
 
@@ -65,11 +49,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsTrainingMap(this IEnumerable<Map> maps)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => ValveGames.IsTrainingMap(m.BaseName));
         }
 
@@ -78,11 +58,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsTrainingMap(this IEnumerable<Map> maps, GameInfo game)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => game.IsTrainingMap(m.BaseName));
         }
 
@@ -91,11 +67,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsMultiplayerMap(this IEnumerable<Map> maps)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => ValveGames.IsMultiplayerMap(m.BaseName));
         }
 
@@ -104,11 +76,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         /// <exception cref="ArgumentNullException"><paramref name="maps"/> is <see langword="null"/>.</exception>
         public static IEnumerable<Map> WhereIsMultiplayerMap(this IEnumerable<Map> maps, GameInfo game)
         {
-            if (maps is null)
-            {
-                throw new ArgumentNullException(nameof(maps));
-            }
-
+            ArgumentNullException.ThrowIfNull(maps);
             return maps.Where(m => game.IsMultiplayerMap(m.BaseName));
         }
     }

@@ -146,11 +146,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </summary>
         public static IEnumerable<KeyValuePair<string, string>> WithoutClassName(this IEnumerable<KeyValuePair<string, string>> keyValues)
         {
-            if (keyValues is null)
-            {
-                throw new ArgumentNullException(nameof(keyValues));
-            }
-
+            ArgumentNullException.ThrowIfNull(keyValues);
             return keyValues.Where(kv => kv.Key != KeyValueUtilities.ClassName);
         }
 
@@ -160,10 +156,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </summary>
         public static void ReplaceKeyValues(this Entity entity, IEnumerable<KeyValuePair<string, string>> keyValues)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
+            ArgumentNullException.ThrowIfNull(entity);
 
             if (entity == keyValues)
             {
@@ -185,15 +178,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </summary>
         public static void ReplaceWith(this Entity entity, Entity other)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (other is null)
-            {
-                throw new ArgumentNullException(nameof(other));
-            }
+            ArgumentNullException.ThrowIfNull(entity);
+            ArgumentNullException.ThrowIfNull(other);
 
             if (entity == other)
             {
@@ -223,20 +209,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public static bool HasKeyValue(this Entity entity, string key, string value)
         {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (key is null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(entity);
+            ArgumentNullException.ThrowIfNull(key);
+            ArgumentNullException.ThrowIfNull(value);
 
             return entity.HasKeyValueCore(key, value);
         }

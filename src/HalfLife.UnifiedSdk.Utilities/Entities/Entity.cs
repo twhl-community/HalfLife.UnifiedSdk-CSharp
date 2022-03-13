@@ -74,11 +74,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <inheritdoc/>
         public bool ContainsValue(string value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
+            ArgumentNullException.ThrowIfNull(value);
             return _currentKeyValues.ContainsValue(value);
         }
 
@@ -119,15 +115,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// </exception>
         public void SetString(string key, string value)
         {
-            if (key is null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(key);
+            ArgumentNullException.ThrowIfNull(value);
 
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -160,10 +149,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <exception cref="ArgumentException"><paramref name="key"/> is <c>worldspawn</c></exception>
         public bool Remove(string key)
         {
-            if (key is null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
+            ArgumentNullException.ThrowIfNull(key);
 
             if (key == KeyValueUtilities.ClassName)
             {

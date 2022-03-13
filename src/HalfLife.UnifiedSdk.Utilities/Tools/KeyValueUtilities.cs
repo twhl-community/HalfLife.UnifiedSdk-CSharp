@@ -43,10 +43,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="ArgumentException"><paramref name="value"/> is invalid.</exception>
         public static void ValidateClassName(string value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             if (!Regex.IsMatch(value, @"^[_a-zA-Z]+[\w]*$"))
             {
@@ -58,11 +55,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         public static bool IsWorldspawnClass(string value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
+            ArgumentNullException.ThrowIfNull(value);
             return value == WorldspawnClassName;
         }
 
