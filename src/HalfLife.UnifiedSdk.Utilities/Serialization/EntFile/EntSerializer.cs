@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.EntFile
 {
     internal sealed class EntSerializer : IMapSerializer
     {
-        public string Extension => "ent";
+        public string Extension => ".ent";
 
         public Map Deserialize(string fileName, Stream stream)
         {

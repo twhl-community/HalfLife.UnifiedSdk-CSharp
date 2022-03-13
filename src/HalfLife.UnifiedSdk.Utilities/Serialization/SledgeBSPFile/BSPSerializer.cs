@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 {
     internal sealed class BSPSerializer : IMapSerializer
     {
-        public string Extension => "bsp";
+        public string Extension => ".bsp";
 
         public Map Deserialize(string fileName, Stream stream)
         {

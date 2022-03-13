@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization
     /// <summary>Represents a means of deserializing maps.</summary>
     public interface IMapSerializer
     {
-        /// <summary>Which file extension this serializer applies to. The extension has no dot.</summary>
+        /// <summary>Which file extension this serializer applies to (including the period ".").</summary>
         string Extension { get; }
 
         /// <summary>Deserializes a map into a <see cref="Map"/> object.</summary>

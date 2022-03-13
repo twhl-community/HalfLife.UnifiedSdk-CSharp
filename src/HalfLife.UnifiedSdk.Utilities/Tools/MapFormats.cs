@@ -25,7 +25,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <summary>The <c>.ent</c> file serializer.</summary>
         public static IMapSerializer Ent { get; } = new EntSerializer();
 
-        /// <summary>Dictionary of extension (without dot) => serializer.</summary>
+        /// <summary>Dictionary of extension (including period ".") => serializer.</summary>
         public static ImmutableDictionary<string, IMapSerializer> Serializers { get; } = new IMapSerializer[]
         {
             Map,
@@ -69,7 +69,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="IOException">An IO error occurred during deserialization.</exception>
         public static Map Deserialize(string fileName, Stream stream)
         {
-            var extension = FileUtilities.GetExtensionWithoutDot(fileName);
+            var extension = Path.GetExtension(fileName);
 
             if (extension is null)
             {
@@ -105,7 +105,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
             {
                 foreach (var file in Directory.EnumerateFiles(directory))
                 {
-                    if (Serializers.ContainsKey(FileUtilities.GetExtensionWithoutDot(file)))
+                    if (Serializers.ContainsKey(Path.GetExtension(file)))
                     {
                         yield return Deserialize(file);
                     }
@@ -120,7 +120,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         {
             foreach (var directory in directories)
             {
-                foreach (var file in Directory.EnumerateFiles(directory, "*." + extension))
+                foreach (var file in Directory.EnumerateFiles(directory, "*" + extension))
                 {
                     yield return Deserialize(file);
                 }

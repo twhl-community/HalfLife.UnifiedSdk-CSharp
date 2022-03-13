@@ -8,7 +8,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
     {
         private readonly QuakeMapFormat _format = new();
 
-        public string Extension => _format.Extension;
+        public string Extension { get; }
+
+        public QuakeMapFileSerializer()
+        {
+            Extension = "." + _format.Extension;
+        }
 
         public Map Deserialize(string fileName, Stream stream)
         {

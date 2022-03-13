@@ -8,7 +8,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
     {
         private readonly WorldcraftRmfFormat _format = new();
 
-        public string Extension => _format.Extension;
+        public string Extension { get; }
+
+        public WorldcraftRmfMapFileSerializer()
+        {
+            Extension = "." + _format.Extension;
+        }
 
         public Map Deserialize(string fileName, Stream stream)
         {
