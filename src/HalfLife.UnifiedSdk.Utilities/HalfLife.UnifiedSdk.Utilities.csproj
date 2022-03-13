@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <Authors>SamVanheer</Authors>
     <Description>Contains utility functionality for opening, analyzing, modifying, converting and upgrading Half-Life 1 maps made for the GoldSource engine.</Description>
     <Copyright>2022 Sam Vanheer</Copyright>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>halflife;half-life;valve;bsp</PackageTags>
-    <PackageReleaseNotes>Updated Sledge.Formats.Bsp to version 1.0.4.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added helpers to get list of Steam languages and mod directory suffixes, upgraded uses of ArgumentNullException to use ThrowIfNull.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
