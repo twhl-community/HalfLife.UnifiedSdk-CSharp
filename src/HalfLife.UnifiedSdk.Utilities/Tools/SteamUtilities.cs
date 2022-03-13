@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using System;
+using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 namespace HalfLife.UnifiedSdk.Utilities.Tools
@@ -7,6 +9,49 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
     public static class SteamUtilities
     {
         private const string SteamKey = @"Software\Valve\Steam";
+
+        private static readonly Lazy<ImmutableList<string>> _steamLanguagesExceptEnglish = new(() => ImmutableList.Create(
+            "arabic",
+            "bulgarian",
+            "schinese",
+            "tchinese",
+            "czech",
+            "danish",
+            "dutch",
+            "finnish",
+            "french",
+            "german",
+            "greek",
+            "hungarian",
+            "italian",
+            "japanese",
+            "koreana",
+            "norwegian",
+            "polish",
+            "portuguese",
+            "brazilian",
+            "romanian",
+            "russian",
+            "spanish",
+            "latam",
+            "swedish",
+            "thai",
+            "turkish",
+            "ukrainian",
+            "vietnamese"
+            ));
+
+        private static readonly Lazy<ImmutableList<string>> _steamLanguages = new(() => _steamLanguagesExceptEnglish.Value.Add("english"));
+
+        /// <summary>Gets an immutable list of all Steam languages except English.</summary>
+        /// <remarks>
+        /// The default language for game assets is <c>english</c>, so this list can be used to format localization paths.
+        /// Not all languages have localization files.
+        /// </remarks>
+        public static ImmutableList<string> SteamLanguagesExceptEnglish => _steamLanguagesExceptEnglish.Value;
+
+        /// <summary>Gets an immutable list of all Steam languages.</summary>
+        public static ImmutableList<string> SteamLanguages => _steamLanguages.Value;
 
         private static object? TryGetSteamRegistryValue(string valueName)
         {
