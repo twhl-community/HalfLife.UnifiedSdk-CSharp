@@ -35,3 +35,9 @@ The `HalfLife.UnifiedSdk.Utilities.Tools` namespace provides various tools for t
 * `UpgradeTool`: This namespace provides classes to help automate the upgrading of maps and map source files from older versions of a game to newer versions.
 
 The [`Sledge.Formats.Bsp` and `Sledge.Formats.Map`](https://github.com/LogicAndTrick/sledge-formats) libraries are used to load Half-Life 1 maps and map source files. Many thanks to Daniel Walder for creating these libraries.
+
+## HalfLife.UnifiedSdk.Skill2Json
+
+This program converts original Half-Life `skill.cfg` files to the Unified SDK's `skill.json` format.
+
+Usage: `dotnet path/to/HalfLife.UnifiedSdk.Json.dll <filename> [--output-filename <output-filename>]`

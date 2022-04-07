@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Authors>SamVanheer</Authors>
+    <Version>0.1.0</Version>
+    <Description>This program converts original Half-Life skill.cfg files to the Unified SDK's skill.json format.</Description>
+    <Copyright>2022 Sam Vanheer</Copyright>
+    <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>halflife;half-life;valve;json</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta3.22114.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.Formats\HalfLife.UnifiedSdk.Formats.csproj" />
+  </ItemGroup>
+
+</Project>
