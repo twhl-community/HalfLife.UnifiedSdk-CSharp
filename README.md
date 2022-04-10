@@ -4,6 +4,9 @@ Tools for the [Half-Life Unified SDK](https://github.com/SamVanheer/halflife-uni
 
 Note: the Unified SDK itself is written in C++.
 
+You will need to install the NET 6 runtime or newer to run the tools included in this repository.
+You can download the runtime here: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+
 ## Install using NuGet
 
 [![Nuget](https://img.shields.io/nuget/v/HalfLife.UnifiedSdk.Utilities?color=fcba03&label=HalfLife.UnifiedSdk.Utilities&logo=nuget)](https://www.nuget.org/packages/HalfLife.UnifiedSdk.Utilities/)
