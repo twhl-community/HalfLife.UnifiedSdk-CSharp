@@ -47,7 +47,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                     copy.CopyOptions.Destination = Path.Combine(gameDirectory.FullName, filter.Destination);
                     copy.CopyOptions.FileFilter = new[] { filter.Pattern };
                     copy.CopyOptions.CopySubdirectories = filter.Recursive;
-                    copy.CopyOptions.Purge = true;
+                    copy.CopyOptions.Purge = filter.PurgeDeletedFiles;
                     copy.CopyOptions.MonitorSourceChangesLimit = 1;
                     copy.CopyOptions.MonitorSourceTimeLimit = 1;
 
