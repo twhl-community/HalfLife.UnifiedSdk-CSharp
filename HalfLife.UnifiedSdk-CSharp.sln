@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Utiliti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Skill2Json", "src\HalfLife.UnifiedSdk.Skill2Json\HalfLife.UnifiedSdk.Skill2Json.csproj", "{99B7F7CC-3224-401C-B24B-2D6A4D58F064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.Formats", "src\HalfLife.UnifiedSdk.Formats\HalfLife.UnifiedSdk.Formats.csproj", "{9F04F2EA-0C6A-4334-99C2-90EAAE72449C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Formats", "src\HalfLife.UnifiedSdk.Formats\HalfLife.UnifiedSdk.Formats.csproj", "{9F04F2EA-0C6A-4334-99C2-90EAAE72449C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Packager", "src\HalfLife.UnifiedSdk.Packager\HalfLife.UnifiedSdk.Packager.csproj", "{8EAA6047-CE9B-4F23-BA22-2159AD760A76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{9F04F2EA-0C6A-4334-99C2-90EAAE72449C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F04F2EA-0C6A-4334-99C2-90EAAE72449C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F04F2EA-0C6A-4334-99C2-90EAAE72449C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EAA6047-CE9B-4F23-BA22-2159AD760A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EAA6047-CE9B-4F23-BA22-2159AD760A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EAA6047-CE9B-4F23-BA22-2159AD760A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EAA6047-CE9B-4F23-BA22-2159AD760A76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
