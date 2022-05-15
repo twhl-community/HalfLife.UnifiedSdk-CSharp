@@ -9,7 +9,8 @@ namespace HalfLife.UnifiedSdk.Packager
     /// </summary>
     sealed class Packager : IDisposable
     {
-        private const string PackageExtension = ".zip";
+        public const string PackageExtension = ".zip";
+
         private readonly ImmutableHashSet<string> _filesToExclude;
         private readonly ZipArchive _archive;
 
