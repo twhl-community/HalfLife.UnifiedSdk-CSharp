@@ -1,6 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Configuration;
 using Newtonsoft.Json;
-using System.Text.Json.Serialization;
 
 namespace HalfLife.UnifiedSdk.Packager
 {

@@ -3,7 +3,6 @@ using HalfLife.UnifiedSdk.Utilities.Tools;
 using Newtonsoft.Json;
 using System.CommandLine;
 using System.CommandLine.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace HalfLife.UnifiedSdk.Packager
