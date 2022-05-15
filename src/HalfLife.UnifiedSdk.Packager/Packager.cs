@@ -22,22 +22,11 @@ namespace HalfLife.UnifiedSdk.Packager
 
             _filesToExclude = filesToExclude.ToImmutableHashSet();
 
-            RemovePackageFile();
-
             Console.WriteLine($"Creating archive {PackageName}");
             _archive = ZipFile.Open(PackageName, ZipArchiveMode.Create);
         }
 
         public void Dispose() => _archive.Dispose();
-
-        private void RemovePackageFile()
-        {
-            if (File.Exists(PackageName))
-            {
-                Console.WriteLine($"Removing archive {PackageName}");
-                File.Delete(PackageName);
-            }
-        }
 
         public void AddFiles(IEnumerable<string> files)
         {
