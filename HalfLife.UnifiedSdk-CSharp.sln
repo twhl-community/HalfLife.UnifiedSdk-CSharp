@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Package
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.AssetSynchronizer", "src\HalfLife.UnifiedSdk.AssetSynchronizer\HalfLife.UnifiedSdk.AssetSynchronizer.csproj", "{B86A9314-3F96-43A0-8ACF-2CE5ECD31B9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.Installer", "src\HalfLife.UnifiedSdk.Installer\HalfLife.UnifiedSdk.Installer.csproj", "{955F9A70-9975-46AC-AED2-BC8C194A8579}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{B86A9314-3F96-43A0-8ACF-2CE5ECD31B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B86A9314-3F96-43A0-8ACF-2CE5ECD31B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B86A9314-3F96-43A0-8ACF-2CE5ECD31B9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{955F9A70-9975-46AC-AED2-BC8C194A8579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{955F9A70-9975-46AC-AED2-BC8C194A8579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{955F9A70-9975-46AC-AED2-BC8C194A8579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{955F9A70-9975-46AC-AED2-BC8C194A8579}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
