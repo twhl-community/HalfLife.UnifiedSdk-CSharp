@@ -26,7 +26,7 @@ namespace HalfLife.UnifiedSdk.Packager
             rootCommand.SetHandler((DirectoryInfo gameDirectory, FileInfo packageManifest, string packageName, IConsole console) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
-                var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-H-mm-ss");
+                var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
 
                 var completePackageName = $"{packageName}-{now}";
 
