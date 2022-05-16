@@ -1,10 +1,14 @@
 ﻿using System.Collections.Immutable;
+using System.CommandLine;
+using System.CommandLine.IO;
 using System.IO.Compression;
 
 namespace HalfLife.UnifiedSdk.Packager
 {
     internal struct ZipArchiveDirectoryVisitor
     {
+        public IConsole Console { get; init; }
+
         public ZipArchive Archive { get; init; }
 
         public ImmutableHashSet<string> FilesToExclude { get; init; }
@@ -17,7 +21,7 @@ namespace HalfLife.UnifiedSdk.Packager
         {
             if (FilesToExclude.Contains(sourceName))
             {
-                Console.WriteLine($"Skipping file or directory \"{sourceName}\"");
+                Console.Out.WriteLine($"Skipping file or directory \"{sourceName}\"");
                 return;
             }
 
@@ -35,10 +39,12 @@ namespace HalfLife.UnifiedSdk.Packager
             }
         }
 
-        public static void CreateEntryFromAny(ZipArchive archive, ImmutableHashSet<string> filesToExclude, string sourceName, string entryName = "")
+        public static void CreateEntryFromAny(
+            IConsole console, ZipArchive archive, ImmutableHashSet<string> filesToExclude, string sourceName, string entryName = "")
         {
             var visitor = new ZipArchiveDirectoryVisitor
             {
+                Console = console,
                 Archive = archive,
                 FilesToExclude = filesToExclude,
                 BaseName = sourceName,

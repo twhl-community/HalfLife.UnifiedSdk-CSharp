@@ -1,4 +1,6 @@
 ﻿using System.Collections.Immutable;
+using System.CommandLine;
+using System.CommandLine.IO;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 
@@ -7,22 +9,24 @@ namespace HalfLife.UnifiedSdk.Packager
     /// <summary>
     /// Creates a mod package from a mod installation.
     /// </summary>
-    sealed class Packager : IDisposable
+    internal sealed class Packager : IDisposable
     {
         public const string PackageExtension = ".zip";
 
+        private readonly IConsole _console;
         private readonly ImmutableHashSet<string> _filesToExclude;
         private readonly ZipArchive _archive;
 
         public string PackageName { get; }
 
-        public Packager(string packageName, IEnumerable<string> filesToExclude)
+        public Packager(IConsole console, string packageName, IEnumerable<string> filesToExclude)
         {
+            _console = console;
             PackageName = packageName + PackageExtension;
 
             _filesToExclude = filesToExclude.ToImmutableHashSet();
 
-            Console.WriteLine($"Creating archive {PackageName}");
+            _console.Out.WriteLine($"Creating archive {PackageName}");
             _archive = ZipFile.Open(PackageName, ZipArchiveMode.Create);
         }
 
@@ -34,20 +38,20 @@ namespace HalfLife.UnifiedSdk.Packager
             {
                 var completePath = file;
 
-                //If the file doesn't exist then it might be game-specific, so the packager should just ignore it.
                 if (!File.Exists(completePath) && !Directory.Exists(completePath))
                 {
-                    Console.WriteLine($"Skipping \"{completePath}\" because it does not exist");
-                    continue;
+                    _archive.Dispose();
+                    File.Delete(PackageName);
+                    throw new PackagerException($"\"{completePath}\" does not exist");
                 }
 
                 if (File.GetAttributes(completePath).HasFlag(FileAttributes.Directory))
                 {
-                    Console.WriteLine($"Adding directory \"{completePath}\"");
+                    _console.Out.WriteLine($"Adding directory \"{completePath}\"");
                 }
                 else
                 {
-                    Console.WriteLine($"Adding file \"{completePath}\"");
+                    _console.Out.WriteLine($"Adding file \"{completePath}\"");
                 }
 
                 var newName = completePath;
@@ -57,10 +61,10 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 if (completePath != newName)
                 {
-                    Console.WriteLine($"Renaming \"{completePath}\" to \"{newName}\"");
+                    _console.Out.WriteLine($"Renaming \"{completePath}\" to \"{newName}\"");
                 }
 
-                ZipArchiveDirectoryVisitor.CreateEntryFromAny(_archive, _filesToExclude, completePath, newName);
+                ZipArchiveDirectoryVisitor.CreateEntryFromAny(_console, _archive, _filesToExclude, completePath, newName);
             }
         }
     }

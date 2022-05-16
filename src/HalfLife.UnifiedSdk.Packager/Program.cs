@@ -62,8 +62,17 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 var filesToExclude = manifest.Exclude.Select(s => Path.Combine(modDirectory, s));
 
-                using var packager = new Packager(completePackageName, filesToExclude);
-                packager.AddFiles(filesToInclude);
+                using var packager = new Packager(console, completePackageName, filesToExclude);
+
+                try
+                {
+                    packager.AddFiles(filesToInclude);
+                }
+                catch(PackagerException e)
+                {
+                    console.Error.WriteLine($"Fatal error: {e.Message}");
+                    return;
+                }
 
                 //Now delete old packages.
                 var regex = new Regex($@"{Regex.Escape(packageName)}-(\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d){Packager.PackageExtension}$");
