@@ -27,10 +27,5 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
         /// Whether to recurse into subdirectories. Default <see langword="true"/>.
         /// </summary>
         public bool Recursive { get; set; } = true;
-
-        /// <summary>
-        /// Whether to purge deleted files from the destination. Default <see langword="false"/>
-        /// </summary>
-        public bool PurgeDeletedFiles { get; set; }
     }
 }
