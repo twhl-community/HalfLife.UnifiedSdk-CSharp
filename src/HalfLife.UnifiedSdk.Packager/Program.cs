@@ -1,7 +1,6 @@
 ﻿
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using Newtonsoft.Json;
-using System.Collections.Immutable;
 using System.CommandLine;
 using System.CommandLine.IO;
 using System.Text.RegularExpressions;
@@ -38,14 +37,14 @@ namespace HalfLife.UnifiedSdk.Packager
                     return;
                 }
 
+                //Move to Half-Life directory.
+                var halfLifeDirectory = gameDirectory.Parent ?? throw new InvalidOperationException("Couldn't get game directory");
+                Environment.CurrentDirectory = halfLifeDirectory.FullName;
+
                 // Get the name of the mod directory.
                 var modDirectory = Path.GetFileNameWithoutExtension(gameDirectory.FullName);
 
                 console.Out.WriteLine($"Loading package manifest \"{packageManifest.FullName}\"");
-
-                // Move to Half-Life directory.
-                var halfLifeDirectory = gameDirectory.Parent ?? throw new InvalidOperationException("Couldn't get game directory");
-                Environment.CurrentDirectory = halfLifeDirectory.FullName;
 
                 var manifest = JsonConvert.DeserializeObject<PackageManifest>(File.ReadAllText(packageManifest.FullName));
 
@@ -55,23 +54,17 @@ namespace HalfLife.UnifiedSdk.Packager
                     return;
                 }
 
-                var filesToInclude = manifest.Include.Select(s => Path.Combine(modDirectory, s))
+                var directories = new[]
+                {
+                    new PackageDirectory(gameDirectory.FullName, manifest.IncludePatterns, manifest.ExcludePatterns)
+                }
                     //Include content directories if they exist.
                     .Concat(ModUtilities.AllPublicModDirectorySuffixes
                         .Select(s => ModUtilities.FormatModDirectory(modDirectory, s))
-                        .Where(Directory.Exists));
+                        .Where(Directory.Exists)
+                        .Select(p => new PackageDirectory(p, new[] { "**/*" }, Array.Empty<string>())));
 
-                var filesToExclude = manifest.Exclude.Select(s => Path.Combine(modDirectory, s)).ToImmutableHashSet();
-
-                try
-                {
-                    Packager.CreatePackage(console, completePackageName, filesToInclude, filesToExclude);
-                }
-                catch(PackagerException e)
-                {
-                    console.Error.WriteLine($"Fatal error: {e.Message}");
-                    return;
-                }
+                Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories);
 
                 //Now delete old packages.
                 var regex = new Regex($@"{Regex.Escape(packageName)}-(\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d){Packager.PackageExtension}$");

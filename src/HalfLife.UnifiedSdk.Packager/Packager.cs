@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using Microsoft.Extensions.FileSystemGlobbing;
 using System.CommandLine;
 using System.CommandLine.IO;
 using System.IO.Compression;
@@ -13,55 +13,41 @@ namespace HalfLife.UnifiedSdk.Packager
     {
         public const string PackageExtension = ".zip";
 
-        public static void CreatePackage(IConsole console, string packageName,
-            IEnumerable<string> filesToInclude, ImmutableHashSet<string> filesToExclude)
+        public static void CreatePackage(IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories)
         {
             var completePackageName = packageName + PackageExtension;
 
-            try
-            {
-                CreatePackageCore(console, completePackageName, filesToInclude, filesToExclude);
-            }
-            catch(PackagerException)
-            {
-                File.Delete(completePackageName);
-                throw;
-            }
-        }
-
-        private static void CreatePackageCore(IConsole console, string completePackageName,
-            IEnumerable<string> filesToInclude, ImmutableHashSet<string> filesToExclude)
-        {
             console.Out.WriteLine($"Creating archive {completePackageName}");
+
             using var archive = ZipFile.Open(completePackageName, ZipArchiveMode.Create);
 
-            foreach (var file in filesToInclude)
+            foreach (var directory in directories)
             {
-                if (!File.Exists(file) && !Directory.Exists(file))
+                console.Out.WriteLine($"Adding mod directory \"{directory.Path}\"");
+
+                var matcher = new Matcher();
+
+                matcher.AddIncludePatterns(directory.IncludePatterns);
+                matcher.AddExcludePatterns(directory.ExcludePatterns);
+
+                foreach (var file in matcher.GetResultsInFullPath(directory.Path))
                 {
-                    throw new PackagerException($"\"{file}\" does not exist");
+                    var relativePath = Path.GetRelativePath(rootDirectory, file);
+
+                    console.Out.WriteLine($"Adding file \"{relativePath}\"");
+
+                    var newName = relativePath;
+
+                    // Files ending with ".install" need to be renamed.
+                    newName = Regex.Replace(newName, "\\.install$", "");
+
+                    if (relativePath != newName)
+                    {
+                        console.Out.WriteLine($"Renaming \"{relativePath}\" to \"{newName}\"");
+                    }
+
+                    archive.CreateEntryFromFile(relativePath, newName);
                 }
-
-                if (File.GetAttributes(file).HasFlag(FileAttributes.Directory))
-                {
-                    console.Out.WriteLine($"Adding directory \"{file}\"");
-                }
-                else
-                {
-                    console.Out.WriteLine($"Adding file \"{file}\"");
-                }
-
-                var newName = file;
-
-                // Files ending with ".install" need to be renamed.
-                newName = Regex.Replace(newName, "\\.install$", "");
-
-                if (file != newName)
-                {
-                    console.Out.WriteLine($"Renaming \"{file}\" to \"{newName}\"");
-                }
-
-                ZipArchiveDirectoryVisitor.CreateEntryFromAny(console, archive, filesToExclude, file, newName);
             }
         }
     }
