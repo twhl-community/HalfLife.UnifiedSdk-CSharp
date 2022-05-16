@@ -1,6 +1,7 @@
 ﻿
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using Newtonsoft.Json;
+using System.Collections.Immutable;
 using System.CommandLine;
 using System.CommandLine.IO;
 using System.Text.RegularExpressions;
@@ -60,13 +61,11 @@ namespace HalfLife.UnifiedSdk.Packager
                         .Select(s => ModUtilities.FormatModDirectory(modDirectory, s))
                         .Where(Directory.Exists));
 
-                var filesToExclude = manifest.Exclude.Select(s => Path.Combine(modDirectory, s));
-
-                using var packager = new Packager(console, completePackageName, filesToExclude);
+                var filesToExclude = manifest.Exclude.Select(s => Path.Combine(modDirectory, s)).ToImmutableHashSet();
 
                 try
                 {
-                    packager.AddFiles(filesToInclude);
+                    Packager.CreatePackage(console, completePackageName, filesToInclude, filesToExclude);
                 }
                 catch(PackagerException e)
                 {

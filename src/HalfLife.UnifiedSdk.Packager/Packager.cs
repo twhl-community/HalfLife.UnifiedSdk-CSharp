@@ -9,62 +9,59 @@ namespace HalfLife.UnifiedSdk.Packager
     /// <summary>
     /// Creates a mod package from a mod installation.
     /// </summary>
-    internal sealed class Packager : IDisposable
+    internal static class Packager
     {
         public const string PackageExtension = ".zip";
 
-        private readonly IConsole _console;
-        private readonly ImmutableHashSet<string> _filesToExclude;
-        private readonly ZipArchive _archive;
-
-        public string PackageName { get; }
-
-        public Packager(IConsole console, string packageName, IEnumerable<string> filesToExclude)
+        public static void CreatePackage(IConsole console, string packageName,
+            IEnumerable<string> filesToInclude, ImmutableHashSet<string> filesToExclude)
         {
-            _console = console;
-            PackageName = packageName + PackageExtension;
+            var completePackageName = packageName + PackageExtension;
 
-            _filesToExclude = filesToExclude.ToImmutableHashSet();
-
-            _console.Out.WriteLine($"Creating archive {PackageName}");
-            _archive = ZipFile.Open(PackageName, ZipArchiveMode.Create);
+            try
+            {
+                CreatePackageCore(console, completePackageName, filesToInclude, filesToExclude);
+            }
+            catch(PackagerException)
+            {
+                File.Delete(completePackageName);
+                throw;
+            }
         }
 
-        public void Dispose() => _archive.Dispose();
-
-        public void AddFiles(IEnumerable<string> files)
+        private static void CreatePackageCore(IConsole console, string completePackageName,
+            IEnumerable<string> filesToInclude, ImmutableHashSet<string> filesToExclude)
         {
-            foreach (var file in files)
-            {
-                var completePath = file;
+            console.Out.WriteLine($"Creating archive {completePackageName}");
+            using var archive = ZipFile.Open(completePackageName, ZipArchiveMode.Create);
 
-                if (!File.Exists(completePath) && !Directory.Exists(completePath))
+            foreach (var file in filesToInclude)
+            {
+                if (!File.Exists(file) && !Directory.Exists(file))
                 {
-                    _archive.Dispose();
-                    File.Delete(PackageName);
-                    throw new PackagerException($"\"{completePath}\" does not exist");
+                    throw new PackagerException($"\"{file}\" does not exist");
                 }
 
-                if (File.GetAttributes(completePath).HasFlag(FileAttributes.Directory))
+                if (File.GetAttributes(file).HasFlag(FileAttributes.Directory))
                 {
-                    _console.Out.WriteLine($"Adding directory \"{completePath}\"");
+                    console.Out.WriteLine($"Adding directory \"{file}\"");
                 }
                 else
                 {
-                    _console.Out.WriteLine($"Adding file \"{completePath}\"");
+                    console.Out.WriteLine($"Adding file \"{file}\"");
                 }
 
-                var newName = completePath;
+                var newName = file;
 
                 // Files ending with ".install" need to be renamed.
                 newName = Regex.Replace(newName, "\\.install$", "");
 
-                if (completePath != newName)
+                if (file != newName)
                 {
-                    _console.Out.WriteLine($"Renaming \"{completePath}\" to \"{newName}\"");
+                    console.Out.WriteLine($"Renaming \"{file}\" to \"{newName}\"");
                 }
 
-                ZipArchiveDirectoryVisitor.CreateEntryFromAny(_console, _archive, _filesToExclude, completePath, newName);
+                ZipArchiveDirectoryVisitor.CreateEntryFromAny(console, archive, filesToExclude, file, newName);
             }
         }
     }
