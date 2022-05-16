@@ -24,8 +24,8 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
         public string Pattern { get; set; } = string.Empty;
 
         /// <summary>
-        /// Whether to recurse into subdirectories. Default <see langword="true"/>.
+        /// Whether to recurse into subdirectories. Default <see langword="false"/>.
         /// </summary>
-        public bool Recursive { get; set; } = true;
+        public bool Recursive { get; set; }
     }
 }
