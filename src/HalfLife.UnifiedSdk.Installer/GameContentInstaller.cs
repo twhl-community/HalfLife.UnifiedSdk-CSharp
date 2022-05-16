@@ -2,6 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using System.IO.Compression;
+using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.Installer
 {
@@ -27,15 +28,12 @@ namespace HalfLife.UnifiedSdk.Installer
             string destinationMapsDirectory = Path.Combine(rootDirectory, "maps");
             string destinationGraphsDirectory = Path.Combine(destinationMapsDirectory, "graphs");
 
-            var entFilesName = game.MapEntFiles is not null ? Path.Combine(rootDirectory, "installer", game.MapEntFiles) : null;
-
             //Install campaign and training maps.
             var mapsToInstall = game.Info.Maps.Values.Where(m => m.Category == MapCategory.Campaign || m.Category == MapCategory.Training);
 
             //Verify that everything exists before continuing.
             if (!VerifyFilesExist(
                 sourceMapsDirectory,
-                entFilesName,
                 mapsToInstall.Select(map => Path.Combine(sourceMapsDirectory, map.Name + MapFormats.Bsp.Extension))))
             {
                 return false;
@@ -49,10 +47,10 @@ namespace HalfLife.UnifiedSdk.Installer
                 Directory.CreateDirectory(destinationGraphsDirectory);
             }
 
-            using var entFiles = entFilesName is not null ? ZipFile.Open(entFilesName, ZipArchiveMode.Read) : null;
-
             Console.WriteLine($"Copying maps from \"{sourceMapsDirectory}\" to \"{destinationMapsDirectory}\"");
             Console.WriteLine("Node graph files in destination for maps being copied will be deleted.");
+
+            var upgradeTool = game.GetUpgradeTool();
 
             //Process maps in sorted order to make it easier to read the output and spot problems.
             foreach (var map in mapsToInstall.OrderBy(m => m.Name))
@@ -67,22 +65,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 // Opening the map auto-converts Blue Shift maps.
                 var mapData = MapFormats.Deserialize(sourceMapName);
 
-                var entFileName = map.Name + MapFormats.Ent.Extension;
-
-                if (entFiles?.GetEntry(entFileName) is { } entFile)
-                {
-                    Console.WriteLine($"\tApplying ent file \"{entFileName}\"...");
-
-                    //Decompress the file data first so we can read it.
-                    using var entFileData = entFile.Open();
-                    using var decompressedData = new MemoryStream();
-
-                    entFileData.CopyTo(decompressedData);
-                    decompressedData.Position = 0;
-
-                    var entMapData = MapFormats.Deserialize(entFileName, decompressedData, MapFormats.Ent);
-                    mapData.Entities.ReplaceWith(entMapData.Entities);
-                }
+                upgradeTool.Upgrade(new MapUpgrade(mapData));
 
                 using var stream = File.Open(destinationMapName, FileMode.Create, FileAccess.Write);
 
@@ -101,19 +84,14 @@ namespace HalfLife.UnifiedSdk.Installer
             return true;
         }
 
-        private static bool VerifyFilesExist(string sourceMapsDirectory, string? entFilesName, IEnumerable<string> mapFileNames)
+        private static bool VerifyFilesExist(string sourceMapsDirectory, IEnumerable<string> mapFileNames)
         {
             var filesToCheck = mapFileNames;
 
-            if (entFilesName is not null)
-            {
-                filesToCheck = filesToCheck.Append(entFilesName);
-            }
-
             IEnumerable<string> directoriesToCheck = new[]
             {
-            sourceMapsDirectory
-        };
+                sourceMapsDirectory
+            };
 
             var missingFiles = filesToCheck.Where(f => !File.Exists(f)).ToList();
 

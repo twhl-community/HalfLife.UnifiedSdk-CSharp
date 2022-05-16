@@ -1,4 +1,7 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Games;
+﻿using HalfLife.UnifiedSdk.Installer.Upgrades;
+using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
+using Semver;
 using System.CommandLine;
 using System.CommandLine.IO;
 
@@ -6,12 +9,22 @@ namespace HalfLife.UnifiedSdk.Installer
 {
     internal static class Program
     {
+        private static MapUpgradeTool GetHalfLifeUpgradeTool()
+        {
+            var unifiedSdk100UpgradeAction = new MapUpgradeAction(new SemVersion(1, 0, 0));
+
+            unifiedSdk100UpgradeAction.Upgrading += new Of4a4BridgeUpgrade().Upgrade;
+            unifiedSdk100UpgradeAction.Upgrading += new BaYard4aSlavesUpgrade().Upgrade;
+
+            return new MapUpgradeTool(unifiedSdk100UpgradeAction);
+        }
+
         //List of games whose content can be installed with this tool.
         private static readonly IEnumerable<GameInstallData> Games = new[]
         {
-            new GameInstallData(ValveGames.HalfLife1),
-            new GameInstallData(ValveGames.OpposingForce, MapEntFiles: "op4_map_ent_files.zip"),
-            new GameInstallData(ValveGames.BlueShift, MapEntFiles: "bs_map_ent_files.zip")
+            new GameInstallData(ValveGames.HalfLife1, GetHalfLifeUpgradeTool),
+            new GameInstallData(ValveGames.OpposingForce, GetHalfLifeUpgradeTool),
+            new GameInstallData(ValveGames.BlueShift, GetHalfLifeUpgradeTool)
         };
 
         public static int Main(string[] args)
