@@ -1,7 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Entities;
-using HalfLife.UnifiedSdk.Utilities.Games;
+﻿using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools;
-using System.IO.Compression;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.Installer

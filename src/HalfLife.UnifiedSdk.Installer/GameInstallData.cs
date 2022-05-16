@@ -6,5 +6,5 @@ namespace HalfLife.UnifiedSdk.Installer
     /// <summary>Defines a single game as a source of content.</summary>
     /// <param name="Info"><see cref="GameInfo"/> object containing information about the game.</param>
     /// <param name="GetUpgradeTool">Delegate that provides an upgrade tool to apply to the game's maps.</param>
-    sealed record class GameInstallData(GameInfo Info, Func<MapUpgradeTool> GetUpgradeTool);
+    internal sealed record class GameInstallData(GameInfo Info, Func<MapUpgradeTool> GetUpgradeTool);
 }
