@@ -62,7 +62,7 @@ namespace HalfLife.UnifiedSdk.Packager
                     .Concat(ModUtilities.AllPublicModDirectorySuffixes
                         .Select(s => ModUtilities.FormatModDirectory(modDirectory, s))
                         .Where(Directory.Exists)
-                        .Select(p => new PackageDirectory(p, new[] { "**/*" }, Array.Empty<string>())));
+                        .Select(p => new PackageDirectory(p, manifest.IncludePatterns, manifest.ExcludePatterns)));
 
                 Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories);
 
