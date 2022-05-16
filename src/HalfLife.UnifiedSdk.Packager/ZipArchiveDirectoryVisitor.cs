@@ -7,21 +7,31 @@ namespace HalfLife.UnifiedSdk.Packager
 {
     internal struct ZipArchiveDirectoryVisitor
     {
-        public IConsole Console { get; init; }
+        private readonly IConsole _console;
 
-        public ZipArchive Archive { get; init; }
+        private readonly ZipArchive _archive;
 
-        public ImmutableHashSet<string> FilesToExclude { get; init; }
+        private readonly ImmutableHashSet<string> _filesToExclude;
 
-        public string BaseName { get; init; }
+        private readonly string _baseName;
 
-        public string EntryName { get; init; }
+        private readonly string _entryName;
+
+        private ZipArchiveDirectoryVisitor(IConsole console, ZipArchive archive, ImmutableHashSet<string> filesToExclude,
+            string baseName, string entryName)
+        {
+            _console = console;
+            _archive = archive;
+            _filesToExclude = filesToExclude;
+            _baseName = baseName;
+            _entryName = entryName;
+        }
 
         private void CreateEntryFromAny(string sourceName)
         {
-            if (FilesToExclude.Contains(sourceName))
+            if (_filesToExclude.Contains(sourceName))
             {
-                Console.Out.WriteLine($"Skipping file or directory \"{sourceName}\"");
+                _console.Out.WriteLine($"Skipping file or directory \"{sourceName}\"");
                 return;
             }
 
@@ -34,22 +44,15 @@ namespace HalfLife.UnifiedSdk.Packager
             }
             else
             {
-                var entryName = EntryName != "" ? sourceName.Replace(BaseName, EntryName) : "";
-                Archive.CreateEntryFromFile(sourceName, entryName);
+                var entryName = _entryName != "" ? sourceName.Replace(_baseName, _entryName) : "";
+                _archive.CreateEntryFromFile(sourceName, entryName);
             }
         }
 
         public static void CreateEntryFromAny(
             IConsole console, ZipArchive archive, ImmutableHashSet<string> filesToExclude, string sourceName, string entryName = "")
         {
-            var visitor = new ZipArchiveDirectoryVisitor
-            {
-                Console = console,
-                Archive = archive,
-                FilesToExclude = filesToExclude,
-                BaseName = sourceName,
-                EntryName = entryName
-            };
+            var visitor = new ZipArchiveDirectoryVisitor(console, archive, filesToExclude, sourceName, entryName);
 
             visitor.CreateEntryFromAny(sourceName);
         }
