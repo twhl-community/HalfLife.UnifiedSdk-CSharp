@@ -10,13 +10,16 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         /// </summary>
         public static MapUpgradeTool Create()
         {
-            var unifiedSdk100UpgradeAction = new MapUpgrade(new SemVersion(1, 0, 0));
-
-            unifiedSdk100UpgradeAction.AddHalfLifeUpgrades();
-            unifiedSdk100UpgradeAction.AddOpposingForceUpgrades();
-            unifiedSdk100UpgradeAction.AddBlueShiftUpgrades();
-
-            return new MapUpgradeTool(unifiedSdk100UpgradeAction);
+            return MapUpgradeToolBuilder.Build(builder =>
+            {
+                builder.AddUpgrade(new SemVersion(1, 0, 0), upgrade =>
+                {
+                    upgrade
+                        .AddHalfLifeUpgrades()
+                        .AddOpposingForceUpgrades()
+                        .AddBlueShiftUpgrades();
+                });
+            });
         }
     }
 }

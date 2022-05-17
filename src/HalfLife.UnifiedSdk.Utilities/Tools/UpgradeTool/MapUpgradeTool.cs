@@ -1,7 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Maps;
 using Semver;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -59,28 +58,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             }
         }
 
-        /// <summary>Creates a new instance of the upgrade tool with the given map upgrades.</summary>
-        /// <param name="upgrades">Set of upgrades to perform to upgrade a map.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="upgrades"/> is <see langword="null"/>.</exception>
-        public MapUpgradeTool(IEnumerable<MapUpgrade> upgrades)
+        internal MapUpgradeTool(ImmutableList<MapUpgrade> upgrades)
         {
-            ArgumentNullException.ThrowIfNull(upgrades);
-
-            Upgrades = upgrades.ToImmutableList().Sort();
-
-            if (Upgrades.Count != upgrades.Distinct().Count())
-            {
-                throw new ArgumentException("Only one upgrade may be associated with a specific version", nameof(upgrades));
-            }
+            Upgrades = upgrades;
 
             //If there are no upgrades then we can't do anything anyway, so use the first version.
             LatestVersion = Upgrades.LastOrDefault()?.Version ?? FirstVersion;
-        }
-
-        /// <inheritdoc cref="MapUpgradeTool(IEnumerable{MapUpgrade})"/>
-        public MapUpgradeTool(params MapUpgrade[] upgrades)
-            : this((IEnumerable<MapUpgrade>)upgrades)
-        {
         }
 
         /// <summary>
