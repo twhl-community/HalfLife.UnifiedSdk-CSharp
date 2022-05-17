@@ -43,7 +43,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
-            action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
+            action.Add((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
             var upgradeTool = new MapUpgradeTool(action);
 
@@ -70,7 +70,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
-            action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
+            action.Add((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
             var upgradeTool = new MapUpgradeTool(action);
 
@@ -117,12 +117,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             //Version 1.0.0: set MaxRange to 4096 (default value in original fgd).
             var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
-            action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096);
+            action.Add((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096));
 
             //Version 2.0.0: set MaxRange to 32768.
             var action2 = new MapUpgrade(new SemVersion(2, 0, 0));
 
-            action2.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
+            action2.Add((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
             var upgradeTool = new MapUpgradeTool(action, action2);
 
@@ -148,7 +148,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             {
                 var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
-                action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
+                action.Add((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
                 var upgradeTool = new MapUpgradeTool(action);
 
@@ -162,7 +162,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
                 var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
                 //Set MaxRange to a different value.
-                action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096);
+                action.Add((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096));
 
                 var upgradeTool = new MapUpgradeTool(action);
 

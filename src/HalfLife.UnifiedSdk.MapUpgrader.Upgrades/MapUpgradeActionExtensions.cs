@@ -11,12 +11,12 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 
         public static void AddOpposingForceUpgrades(this MapUpgrade action)
         {
-            action.Upgrading += new Of4a4BridgeUpgrade().Upgrade;
+            action.Add(new Of4a4BridgeUpgrade());
         }
 
         public static void AddBlueShiftUpgrades(this MapUpgrade action)
         {
-            action.Upgrading += new BaYard4aSlavesUpgrade().Upgrade;
+            action.Add(new BaYard4aSlavesUpgrade());
         }
     }
 }

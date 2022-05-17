@@ -6,14 +6,14 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
     /// <summary>
     /// Fixes the Alien Slaves in ba_yard4a being resurrected by triggering them instead of the scripted_sequence keeping them in stasis.
     /// </summary>
-    internal sealed class BaYard4aSlavesUpgrade : MapSpecificUpgrade
+    internal sealed class BaYard4aSlavesUpgrade : MapSpecificUpgradeAction
     {
         public BaYard4aSlavesUpgrade()
             : base("ba_yard4a")
         {
         }
 
-        protected override void UpgradeCore(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             ModifyScript(context, "frozen_slave_1");
             ModifyScript(context, "frozen_slave_2");
