@@ -1,4 +1,4 @@
-﻿using HalfLife.UnifiedSdk.Installer.Upgrades;
+﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades;
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using Semver;
@@ -13,8 +13,9 @@ namespace HalfLife.UnifiedSdk.Installer
         {
             var unifiedSdk100UpgradeAction = new MapUpgradeAction(new SemVersion(1, 0, 0));
 
-            unifiedSdk100UpgradeAction.Upgrading += new Of4a4BridgeUpgrade().Upgrade;
-            unifiedSdk100UpgradeAction.Upgrading += new BaYard4aSlavesUpgrade().Upgrade;
+            unifiedSdk100UpgradeAction.AddHalfLifeUpgrades();
+            unifiedSdk100UpgradeAction.AddOpposingForceUpgrades();
+            unifiedSdk100UpgradeAction.AddBlueShiftUpgrades();
 
             return new MapUpgradeTool(unifiedSdk100UpgradeAction);
         }

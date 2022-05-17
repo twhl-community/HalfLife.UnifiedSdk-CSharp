@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.MapUpgrader.Upgrades\HalfLife.UnifiedSdk.MapUpgrader.Upgrades.csproj" />
     <ProjectReference Include="..\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj" />
   </ItemGroup>
 

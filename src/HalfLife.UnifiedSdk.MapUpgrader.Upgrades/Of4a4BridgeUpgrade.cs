@@ -1,7 +1,7 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.Installer.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
     /// <summary>
     /// Fixes the Pit Worm's Nest bridge possibly breaking if triggered too soon.
