@@ -38,11 +38,8 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 {
                     filter.Source = Path.Combine(assetsDirectory.FullName, filter.Source);
                     filter.Destination = Path.Combine(gameDirectory.FullName, filter.Destination);
-                }
 
-                //Verify that the paths are valid.
-                foreach (var filter in manifest)
-                {
+                    //Verify that the paths are valid.
                     if (File.Exists(filter.Source))
                     {
                         console.Error.WriteLine($"The source directory \"{filter.Source}\" is a file");
