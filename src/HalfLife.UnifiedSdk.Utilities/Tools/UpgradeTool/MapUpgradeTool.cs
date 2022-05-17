@@ -86,26 +86,26 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// <summary>
         /// Performs the upgrade of the given map from the given current version to the given target version.
         /// </summary>
-        /// <param name="mapUpgrade">Map upgrade command.</param>
+        /// <param name="command">Map upgrade command.</param>
         /// <returns>The version the map was upgraded from and the version the map was upgraded to.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="mapUpgrade"/> or <c>mapUpgrade.Map</c> are <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <c>command.Map</c> are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">
         /// If the map contains a <c>UpgradeToolVersion</c> value that is not a valid semantic version string.
         /// </exception>
         /// <exception cref="MapUpgradeException">
         /// If the version to upgrade from is older than the map version
-        /// and <see cref="MapUpgrade.ThrowOnTooOldVersion"/> is <see langword="true"/>.
+        /// and <see cref="MapUpgradeCommand.ThrowOnTooOldVersion"/> is <see langword="true"/>.
         /// </exception>
-        public (SemVersion From, SemVersion To) Upgrade(MapUpgrade mapUpgrade)
+        public (SemVersion From, SemVersion To) Upgrade(MapUpgradeCommand command)
         {
-            ArgumentNullException.ThrowIfNull(mapUpgrade);
+            ArgumentNullException.ThrowIfNull(command);
 
-            var currentVersion = GetVersion(mapUpgrade.Map);
+            var currentVersion = GetVersion(command.Map);
 
-            var from = mapUpgrade.From ?? currentVersion;
-            var to = mapUpgrade.To ?? LatestVersion;
+            var from = command.From ?? currentVersion;
+            var to = command.To ?? LatestVersion;
 
-            if (mapUpgrade.ThrowOnTooOldVersion && from < currentVersion)
+            if (command.ThrowOnTooOldVersion && from < currentVersion)
             {
                 throw new MapUpgradeException(
                     $"Attempted to upgrade map with version {currentVersion} from older version {from} to version {to}");
@@ -122,11 +122,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             //Apply all upgrades starting at currentVersion + 1 up to and including targetVersion.
             foreach (var upgradeAction in Actions.Where(v => v.Version > from && v.Version <= to))
             {
-                var context = new MapUpgradeContext(this, from, to, currentVersion, upgradeAction, mapUpgrade.Map);
+                var context = new MapUpgradeContext(this, from, to, currentVersion, upgradeAction, command.Map);
                 upgradeAction.PerformUpgrade(context);
             }
 
-            SetVersion(mapUpgrade.Map, to);
+            SetVersion(command.Map, to);
 
             return (from, to);
         }

@@ -26,7 +26,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = new MapUpgradeTool();
 
-            upgradeTool.Upgrade(new MapUpgrade(map));
+            upgradeTool.Upgrade(new MapUpgradeCommand(map));
 
             Assert.Single(map.Entities);
 
@@ -47,7 +47,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = new MapUpgradeTool(action);
 
-            upgradeTool.Upgrade(new MapUpgrade(map));
+            upgradeTool.Upgrade(new MapUpgradeCommand(map));
 
             Assert.Single(map.Entities);
 
@@ -74,7 +74,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = new MapUpgradeTool(action);
 
-            var (from, to) = upgradeTool.Upgrade(new MapUpgrade(map));
+            var (from, to) = upgradeTool.Upgrade(new MapUpgradeCommand(map));
 
             Assert.Equal(from, to);
 
@@ -96,7 +96,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = new MapUpgradeTool();
 
-            Assert.Throws<MapUpgradeException>(() => upgradeTool.Upgrade(new MapUpgrade(map)
+            Assert.Throws<MapUpgradeException>(() => upgradeTool.Upgrade(new MapUpgradeCommand(map)
             {
                 From = new SemVersion(1, 0, 0)
             }));
@@ -126,7 +126,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = new MapUpgradeTool(action, action2);
 
-            upgradeTool.Upgrade(new MapUpgrade(map));
+            upgradeTool.Upgrade(new MapUpgradeCommand(map));
 
             Assert.Single(map.Entities);
 
@@ -152,7 +152,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
                 var upgradeTool = new MapUpgradeTool(action);
 
-                upgradeTool.Upgrade(new MapUpgrade(map));
+                upgradeTool.Upgrade(new MapUpgradeCommand(map));
 
                 RunTests(upgradeTool, action);
             }
@@ -166,7 +166,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
                 var upgradeTool = new MapUpgradeTool(action);
 
-                upgradeTool.Upgrade(new MapUpgrade(map));
+                upgradeTool.Upgrade(new MapUpgradeCommand(map));
 
                 RunTests(upgradeTool, action);
             }

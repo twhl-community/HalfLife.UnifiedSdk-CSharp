@@ -5,7 +5,7 @@ using System;
 namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 {
     /// <summary>A map upgrade command.</summary>
-    public sealed class MapUpgrade
+    public sealed class MapUpgradeCommand
     {
         /// <summary>Map being upgraded.</summary>
         public Map Map { get; }
@@ -30,7 +30,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 
         /// <summary>Creates a new map upgrde command.</summary>
         /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
-        public MapUpgrade(Map map)
+        public MapUpgradeCommand(Map map)
         {
             Map = map ?? throw new ArgumentNullException(nameof(map));
         }

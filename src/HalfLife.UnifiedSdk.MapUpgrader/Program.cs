@@ -31,7 +31,7 @@ namespace HalfLife.UnifiedSdk.Installer
 
                     console.Out.Write($"Upgrading \"{map.FullName}\" from version {currentVersion}");
 
-                    upgradeTool.Upgrade(new MapUpgrade(mapData));
+                    upgradeTool.Upgrade(new MapUpgradeCommand(mapData));
 
                     using var stream = File.Open(map.FullName, FileMode.Create, FileAccess.Write);
 
