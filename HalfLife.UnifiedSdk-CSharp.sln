@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Install
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.MapUpgrader.Upgrades", "src\HalfLife.UnifiedSdk.MapUpgrader.Upgrades\HalfLife.UnifiedSdk.MapUpgrader.Upgrades.csproj", "{14ADC145-1A9E-4EEA-8C11-1DB5E344A5E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.MapUpgrader", "src\HalfLife.UnifiedSdk.MapUpgrader\HalfLife.UnifiedSdk.MapUpgrader.csproj", "{A6E9C2F6-1648-4F06-B50C-F2049E61C235}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{14ADC145-1A9E-4EEA-8C11-1DB5E344A5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14ADC145-1A9E-4EEA-8C11-1DB5E344A5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14ADC145-1A9E-4EEA-8C11-1DB5E344A5E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6E9C2F6-1648-4F06-B50C-F2049E61C235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6E9C2F6-1648-4F06-B50C-F2049E61C235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6E9C2F6-1648-4F06-B50C-F2049E61C235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6E9C2F6-1648-4F06-B50C-F2049E61C235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

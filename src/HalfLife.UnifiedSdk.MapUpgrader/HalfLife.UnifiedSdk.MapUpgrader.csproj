@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <Authors>SamVanheer</Authors>
+    <Copyright>2022 Sam Vanheer</Copyright>
+    <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>This tool upgrades Half-Life maps to the latest version of the Unified SDK.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta3.22114.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.MapUpgrader.Upgrades\HalfLife.UnifiedSdk.MapUpgrader.Upgrades.csproj" />
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,7 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades;
 using HalfLife.UnifiedSdk.Utilities.Games;
-using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
-using Semver;
 using System.CommandLine;
 using System.CommandLine.IO;
 
@@ -9,23 +7,12 @@ namespace HalfLife.UnifiedSdk.Installer
 {
     internal static class Program
     {
-        private static MapUpgradeTool GetHalfLifeUpgradeTool()
-        {
-            var unifiedSdk100UpgradeAction = new MapUpgradeAction(new SemVersion(1, 0, 0));
-
-            unifiedSdk100UpgradeAction.AddHalfLifeUpgrades();
-            unifiedSdk100UpgradeAction.AddOpposingForceUpgrades();
-            unifiedSdk100UpgradeAction.AddBlueShiftUpgrades();
-
-            return new MapUpgradeTool(unifiedSdk100UpgradeAction);
-        }
-
         //List of games whose content can be installed with this tool.
         private static readonly IEnumerable<GameInstallData> Games = new[]
         {
-            new GameInstallData(ValveGames.HalfLife1, GetHalfLifeUpgradeTool),
-            new GameInstallData(ValveGames.OpposingForce, GetHalfLifeUpgradeTool),
-            new GameInstallData(ValveGames.BlueShift, GetHalfLifeUpgradeTool)
+            new GameInstallData(ValveGames.HalfLife1, MapUpgradeToolFactory.Create),
+            new GameInstallData(ValveGames.OpposingForce, MapUpgradeToolFactory.Create),
+            new GameInstallData(ValveGames.BlueShift, MapUpgradeToolFactory.Create)
         };
 
         public static int Main(string[] args)

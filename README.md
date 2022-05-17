@@ -41,18 +41,22 @@ The [`Sledge.Formats.Bsp` and `Sledge.Formats.Map`](https://github.com/LogicAndT
 
 ## HalfLife.UnifiedSdk.AssetSynchronizer
 
-This program copies a set of directories to a target directory.
+This tool copies a set of directories to a target directory.
 
 ## HalfLife.UnifiedSdk.Installer
 
-This programs copies, converts and upgrades Half-Life game assets for use in a mod.
+This tool copies, converts and upgrades Half-Life game assets for use in a mod.
+
+## HalfLife.UnifiedSdk.MapUpgrader
+
+This tool upgrades Half-Life maps to the latest version of the Unified SDK.
 
 ## HalfLife.UnifiedSdk.Packager
 
-This programs packages Half-Life mods into a zip archive.
+This tool packages Half-Life mods into a zip archive.
 
 ## HalfLife.UnifiedSdk.Skill2Json
 
-This program converts original Half-Life `skill.cfg` files to the Unified SDK's `skill.json` format.
+This tool converts original Half-Life `skill.cfg` files to the Unified SDK's `skill.json` format.
 
 Usage: `dotnet path/to/HalfLife.UnifiedSdk.Json.dll <filename> [--output-filename <output-filename>]`
