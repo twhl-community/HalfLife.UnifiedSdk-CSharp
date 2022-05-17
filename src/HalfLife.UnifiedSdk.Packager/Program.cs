@@ -14,15 +14,17 @@ namespace HalfLife.UnifiedSdk.Packager
             var gameDirectoryOption = new Option<DirectoryInfo>("--game-directory", description: "Path to the game directory");
             var packageManifestOption = new Option<FileInfo>("--package-manifest", description: "Path to the package manifest file");
             var packageNameOption = new Option<string>("--package-name", description: "Base name of the package");
+            var verboseOption = new Option<bool>("--verbose", description: "Log additional information");
 
             var rootCommand = new RootCommand("Half-Life game packager")
             {
                 gameDirectoryOption,
                 packageManifestOption,
-                packageNameOption
+                packageNameOption,
+                verboseOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo gameDirectory, FileInfo packageManifest, string packageName, IConsole console) =>
+            rootCommand.SetHandler((DirectoryInfo gameDirectory, FileInfo packageManifest, string packageName, bool verbose, IConsole console) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
                 var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
@@ -64,7 +66,7 @@ namespace HalfLife.UnifiedSdk.Packager
                         .Where(Directory.Exists)
                         .Select(p => new PackageDirectory(p, manifest.IncludePatterns, manifest.ExcludePatterns)));
 
-                Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories);
+                Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories, verbose);
 
                 //Now delete old packages.
                 var regex = new Regex($@"{Regex.Escape(packageName)}-(\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d){Packager.PackageExtension}$");
@@ -82,7 +84,7 @@ namespace HalfLife.UnifiedSdk.Packager
                         }
                     }
                 }
-            }, gameDirectoryOption, packageManifestOption, packageNameOption);
+            }, gameDirectoryOption, packageManifestOption, packageNameOption, verboseOption);
 
             return rootCommand.Invoke(args);
         }

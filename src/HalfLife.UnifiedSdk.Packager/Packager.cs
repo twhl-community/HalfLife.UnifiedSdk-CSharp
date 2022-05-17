@@ -13,7 +13,8 @@ namespace HalfLife.UnifiedSdk.Packager
     {
         public const string PackageExtension = ".zip";
 
-        public static void CreatePackage(IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories)
+        public static void CreatePackage(
+            IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories, bool verbose)
         {
             var completePackageName = packageName + PackageExtension;
 
@@ -34,14 +35,17 @@ namespace HalfLife.UnifiedSdk.Packager
                 {
                     var relativePath = Path.GetRelativePath(rootDirectory, file);
 
-                    console.Out.WriteLine($"Adding file \"{relativePath}\"");
+                    if (verbose)
+                    {
+                        console.Out.WriteLine($"Adding file \"{relativePath}\"");
+                    }
 
                     var newName = relativePath;
 
                     // Files ending with ".install" need to be renamed.
                     newName = Regex.Replace(newName, "\\.install$", "");
 
-                    if (relativePath != newName)
+                    if (relativePath != newName && verbose)
                     {
                         console.Out.WriteLine($"Renaming \"{relativePath}\" to \"{newName}\"");
                     }
