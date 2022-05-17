@@ -11,40 +11,40 @@ namespace HalfLife.UnifiedSdk.Packager
     {
         public static int Main(string[] args)
         {
-            var gameDirectoryOption = new Option<DirectoryInfo>("--game-directory", description: "Path to the game directory");
+            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
             var packageManifestOption = new Option<FileInfo>("--package-manifest", description: "Path to the package manifest file");
             var packageNameOption = new Option<string>("--package-name", description: "Base name of the package");
             var verboseOption = new Option<bool>("--verbose", description: "Log additional information");
 
-            var rootCommand = new RootCommand("Half-Life game packager")
+            var rootCommand = new RootCommand("Half-Life mod packager")
             {
-                gameDirectoryOption,
+                modDirectoryOption,
                 packageManifestOption,
                 packageNameOption,
                 verboseOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo gameDirectory, FileInfo packageManifest, string packageName, bool verbose, IConsole console) =>
+            rootCommand.SetHandler((DirectoryInfo modDirectory, FileInfo packageManifest, string packageName, bool verbose, IConsole console) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
                 var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
 
                 var completePackageName = $"{packageName}-{now}";
 
-                console.Out.WriteLine($"Game directory is \"{gameDirectory.FullName}\"");
+                console.Out.WriteLine($"Mod directory is \"{modDirectory.FullName}\"");
 
-                if (!gameDirectory.Exists)
+                if (!modDirectory.Exists)
                 {
-                    console.Error.WriteLine($"Game directory \"{gameDirectory.FullName}\" does not exist");
+                    console.Error.WriteLine($"Mod directory \"{modDirectory.FullName}\" does not exist");
                     return;
                 }
 
                 //Move to Half-Life directory.
-                var halfLifeDirectory = gameDirectory.Parent ?? throw new InvalidOperationException("Couldn't get game directory");
+                var halfLifeDirectory = modDirectory.Parent ?? throw new InvalidOperationException("Couldn't get game directory");
                 Environment.CurrentDirectory = halfLifeDirectory.FullName;
 
                 // Get the name of the mod directory.
-                var modDirectory = Path.GetFileNameWithoutExtension(gameDirectory.FullName);
+                var modDirectoryName = Path.GetFileNameWithoutExtension(modDirectory.FullName);
 
                 console.Out.WriteLine($"Loading package manifest \"{packageManifest.FullName}\"");
 
@@ -58,11 +58,11 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 var directories = new[]
                 {
-                    new PackageDirectory(gameDirectory.FullName, manifest.IncludePatterns, manifest.ExcludePatterns)
+                    new PackageDirectory(modDirectory.FullName, manifest.IncludePatterns, manifest.ExcludePatterns)
                 }
                     //Include content directories if they exist.
                     .Concat(ModUtilities.AllPublicModDirectorySuffixes
-                        .Select(s => ModUtilities.FormatModDirectory(modDirectory, s))
+                        .Select(s => ModUtilities.FormatModDirectory(modDirectoryName, s))
                         .Where(Directory.Exists)
                         .Select(p => new PackageDirectory(p, manifest.IncludePatterns, manifest.ExcludePatterns)));
 
@@ -84,7 +84,7 @@ namespace HalfLife.UnifiedSdk.Packager
                         }
                     }
                 }
-            }, gameDirectoryOption, packageManifestOption, packageNameOption, verboseOption);
+            }, modDirectoryOption, packageManifestOption, packageNameOption, verboseOption);
 
             return rootCommand.Invoke(args);
         }

@@ -10,24 +10,24 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
         public static int Main(string[] args)
         {
             var assetsDirectoryOption = new Option<DirectoryInfo>("--assets-directory", description: "Path to the assets directory");
-            var gameDirectoryOption = new Option<DirectoryInfo>("--game-directory", description: "Path to the game directory");
+            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
             var assetManifestOption = new Option<FileInfo>("--asset-manifest", description: "Path to the asset manifest file");
 
             var rootCommand = new RootCommand("Half-Life Unified SDK asset synchronizer")
             {
                 assetsDirectoryOption,
-                gameDirectoryOption,
+                modDirectoryOption,
                 assetManifestOption,
             };
 
             rootCommand.SetHandler((
-                DirectoryInfo assetsDirectory, DirectoryInfo gameDirectory,
+                DirectoryInfo assetsDirectory, DirectoryInfo modDirectory,
                 FileInfo assetManifest,
                 IConsole console) =>
             {
-                if (!gameDirectory.Exists)
+                if (!modDirectory.Exists)
                 {
-                    console.Error.WriteLine($"The given game directory \"{gameDirectory}\" does not exist");
+                    console.Error.WriteLine($"The given mod directory \"{modDirectory}\" does not exist");
                     return;
                 }
 
@@ -37,7 +37,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 foreach (var filter in manifest)
                 {
                     filter.Source = Path.Combine(assetsDirectory.FullName, filter.Source);
-                    filter.Destination = Path.Combine(gameDirectory.FullName, filter.Destination);
+                    filter.Destination = Path.Combine(modDirectory.FullName, filter.Destination);
 
                     //Verify that the paths are valid.
                     if (File.Exists(filter.Source))
@@ -77,7 +77,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 }
 
                 console.Out.WriteLine("done");
-            }, assetsDirectoryOption, gameDirectoryOption, assetManifestOption);
+            }, assetsDirectoryOption, modDirectoryOption, assetManifestOption);
 
             return rootCommand.Invoke(args);
         }

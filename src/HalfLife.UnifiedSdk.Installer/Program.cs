@@ -29,20 +29,20 @@ namespace HalfLife.UnifiedSdk.Installer
 
         public static int Main(string[] args)
         {
-            var gameDirectoryOption = new Option<DirectoryInfo>("--game-directory", description: "Path to the game directory");
+            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
             var dryRunOption = new Option<bool>("--dry-run", description: "If provided no file changes will be written to disk");
 
             var rootCommand = new RootCommand("Half-Life game content installer")
             {
-                gameDirectoryOption,
+                modDirectoryOption,
                 dryRunOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo gameDirectory, bool dryRun, IConsole console) =>
+            rootCommand.SetHandler((DirectoryInfo modDirectory, bool dryRun, IConsole console) =>
             {
-                if (!gameDirectory.Exists)
+                if (!modDirectory.Exists)
                 {
-                    console.Error.WriteLine($"The given game directory \"{gameDirectory}\" does not exist");
+                    console.Error.WriteLine($"The given mod directory \"{modDirectory}\" does not exist");
                     return;
                 }
 
@@ -56,8 +56,8 @@ namespace HalfLife.UnifiedSdk.Installer
                     IsDryRun = dryRun
                 };
 
-                installer.Install(gameDirectory.FullName, Games);
-            }, gameDirectoryOption, dryRunOption);
+                installer.Install(modDirectory.FullName, Games);
+            }, modDirectoryOption, dryRunOption);
 
             return rootCommand.Invoke(args);
         }
