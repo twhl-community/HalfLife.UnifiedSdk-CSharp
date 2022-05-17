@@ -51,7 +51,7 @@ namespace HalfLife.UnifiedSdk.Installer
                     console.Out.WriteLine("Performing dry run.");
                 }
 
-                var installer = new GameContentInstaller
+                var installer = new GameContentInstaller(console)
                 {
                     IsDryRun = dryRun
                 };

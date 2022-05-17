@@ -1,6 +1,8 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
+using System.CommandLine;
+using System.CommandLine.IO;
 
 namespace HalfLife.UnifiedSdk.Installer
 {
@@ -12,10 +14,17 @@ namespace HalfLife.UnifiedSdk.Installer
         private const string NodExtension = ".nod";
         private const string NrpExtension = ".nrp";
 
+        private readonly IConsole _console;
+
         /// <summary>
         /// If set to true no file changes will be written to disk.
         /// </summary>
         public bool IsDryRun { get; init; } = false;
+
+        public GameContentInstaller(IConsole console)
+        {
+            _console = console;
+        }
 
         private bool CopyFiles(string rootDirectory, GameInstallData game)
         {
@@ -45,8 +54,8 @@ namespace HalfLife.UnifiedSdk.Installer
                 Directory.CreateDirectory(destinationGraphsDirectory);
             }
 
-            Console.WriteLine($"Copying maps from \"{sourceMapsDirectory}\" to \"{destinationMapsDirectory}\"");
-            Console.WriteLine("Node graph files in destination for maps being copied will be deleted.");
+            _console.Out.WriteLine($"Copying maps from \"{sourceMapsDirectory}\" to \"{destinationMapsDirectory}\"");
+            _console.Out.WriteLine("Node graph files in destination for maps being copied will be deleted.");
 
             var upgradeTool = game.GetUpgradeTool();
 
@@ -58,7 +67,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 var destinationMapName = Path.Combine(destinationMapsDirectory, baseMapName);
 
                 //Use relative paths to keep the output small.
-                Console.WriteLine($"Copying map \"{baseMapName}\"...");
+                _console.Out.WriteLine($"Copying map \"{baseMapName}\"...");
 
                 // Opening the map auto-converts Blue Shift maps.
                 var mapData = MapFormats.Deserialize(sourceMapName);
@@ -77,12 +86,12 @@ namespace HalfLife.UnifiedSdk.Installer
                 }
             }
 
-            Console.WriteLine($"Copied {mapsToInstall.Count()} maps.");
+            _console.Out.WriteLine($"Copied {mapsToInstall.Count()} maps.");
 
             return true;
         }
 
-        private static bool VerifyFilesExist(string sourceMapsDirectory, IEnumerable<string> mapFileNames)
+        private bool VerifyFilesExist(string sourceMapsDirectory, IEnumerable<string> mapFileNames)
         {
             var filesToCheck = mapFileNames;
 
@@ -95,21 +104,21 @@ namespace HalfLife.UnifiedSdk.Installer
 
             foreach (var fileName in missingFiles)
             {
-                Console.WriteLine($"File \"{fileName}\" is missing");
+                _console.Error.WriteLine($"File \"{fileName}\" is missing");
             }
 
             var missingDirectories = directoriesToCheck.Where(d => !Directory.Exists(d)).ToList();
 
             foreach (var directory in missingDirectories)
             {
-                Console.WriteLine($"Directory \"{directory}\" is missing");
+                _console.Error.WriteLine($"Directory \"{directory}\" is missing");
             }
 
             bool everythingNeededExists = missingFiles.Count == 0 && missingDirectories.Count == 0;
 
             if (!everythingNeededExists)
             {
-                Console.WriteLine("One or more files and/or directories are missing");
+                _console.Error.WriteLine("One or more files and/or directories are missing");
             }
 
             return everythingNeededExists;
@@ -126,11 +135,11 @@ namespace HalfLife.UnifiedSdk.Installer
             //Sanity check in case things go seriously wrong somehow.
             if (!Directory.Exists(rootDirectory))
             {
-                Console.WriteLine($"Root directory \"{rootDirectory}\" does not exist");
+                _console.Error.WriteLine($"Root directory \"{rootDirectory}\" does not exist");
                 return;
             }
 
-            Console.WriteLine($"Installing content to mod directory \"{rootDirectory}\".");
+            _console.Out.WriteLine($"Installing content to mod directory \"{rootDirectory}\".");
 
             foreach (var game in games)
             {
@@ -139,16 +148,16 @@ namespace HalfLife.UnifiedSdk.Installer
                 // This isn't a fatal error. Users should be able to install as much content as they can.
                 if (!IsGameInstalled(rootDirectory, game.Info.ModDirectory))
                 {
-                    Console.WriteLine($"Could not find \"{ModUtilities.LiblistFileName}\" for {game.Info.Name}. Make sure the game is installed.");
-                    Console.WriteLine("Skipping this game.");
+                    _console.Error.WriteLine($"Could not find \"{ModUtilities.LiblistFileName}\" for {game.Info.Name}. Make sure the game is installed.");
+                    _console.Error.WriteLine("Skipping this game.");
                     continue;
                 }
 
-                Console.WriteLine($"Installing {game.Info.Name} content...");
+                _console.Out.WriteLine($"Installing {game.Info.Name} content...");
 
                 CopyFiles(rootDirectory, game);
 
-                Console.WriteLine($"Finished installing {game.Info.Name} content.");
+                _console.Out.WriteLine($"Finished installing {game.Info.Name} content.");
             }
         }
     }
