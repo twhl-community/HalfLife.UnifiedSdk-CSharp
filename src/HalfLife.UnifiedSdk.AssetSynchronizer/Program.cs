@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using RoboSharp;
 using System.Collections.Immutable;
 using System.CommandLine;
 using System.CommandLine.IO;
-using System.Text;
 
 namespace HalfLife.UnifiedSdk.AssetSynchronizer
 {
@@ -16,11 +14,11 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
             var assetManifestOption = new Option<FileInfo>("--asset-manifest", description: "Path to the asset manifest file");
 
             var rootCommand = new RootCommand("Half-Life Unified SDK asset synchronizer")
-{
-    assetsDirectoryOption,
-    gameDirectoryOption,
-    assetManifestOption,
-};
+            {
+                assetsDirectoryOption,
+                gameDirectoryOption,
+                assetManifestOption,
+            };
 
             rootCommand.SetHandler((
                 DirectoryInfo assetsDirectory, DirectoryInfo gameDirectory,
@@ -33,45 +31,128 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                     return;
                 }
 
-                //Needed because RoboSharp relies on a codepage not available in NET Core by default.
-                CodePagesEncodingProvider.Instance.GetEncoding(437);
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
                 var manifest = JsonConvert.DeserializeObject<List<ManifestFilter>>(File.ReadAllText(assetManifest.FullName)) ?? new();
 
-                var watchers = manifest.Select(filter =>
+                //Convert paths to absolute.
+                foreach (var filter in manifest)
                 {
-                    var copy = new RoboCommand();
+                    filter.Source = Path.Combine(assetsDirectory.FullName, filter.Source);
+                    filter.Destination = Path.Combine(gameDirectory.FullName, filter.Destination);
+                }
 
-                    copy.CopyOptions.Source = Path.Combine(assetsDirectory.FullName, filter.Source);
-                    copy.CopyOptions.Destination = Path.Combine(gameDirectory.FullName, filter.Destination);
-                    copy.CopyOptions.FileFilter = new[] { filter.Pattern };
-                    copy.CopyOptions.CopySubdirectories = filter.Recursive;
-                    //Make sure this is disabled so users don't lose any files by mistake.
-                    copy.CopyOptions.Purge = false;
-                    copy.CopyOptions.MonitorSourceChangesLimit = 1;
-                    copy.CopyOptions.MonitorSourceTimeLimit = 1;
-
-                    copy.Start();
-
-                    return copy;
-                }).ToImmutableList();
-
-                console.Out.WriteLine("Watching for file changes");
-                console.Out.WriteLine("Press any key to stop...");
-                //Block until told to stop.
-                Console.ReadKey();
-                console.Out.Write("Stopping watchers...");
-
-                foreach (var watcher in watchers)
+                //Verify that the paths are valid.
+                foreach (var filter in manifest)
                 {
-                    watcher.Dispose();
+                    if (File.Exists(filter.Source))
+                    {
+                        console.Error.WriteLine($"The source directory \"{filter.Source}\" is a file");
+                        return;
+                    }
+
+                    if (File.Exists(filter.Destination))
+                    {
+                        console.Error.WriteLine($"The destination directory \"{filter.Destination}\" is a file");
+                        return;
+                    }
+                }
+
+                //Copy all changed files on startup.
+                foreach (var filter in manifest)
+                {
+                    CopyAllFiles(console, filter);
+                }
+
+                {
+                    var watchers = manifest
+                        .Select(f => new Watcher(console, f.Source, f.Destination, f.Pattern, f.Recursive))
+                        .ToImmutableList();
+
+                    console.Out.WriteLine("Watching for file changes");
+                    console.Out.WriteLine("Press any key to stop...");
+                    //Block until told to stop.
+                    Console.ReadKey();
+                    console.Out.Write("Stopping watchers...");
+
+                    foreach (var watcher in watchers)
+                    {
+                        watcher.Dispose();
+                    }
                 }
 
                 console.Out.WriteLine("done");
             }, assetsDirectoryOption, gameDirectoryOption, assetManifestOption);
 
             return rootCommand.Invoke(args);
+        }
+
+        private static void CopyAllFiles(IConsole console, ManifestFilter filter)
+        {
+            foreach (var fileName in Directory.EnumerateFiles(filter.Source, filter.Pattern, new EnumerationOptions
+            {
+                RecurseSubdirectories = filter.Recursive
+            }))
+            {
+                var relativePath = Path.GetRelativePath(filter.Source, fileName);
+                var destinationFileName = Path.Combine(filter.Destination, relativePath);
+
+                CopyIfDifferent(console, fileName, destinationFileName);
+            }
+        }
+
+        private static void CopyIfDifferent(IConsole console, string sourceFileName, string destinationFileName)
+        {
+            if (!FilesAreEqual(sourceFileName, destinationFileName))
+            {
+                var directoryName = Path.GetDirectoryName(destinationFileName);
+
+                try
+                {
+                    if (directoryName is not null)
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+
+                    File.Copy(sourceFileName, destinationFileName, true);
+                }
+                catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
+                {
+                    WatcherHelpers.PrintException(console, e);
+                }
+            }
+        }
+
+        //Based on https://docs.microsoft.com/en-us/troubleshoot/developer/visualstudio/csharp/language-compilers/create-file-compare
+        private static bool FilesAreEqual(string sourceFileName, string destinationFileName)
+        {
+            if (sourceFileName == destinationFileName)
+            {
+                return true;
+            }
+
+            if (!File.Exists(sourceFileName) || !File.Exists(destinationFileName))
+            {
+                return false;
+            }
+
+            using var fs1 = File.OpenRead(sourceFileName);
+            using var fs2 = File.OpenRead(destinationFileName);
+
+            if (fs1.Length != fs2.Length)
+            {
+                return false;
+            }
+
+            int file1byte;
+            int file2byte;
+
+            do
+            {
+                file1byte = fs1.ReadByte();
+                file2byte = fs2.ReadByte();
+            }
+            while ((file1byte == file2byte) && (file1byte != -1));
+
+            return file1byte == file2byte;
         }
     }
 }
