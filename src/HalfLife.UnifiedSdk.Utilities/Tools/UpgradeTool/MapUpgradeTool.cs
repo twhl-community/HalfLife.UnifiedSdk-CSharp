@@ -10,7 +10,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 {
     /// <summary>
     /// Tool to aid in the upgrading of maps from one version of a game to another.
-    /// This tool will invoke a set of actions registered to versions of a game.
+    /// This tool invokes a set of upgrades registered to versions of a game.
     /// </summary>
     /// <example>
     /// A map made for version <c>1.0.0</c> upgraded to version <c>3.0.0</c> will have upgrades applied for versions
@@ -25,16 +25,16 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// <summary>The first version that any map can be.</summary>
         public static readonly SemVersion FirstVersion = new(0, 0, 0);
 
-        /// <summary>Gets a sorted immutable list containing the upgrade actions used by this tool.</summary>
-        public ImmutableList<MapUpgradeAction> Actions { get; }
+        /// <summary>Gets a sorted immutable list containing the upgrades used by this tool.</summary>
+        public ImmutableList<MapUpgrade> Upgrades { get; }
 
         /// <summary>
         /// Latest version to upgrade to.
-        /// Defaults to the last upgrade action provided.
+        /// Defaults to the upgrade with the newest version.
         /// </summary>
         /// <remarks>
-        /// If no upgrade actions were provided this will be <see cref="FirstVersion"/>.
-        /// If the last upgrade action is not the latest version of the game, set this to the latest version to ensure upgrades work properly.
+        /// If no upgrades were provided this will be <see cref="FirstVersion"/>.
+        /// If the last upgrade is not the latest version of the game, set this to the latest version to ensure upgrades work properly.
         /// </remarks>
         public SemVersion LatestVersion { get; init; }
 
@@ -59,27 +59,27 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             }
         }
 
-        /// <summary>Creates a new instance of the upgrade tool with the given map upgrade actions.</summary>
-        /// <param name="actions">Set of actions to perform to upgrade a map.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="actions"/> is <see langword="null"/>.</exception>
-        public MapUpgradeTool(IEnumerable<MapUpgradeAction> actions)
+        /// <summary>Creates a new instance of the upgrade tool with the given map upgrades.</summary>
+        /// <param name="upgrades">Set of upgrades to perform to upgrade a map.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="upgrades"/> is <see langword="null"/>.</exception>
+        public MapUpgradeTool(IEnumerable<MapUpgrade> upgrades)
         {
-            ArgumentNullException.ThrowIfNull(actions);
+            ArgumentNullException.ThrowIfNull(upgrades);
 
-            Actions = actions.ToImmutableList().Sort();
+            Upgrades = upgrades.ToImmutableList().Sort();
 
-            if (Actions.Count != actions.Distinct().Count())
+            if (Upgrades.Count != upgrades.Distinct().Count())
             {
-                throw new ArgumentException("Only one action may be associated with a specific version", nameof(actions));
+                throw new ArgumentException("Only one upgrade may be associated with a specific version", nameof(upgrades));
             }
 
             //If there are no upgrades then we can't do anything anyway, so use the first version.
-            LatestVersion = Actions.LastOrDefault()?.Version ?? FirstVersion;
+            LatestVersion = Upgrades.LastOrDefault()?.Version ?? FirstVersion;
         }
 
-        /// <inheritdoc cref="MapUpgradeTool(IEnumerable{MapUpgradeAction})"/>
-        public MapUpgradeTool(params MapUpgradeAction[] actions)
-            : this((IEnumerable<MapUpgradeAction>)actions)
+        /// <inheritdoc cref="MapUpgradeTool(IEnumerable{MapUpgrade})"/>
+        public MapUpgradeTool(params MapUpgrade[] upgrades)
+            : this((IEnumerable<MapUpgrade>)upgrades)
         {
         }
 
@@ -120,10 +120,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             }
 
             //Apply all upgrades starting at currentVersion + 1 up to and including targetVersion.
-            foreach (var upgradeAction in Actions.Where(v => v.Version > from && v.Version <= to))
+            foreach (var upgrade in Upgrades.Where(v => v.Version > from && v.Version <= to))
             {
-                var context = new MapUpgradeContext(this, from, to, currentVersion, upgradeAction, command.Map);
-                upgradeAction.PerformUpgrade(context);
+                var context = new MapUpgradeContext(this, from, to, currentVersion, upgrade, command.Map);
+                upgrade.PerformUpgrade(context);
             }
 
             SetVersion(command.Map, to);

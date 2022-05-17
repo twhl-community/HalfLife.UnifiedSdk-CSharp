@@ -10,7 +10,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         /// </summary>
         public static MapUpgradeTool Create()
         {
-            var unifiedSdk100UpgradeAction = new MapUpgradeAction(new SemVersion(1, 0, 0));
+            var unifiedSdk100UpgradeAction = new MapUpgrade(new SemVersion(1, 0, 0));
 
             unifiedSdk100UpgradeAction.AddHalfLifeUpgrades();
             unifiedSdk100UpgradeAction.AddOpposingForceUpgrades();

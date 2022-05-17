@@ -41,7 +41,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
         {
             var map = LoadSimpleMapWithNoVersion();
 
-            var action = new MapUpgradeAction(new SemVersion(1, 0, 0));
+            var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
             action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
 
@@ -68,7 +68,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             //Set version to 2.0.0.
             map.Entities.Worldspawn.SetString(MapUpgradeTool.DefaultGameVersionKey, "2.0.0");
 
-            var action = new MapUpgradeAction(new SemVersion(1, 0, 0));
+            var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
             action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
 
@@ -115,12 +115,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             var map = LoadSimpleMapWithNoVersion();
 
             //Version 1.0.0: set MaxRange to 4096 (default value in original fgd).
-            var action = new MapUpgradeAction(new SemVersion(1, 0, 0));
+            var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
             action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096);
 
             //Version 2.0.0: set MaxRange to 32768.
-            var action2 = new MapUpgradeAction(new SemVersion(2, 0, 0));
+            var action2 = new MapUpgrade(new SemVersion(2, 0, 0));
 
             action2.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
 
@@ -146,7 +146,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             //First upgrade from 0.0.0 to 1.0.0.
             {
-                var action = new MapUpgradeAction(new SemVersion(1, 0, 0));
+                var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
                 action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768);
 
@@ -159,7 +159,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             //Second upgrade from 1.0.0 to 1.0.0, should do nothing.
             {
-                var action = new MapUpgradeAction(new SemVersion(1, 0, 0));
+                var action = new MapUpgrade(new SemVersion(1, 0, 0));
 
                 //Set MaxRange to a different value.
                 action.Upgrading += (context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096);
@@ -171,7 +171,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
                 RunTests(upgradeTool, action);
             }
 
-            void RunTests(MapUpgradeTool upgradeTool, MapUpgradeAction action)
+            void RunTests(MapUpgradeTool upgradeTool, MapUpgrade action)
             {
                 Assert.Single(map.Entities);
 
