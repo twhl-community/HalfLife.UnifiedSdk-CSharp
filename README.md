@@ -39,6 +39,18 @@ The `HalfLife.UnifiedSdk.Utilities.Tools` namespace provides various tools for t
 
 The [`Sledge.Formats.Bsp` and `Sledge.Formats.Map`](https://github.com/LogicAndTrick/sledge-formats) libraries are used to load Half-Life 1 maps and map source files. Many thanks to Daniel Walder for creating these libraries.
 
+## HalfLife.UnifiedSdk.AssetSynchronizer
+
+This program copies a set of directories to a target directory.
+
+## HalfLife.UnifiedSdk.Installer
+
+This programs copies, converts and upgrades Half-Life game assets for use in a mod.
+
+## HalfLife.UnifiedSdk.Packager
+
+This programs packages Half-Life mods into a zip archive.
+
 ## HalfLife.UnifiedSdk.Skill2Json
 
 This program converts original Half-Life `skill.cfg` files to the Unified SDK's `skill.json` format.
