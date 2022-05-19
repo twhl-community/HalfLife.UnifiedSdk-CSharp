@@ -15,6 +15,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
                 builder.AddUpgrade(new SemVersion(1, 0, 0), upgrade =>
                 {
                     upgrade
+                        .AddSharedUpgrades()
                         .AddHalfLifeUpgrades()
                         .AddOpposingForceUpgrades()
                         .AddBlueShiftUpgrades();

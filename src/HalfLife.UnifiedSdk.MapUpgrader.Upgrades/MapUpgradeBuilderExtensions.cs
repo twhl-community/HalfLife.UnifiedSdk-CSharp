@@ -4,6 +4,13 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
     public static class MapUpgradeBuilderExtensions
     {
+        public static MapUpgradeBuilder AddSharedUpgrades(this MapUpgradeBuilder builder)
+        {
+            //Must come before any other upgrades.
+            builder.AddAction(new ConvertAngleToAnglesUpgrade());
+            return builder;
+        }
+
         public static MapUpgradeBuilder AddHalfLifeUpgrades(this MapUpgradeBuilder builder)
         {
             //Nothing.
