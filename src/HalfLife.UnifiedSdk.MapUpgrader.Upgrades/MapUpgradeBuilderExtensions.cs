@@ -20,6 +20,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 
         public static MapUpgradeBuilder AddOpposingForceUpgrades(this MapUpgradeBuilder builder)
         {
+            builder.AddAction(new ConvertSuitToPCVUpgrade());
             builder.AddAction(new MonsterTentacleSpawnFlagUpgrade());
             builder.AddAction(new Of4a4BridgeUpgrade());
             return builder;
