@@ -8,6 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         {
             //Must come before any other upgrades.
             builder.AddAction(new ConvertAngleToAnglesUpgrade());
+            builder.AddAction(new AdjustShotgunAnglesUpgrade());
             return builder;
         }
 
