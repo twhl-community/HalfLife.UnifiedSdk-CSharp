@@ -1,7 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
-using System.Collections.Immutable;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
