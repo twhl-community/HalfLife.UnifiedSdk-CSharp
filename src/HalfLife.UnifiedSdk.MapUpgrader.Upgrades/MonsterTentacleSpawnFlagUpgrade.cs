@@ -1,10 +1,12 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
     /// <summary>
-    /// Converts the Opposing Force <c>monster_tentacle</c> "Use Lower Model" spawnflag to instead set a custom model on the entity.
+    /// Converts the Opposing Force <c>monster_tentacle</c> "Use Lower Model" spawnflag to instead set a custom model on the entity,
+    /// and changes other uses to use the alternate model.
     /// </summary>
     internal sealed class MonsterTentacleSpawnFlagUpgrade : IMapUpgradeAction
     {
@@ -12,11 +14,22 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 
         public void Apply(MapUpgradeContext context)
         {
-            foreach (var tentacle in context.Map.Entities
-                .OfClass("monster_tentacle")
-                .Where(e => (e.GetSpawnFlags() & UseLowerModel) != 0))
+            if (!ValveGames.OpposingForce.IsMap(context.Map.BaseName))
             {
-                tentacle.SetModel("models/tentacle2_lower.mdl");
+                return;
+            }
+
+            foreach (var tentacle in context.Map.Entities
+                .OfClass("monster_tentacle"))
+            {
+                if ((tentacle.GetSpawnFlags() & UseLowerModel) != 0)
+                {
+                    tentacle.SetModel("models/tentacle3.mdl");
+                }
+                else
+                {
+                    tentacle.SetModel("models/tentacle2_lower.mdl");
+                }
             }
         }
     }
