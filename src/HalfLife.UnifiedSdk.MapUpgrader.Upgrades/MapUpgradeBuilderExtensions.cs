@@ -24,6 +24,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ConvertScientistItemUpgrade());
             builder.AddAction(new RenameOtisAnimationsUpgrade());
             builder.AddAction(new MonsterTentacleSpawnFlagUpgrade());
+            builder.AddAction(new Of1a4bChangeLoaderSkinUpgrade());
             builder.AddAction(new Of4a4BridgeUpgrade());
             return builder;
         }
