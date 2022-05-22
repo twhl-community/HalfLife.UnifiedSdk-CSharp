@@ -30,6 +30,12 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
                 {
                     tentacle.SetModel("models/tentacle2_lower.mdl");
                 }
+
+                //Adjust height values to match Opposing Force's.
+                tentacle.SetDouble("height0", 0);
+                tentacle.SetDouble("height1", 136);
+                tentacle.SetDouble("height2", 190);
+                tentacle.SetDouble("height3", 328);
             }
         }
     }
