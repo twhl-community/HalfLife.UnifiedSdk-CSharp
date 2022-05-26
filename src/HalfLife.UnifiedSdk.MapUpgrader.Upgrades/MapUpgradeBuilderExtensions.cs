@@ -10,7 +10,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ConvertAngleToAnglesUpgrade());
             builder.AddAction(new AdjustShotgunAnglesUpgrade());
             builder.AddAction(new ConvertOtisModelUpgrade());
-            builder.AddAction(new RenameCreditsMessagesUpgrade());
+            builder.AddAction(new RenameMessagesUpgrade());
             return builder;
         }
 
