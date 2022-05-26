@@ -33,6 +33,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         public static MapUpgradeBuilder AddBlueShiftUpgrades(this MapUpgradeBuilder builder)
         {
             builder.AddAction(new BaYard4aSlavesUpgrade());
+            builder.AddAction(new RenameConsoleCivAnimationsUpgrade());
             return builder;
         }
     }
