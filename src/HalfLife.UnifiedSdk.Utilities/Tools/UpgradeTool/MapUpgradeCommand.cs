@@ -28,6 +28,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// </summary>
         public bool ThrowOnTooOldVersion { get; init; } = true;
 
+        /// <summary>
+        /// If not empty, specifies which game the map is from. Uses the mod directory name.
+        /// </summary>
+        public string GameName { get; init; } = string.Empty;
+
         /// <summary>Creates a new map upgrde command.</summary>
         /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
         public MapUpgradeCommand(Map map)
