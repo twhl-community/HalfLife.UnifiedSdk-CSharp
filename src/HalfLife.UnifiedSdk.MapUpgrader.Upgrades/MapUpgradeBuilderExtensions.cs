@@ -36,6 +36,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new BaYard4aSlavesUpgrade());
             builder.AddAction(new RenameConsoleCivAnimationsUpgrade());
             builder.AddAction(new ChangeRosenbergModelUpgrade());
+            builder.AddAction(new RemapRosenbergNoUseFlagUpgrade());
             return builder;
         }
     }
