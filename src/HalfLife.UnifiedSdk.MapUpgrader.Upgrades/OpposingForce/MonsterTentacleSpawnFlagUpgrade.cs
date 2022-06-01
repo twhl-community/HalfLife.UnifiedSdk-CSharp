@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
 {
     /// <summary>
     /// Converts the Opposing Force <c>monster_tentacle</c> "Use Lower Model" spawnflag to instead set a custom model on the entity,

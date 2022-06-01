@@ -1,4 +1,7 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
+﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift;
+using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common;
+using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce;
+using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {

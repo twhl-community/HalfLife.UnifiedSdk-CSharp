@@ -4,7 +4,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Numerics;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 {
     /// <summary>
     /// Opposing Force and Blue Shift's shotgun world model has a different alignment.

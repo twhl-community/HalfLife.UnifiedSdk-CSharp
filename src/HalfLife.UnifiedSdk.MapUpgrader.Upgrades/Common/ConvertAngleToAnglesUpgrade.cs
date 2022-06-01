@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Numerics;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 {
     /// <summary>
     /// Converts the obsolete <c>angle</c> keyvalue to <c>angles</c>.

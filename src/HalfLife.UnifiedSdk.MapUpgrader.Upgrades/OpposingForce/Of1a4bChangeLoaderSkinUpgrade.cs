@@ -1,7 +1,7 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
 {
     /// <summary>
     /// Changes the loader entity's skin in <c>of1a4b</c> to use the correct crate texture.

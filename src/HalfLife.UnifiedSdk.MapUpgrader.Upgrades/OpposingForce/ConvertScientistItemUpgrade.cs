@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
 {
     /// <summary>
     /// Converts the Opposing Force scientist <c>clipboard</c> and <c>stick</c> heads to use the <c>item</c> body group instead.

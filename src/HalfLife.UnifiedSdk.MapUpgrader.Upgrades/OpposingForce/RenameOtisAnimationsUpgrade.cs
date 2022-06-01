@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Collections.Immutable;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
 {
     /// <summary>
     /// Renames certain animations referenced by <c>scripted_sequence</c>s targeting <c>monster_otis</c>
@@ -34,7 +34,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
                     continue;
                 }
 
-                if (target.ClassName != "monster_otis" && (target.GetModel() != "models/otis.mdl"))
+                if (target.ClassName != "monster_otis" && target.GetModel() != "models/otis.mdl")
                 {
                     continue;
                 }

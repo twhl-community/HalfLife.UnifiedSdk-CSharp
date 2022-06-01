@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 {
     /// <summary>
     /// Converts the <c>monster_otis</c> model and body value to the appropriate keyvalues.

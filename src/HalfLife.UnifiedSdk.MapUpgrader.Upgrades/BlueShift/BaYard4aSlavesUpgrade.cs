@@ -1,7 +1,7 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
     /// <summary>
     /// Fixes the Alien Slaves in ba_yard4a being resurrected by triggering them instead of the scripted_sequence keeping them in stasis.

@@ -3,7 +3,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 {
     /// <summary>
     /// Renames the messages used in <c>env_message</c> entities to use a game-specific prefix.

@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Collections.Immutable;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
     /// <summary>
     /// Renames certain animations referenced by <c>scripted_sequence</c>s targeting entities using <c>models/console_civ_scientist.mdl</c>.

@@ -1,7 +1,7 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
     /// <summary>
     /// Remaps <c>monster_rosenberg</c>'s <c>No use</c> flag to <c>monster_scientist</c>'s <c>Allow follow</c> keyvalue.

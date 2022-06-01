@@ -2,7 +2,7 @@
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
-namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
+namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
 {
     /// <summary>
     /// Converts <c>item_suit</c>'s model to use <c>w_pcv.mdl</c> in Opposing Force maps.

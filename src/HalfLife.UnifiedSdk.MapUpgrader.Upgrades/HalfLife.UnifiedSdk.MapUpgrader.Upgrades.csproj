@@ -10,4 +10,8 @@
     <ProjectReference Include="..\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HalfLife\" />
+  </ItemGroup>
+
 </Project>
