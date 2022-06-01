@@ -75,7 +75,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         /// <summary>
         /// Creates a new entity with the given class name.
-        /// The entity will not be added to the entity list.
         /// </summary>
         /// <remarks> You cannot create new worldspawn entities. </remarks>
         /// <exception cref="ArgumentException">
@@ -92,7 +91,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot create new worldspawn entity", nameof(className));
             }
 
-            return new Entity(this, Map.CreateNewEntity(className));
+            var entity = new Entity(this, Map.CreateNewEntity(className));
+
+            AddCore(entity);
+
+            return entity;
         }
 
         /// <summary>
@@ -114,6 +117,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             var newEntity = new Entity(this, Map.CreateNewEntity(entity.ClassName));
 
             newEntity.ReplaceKeyValues(entity);
+
+            AddCore(newEntity);
 
             return newEntity;
         }
@@ -144,6 +149,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException($"Trying to add entity {entity} that is already in the list", nameof(entity));
             }
 
+            AddCore(entity);
+        }
+
+        private void AddCore(Entity entity)
+        {
             _entities.Add(entity);
             Map.Add(entity._entity);
         }
