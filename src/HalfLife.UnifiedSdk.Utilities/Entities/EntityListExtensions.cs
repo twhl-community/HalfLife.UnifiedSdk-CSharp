@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace HalfLife.UnifiedSdk.Utilities.Entities
 {
@@ -165,6 +166,43 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             }
 
             return entityList;
+        }
+
+        /// <summary>
+        /// Generates a unique targetname from a base name.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="entityList"/> or <paramref name="baseName"/> are <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="baseName"/> is empty or contains only whitespace
+        /// -or- A unique targetname could not be generated for <paramref name="baseName"/>.</exception>
+        public static string GenerateUniqueTargetName(this EntityList entityList, string baseName)
+        {
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(baseName);
+
+            if (string.IsNullOrWhiteSpace(baseName))
+            {
+                throw new ArgumentException("Base name must contain valid characters", nameof(baseName));
+            }
+
+            var builder = new StringBuilder();
+            builder.Append(baseName);
+
+            var baseLength = builder.Length;
+
+            for (int number = 0; number != int.MaxValue; ++number)
+            {
+                builder.Length = baseLength;
+                builder.Append(number);
+
+                if (!entityList.Any(e => builder.Equals(e.GetTargetName().AsSpan())))
+                {
+                    return builder.ToString();
+                }
+            }
+
+            //Unlikely to happen unless a map has way more entities than the engine supports.
+            throw new ArgumentException($"Could not generate unique targetname for \"{baseName}\"", nameof(baseName));
         }
     }
 }
