@@ -117,6 +117,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets the <c>target</c> value.</summary>
         public static string GetTarget(this Entity entity) => entity.GetString(KeyValueUtilities.Target);
 
+        /// <summary>Gets the <c>delay</c> value.</summary>
+        public static double GetDelay(this Entity entity) => entity.GetDouble(KeyValueUtilities.Delay);
+
         /// <summary>Gets the <c>origin</c> value.</summary>
         public static Vector3 GetOrigin(this Entity entity) => entity.GetVector3(KeyValueUtilities.Origin);
 
@@ -134,6 +137,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         /// <summary>Sets the <c>target</c> value.</summary>
         public static void SetTarget(this Entity entity, string target) => entity.SetString(KeyValueUtilities.Target, target);
+
+        /// <summary>Sets the <c>delay</c> value.</summary>
+        public static void SetDelay(this Entity entity, double delay) => entity.SetDouble(KeyValueUtilities.Delay, delay);
 
         /// <summary>Sets the <c>origin</c> value.</summary>
         public static void SetOrigin(this Entity entity, Vector3 value) => entity.SetVector3(KeyValueUtilities.Origin, value);

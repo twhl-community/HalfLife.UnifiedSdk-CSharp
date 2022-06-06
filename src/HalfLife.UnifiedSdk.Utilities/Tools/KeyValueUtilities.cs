@@ -21,6 +21,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <summary>The <c>target</c> key.</summary>
         public const string Target = "target";
 
+        /// <summary>The <c>delay</c> key.</summary>
+        public const string Delay = "delay";
+
         /// <summary>The <c>origin</c> key.</summary>
         public const string Origin = "origin";
 
