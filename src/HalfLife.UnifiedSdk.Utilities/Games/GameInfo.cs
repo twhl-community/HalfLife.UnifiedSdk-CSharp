@@ -12,7 +12,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
     {
         private static GameInfo CreateGenericGameInfo(GameEngine engine)
         {
-            return new(engine, "generic", string.Empty, () => ImmutableDictionary<string, MapInfo>.Empty);
+            return new(engine, "generic", string.Empty, () => ImmutableDictionary<string, MapInfo>.Empty, () => ImmutableHashSet<string>.Empty);
         }
 
         /// <summary>Generic GoldSource engine game info.</summary>
@@ -25,6 +25,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
         public static GameInfo GenericSource2Game { get; } = CreateGenericGameInfo(GameEngine.Source2);
 
         private readonly Lazy<ImmutableDictionary<string, MapInfo>> _maps;
+
+        private readonly Lazy<ImmutableHashSet<string>> _musicFileNames;
 
         /// <summary>Which engine this game is running on.</summary>
         public GameEngine Engine { get; }
@@ -44,6 +46,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
         /// <summary>Dictionary of all official maps in this game.</summary>
         public ImmutableDictionary<string, MapInfo> Maps => _maps.Value;
 
+        /// <summary>Set of all music filenames used by this game.</summary>
+        public ImmutableHashSet<string> MusicFileNames => _musicFileNames.Value;
+
         /// <summary>Gets an enumerable collection of all of the campaign maps.</summary>
         public IEnumerable<MapInfo> CampaignMaps => GetMaps(MapCategory.Campaign);
 
@@ -61,15 +66,38 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
         /// <param name="name"><see cref="Name"/></param>
         /// <param name="modDirectory"><see cref="ModDirectory"/></param>
         /// <param name="maps">A function that returns a dictionary of map info. Will be invoked once if and when map info is requested.</param>
+        /// <param name="musicFileNames">
+        /// A function that returns a set of music filenames used by this game.
+        /// Will be invoked once if and when music info is requested.
+        /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/>, <paramref name="modDirectory"/> or <paramref name="maps"/> are <see langword="null"/>.
+        /// <paramref name="name"/>, <paramref name="modDirectory"/>,
+        /// <paramref name="maps"/> or <paramref name="musicFileNames"/> are <see langword="null"/>.
         /// </exception>
-        public GameInfo(GameEngine engine, string name, string modDirectory, Func<ImmutableDictionary<string, MapInfo>> maps)
+        public GameInfo(GameEngine engine, string name, string modDirectory,
+            Func<ImmutableDictionary<string, MapInfo>> maps, Func<ImmutableHashSet<string>> musicFileNames)
         {
             Engine = engine;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             ModDirectory = modDirectory ?? throw new ArgumentNullException(nameof(modDirectory));
             _maps = new(maps ?? throw new ArgumentNullException(nameof(maps)));
+            _musicFileNames = new(musicFileNames ?? throw new ArgumentNullException(nameof(maps)));
+        }
+
+        /// <summary>
+        /// Creates a new game info object.
+        /// </summary>
+        /// <param name="engine"><see cref="Engine"/></param>
+        /// <param name="name"><see cref="Name"/></param>
+        /// <param name="modDirectory"><see cref="ModDirectory"/></param>
+        /// <param name="maps">A function that returns a dictionary of map info. Will be invoked once if and when map info is requested.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name"/>, <paramref name="modDirectory"/> or <paramref name="maps"/> are <see langword="null"/>.
+        /// </exception>
+        public GameInfo(GameEngine engine, string name, string modDirectory,
+            Func<ImmutableDictionary<string, MapInfo>> maps)
+            : this(engine, name, modDirectory, maps, () => ImmutableHashSet<string>.Empty)
+        {
         }
 
         /// <summary>Gets an enumerable collection of all of the maps of the given category.</summary>

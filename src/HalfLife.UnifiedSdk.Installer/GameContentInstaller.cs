@@ -88,6 +88,8 @@ namespace HalfLife.UnifiedSdk.Installer
 
             _console.Out.WriteLine($"Copied {mapsToInstall.Count()} maps.");
 
+            game.AdditionalCopySteps?.Invoke(sourceModDirectory, rootDirectory);
+
             return true;
         }
 

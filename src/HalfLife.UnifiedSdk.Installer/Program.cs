@@ -7,14 +7,6 @@ namespace HalfLife.UnifiedSdk.Installer
 {
     internal static class Program
     {
-        //List of games whose content can be installed with this tool.
-        private static readonly IEnumerable<GameInstallData> Games = new[]
-        {
-            new GameInstallData(ValveGames.HalfLife1, MapUpgradeToolFactory.Create),
-            new GameInstallData(ValveGames.OpposingForce, MapUpgradeToolFactory.Create),
-            new GameInstallData(ValveGames.BlueShift, MapUpgradeToolFactory.Create)
-        };
-
         public static int Main(string[] args)
         {
             var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
@@ -44,10 +36,50 @@ namespace HalfLife.UnifiedSdk.Installer
                     IsDryRun = dryRun
                 };
 
-                installer.Install(modDirectory.FullName, Games);
+                var tool = MapUpgradeToolFactory.Create();
+
+                var getTool = () => tool;
+
+                //List of games whose content can be installed with this tool.
+                var games = new[]
+                {
+                    new GameInstallData(ValveGames.HalfLife1, getTool),
+                    new GameInstallData(ValveGames.OpposingForce, getTool, CopyOpposingForceSoundtrack),
+                    new GameInstallData(ValveGames.BlueShift, getTool, CopyBlueShiftSoundtrack)
+                };
+
+        installer.Install(modDirectory.FullName, games);
             }, modDirectoryOption, dryRunOption);
 
             return rootCommand.Invoke(args);
+        }
+
+        private static void CopySoundtrack(string sourceDirectory, string destinationDirectory, string gameName)
+        {
+            Directory.CreateDirectory(Path.Combine(destinationDirectory, GameMedia.MediaDirectory));
+
+            foreach (var fileName in GameMedia.MusicFileNames)
+            {
+                var destinationFileName = GameMedia.GetGameSpecificMusicName(fileName, gameName);
+
+                var sourceFileName = Path.Combine(sourceDirectory, GameMedia.GetMusicFileName(fileName));
+                destinationFileName = Path.Combine(destinationDirectory, GameMedia.GetMusicFileName(destinationFileName));
+
+                if (File.Exists(sourceFileName))
+                {
+                    File.Copy(sourceFileName, destinationFileName, true);
+                }
+            }
+        }
+
+        private static void CopyOpposingForceSoundtrack(string sourceDirectory, string destinationDirectory)
+        {
+            CopySoundtrack(sourceDirectory, destinationDirectory, GameMedia.OpposingForceMusicPrefix);
+        }
+
+        private static void CopyBlueShiftSoundtrack(string sourceDirectory, string destinationDirectory)
+        {
+            CopySoundtrack(sourceDirectory, destinationDirectory, GameMedia.BlueShiftMusicPrefix);
         }
     }
 }

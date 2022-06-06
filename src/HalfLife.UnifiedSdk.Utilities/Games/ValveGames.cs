@@ -141,7 +141,37 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
                     "undertow"
                 }
             .Select(n => new MapInfo(n, MapCategory.Multiplayer)))
-            .ToImmutableDictionary(m => m.Name));
+            .ToImmutableDictionary(m => m.Name),
+            () => new[]
+            {
+                "Half-Life01",
+                "Half-Life02",
+                "Half-Life03",
+                "Half-Life04",
+                "Half-Life05",
+                "Half-Life06",
+                "Half-Life07",
+                "Half-Life08",
+                "Half-Life09",
+                "Half-Life10",
+                "Half-Life11",
+                "Half-Life12",
+                "Half-Life13",
+                "Half-Life14",
+                "Half-Life15",
+                "Half-Life16",
+                "Half-Life17",
+                "Prospero01",
+                "Prospero02",
+                "Prospero03",
+                "Prospero04",
+                "Prospero05",
+                "Suspense01",
+                "Suspense02",
+                "Suspense03",
+                "Suspense05",
+                "Suspense07"
+            }.ToImmutableHashSet());
 
         /// <summary>Half-Life: Opposing Force.</summary>
         public static GameInfo OpposingForce { get; } = new(
@@ -228,7 +258,29 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
                     "op4_xendance"
                 }
             .Select(n => new MapInfo(n, MapCategory.Multiplayer)))
-            .ToImmutableDictionary(m => m.Name));
+            .ToImmutableDictionary(m => m.Name),
+            () => new[]
+            {
+                "Half-Life01",
+                "Half-Life02",
+                "Half-Life03",
+                "Half-Life04",
+                "Half-Life05",
+                "Half-Life07",
+                "Half-Life08",
+                "Half-Life09",
+                "Half-Life10",
+                "Half-Life12",
+                "Half-Life13",
+                "Half-Life14",
+                "Half-Life15",
+                "Half-Life16",
+                "Prospero01",
+                "Prospero02",
+                "Suspense01",
+                "Suspense02",
+                "Suspense03"
+            }.ToImmutableHashSet());
 
         /// <summary>Half-Life: Blue Shift.</summary>
         public static GameInfo BlueShift { get; } = new(
@@ -280,7 +332,29 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
                     "ba_hazard6"
                 }
             .Select(n => new MapInfo(n, MapCategory.Training)))
-            .ToImmutableDictionary(m => m.Name));
+            .ToImmutableDictionary(m => m.Name),
+            () => new[]
+            {
+                "Half-Life01",
+                "Half-Life02",
+                "Half-Life03",
+                "Half-Life04",
+                "Half-Life05",
+                "Half-Life07",
+                "Half-Life08",
+                "Half-Life09",
+                "Half-Life10",
+                "Half-Life12",
+                "Half-Life13",
+                "Half-Life14",
+                "Half-Life15",
+                "Half-Life16",
+                "Prospero01",
+                "Prospero02",
+                "Suspense01",
+                "Suspense02",
+                "Suspense03"
+            }.ToImmutableHashSet());
 
         /// <summary>Half-Life: Uplink.</summary>
         /// <remarks>
