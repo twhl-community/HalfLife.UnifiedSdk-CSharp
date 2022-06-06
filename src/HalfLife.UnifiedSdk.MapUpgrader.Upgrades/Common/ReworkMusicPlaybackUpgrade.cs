@@ -1,5 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
@@ -47,9 +48,26 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             //Remap to trigger_once triggering ambient_music.
             foreach (var trigger in context.Map.Entities.OfClass("trigger_cdaudio").ToList())
             {
-                trigger.ClassName = TriggerOnceClassName;
+                Entity music;
 
-                var music = context.Map.Entities.CreateNewEntity(AmbientMusicClassName);
+                //If the entity has a targetname then we'll assume it will be triggered instead of touched.
+                if (!string.IsNullOrWhiteSpace(trigger.GetTargetName()))
+                {
+                    trigger.ClassName = AmbientMusicClassName;
+                    music = trigger;
+                    //Remove the brush model so it doesn't interfere.
+                    trigger.Remove(KeyValueUtilities.Model);
+                }
+                else
+                {
+                    trigger.ClassName = TriggerOnceClassName;
+                    music = context.Map.Entities.CreateNewEntity(AmbientMusicClassName);
+
+                    var targetName = context.Map.Entities.GenerateUniqueTargetName("music");
+
+                    music.SetTargetName(targetName);
+                    trigger.SetTarget(targetName);
+                }
 
                 UpdateEntities(trigger, music, AmbientMusicTargetSelector.LocalPlayer, context.GameInfo);
             }
