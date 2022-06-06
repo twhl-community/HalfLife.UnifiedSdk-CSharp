@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Maps;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
@@ -35,7 +36,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = MapUpgradeToolBuilder.Build(_ => { });
 
-            upgradeTool.Upgrade(new MapUpgradeCommand(map));
+            upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
 
             Assert.Single(map.Entities);
 
@@ -52,7 +53,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = ToolWithDelegate((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
-            upgradeTool.Upgrade(new MapUpgradeCommand(map));
+            upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
 
             Assert.Single(map.Entities);
 
@@ -75,7 +76,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = ToolWithDelegate((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
-            var (from, to) = upgradeTool.Upgrade(new MapUpgradeCommand(map));
+            var (from, to) = upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
 
             Assert.Equal(from, to);
 
@@ -97,7 +98,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             var upgradeTool = MapUpgradeToolBuilder.Build(_ => { });
 
-            Assert.Throws<MapUpgradeException>(() => upgradeTool.Upgrade(new MapUpgradeCommand(map)
+            Assert.Throws<MapUpgradeException>(() => upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1)
             {
                 From = new SemVersion(1, 0, 0)
             }));
@@ -126,7 +127,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
                 builder.AddUpgrade(version2, upgrade => upgrade.AddAction((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768)));
             });
 
-            upgradeTool.Upgrade(new MapUpgradeCommand(map));
+            upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
 
             Assert.Single(map.Entities);
 
@@ -148,7 +149,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             {
                 var upgradeTool = ToolWithDelegate((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768));
 
-                upgradeTool.Upgrade(new MapUpgradeCommand(map));
+                upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
 
                 RunTests(upgradeTool, upgradeTool.Upgrades[0]);
             }
@@ -158,7 +159,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
                 //Set MaxRange to a different value.
                 var upgradeTool = ToolWithDelegate((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096));
 
-                upgradeTool.Upgrade(new MapUpgradeCommand(map));
+                upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
 
                 RunTests(upgradeTool, upgradeTool.Upgrades[0]);
             }

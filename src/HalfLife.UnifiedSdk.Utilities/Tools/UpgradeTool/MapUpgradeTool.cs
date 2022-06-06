@@ -105,7 +105,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             //Apply all upgrades starting at currentVersion + 1 up to and including targetVersion.
             foreach (var upgrade in Upgrades.Where(v => v.Version > from && v.Version <= to))
             {
-                var context = new MapUpgradeContext(this, from, to, currentVersion, upgrade, command.Map, command.GameName);
+                var context = new MapUpgradeContext(this, from, to, currentVersion, upgrade, command.Map, command.GameInfo);
                 upgrade.PerformUpgrade(context);
             }
 

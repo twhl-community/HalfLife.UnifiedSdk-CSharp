@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades;
+using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.CommandLine;
@@ -31,7 +32,8 @@ namespace HalfLife.UnifiedSdk.Installer
 
                     console.Out.Write($"Upgrading \"{map.FullName}\" from version {currentVersion}");
 
-                    upgradeTool.Upgrade(new MapUpgradeCommand(mapData));
+                    //TODO: let user specify which game the map is from.
+                    upgradeTool.Upgrade(new MapUpgradeCommand(mapData, ValveGames.HalfLife1));
 
                     using var stream = File.Open(map.FullName, FileMode.Create, FileAccess.Write);
 

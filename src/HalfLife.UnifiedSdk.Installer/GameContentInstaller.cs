@@ -72,10 +72,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 // Opening the map auto-converts Blue Shift maps.
                 var mapData = MapFormats.Deserialize(sourceMapName);
 
-                upgradeTool.Upgrade(new MapUpgradeCommand(mapData)
-                {
-                    GameName = game.Info.ModDirectory
-                });
+                upgradeTool.Upgrade(new MapUpgradeCommand(mapData, game.Info));
 
                 using var stream = File.Open(destinationMapName, FileMode.Create, FileAccess.Write);
 

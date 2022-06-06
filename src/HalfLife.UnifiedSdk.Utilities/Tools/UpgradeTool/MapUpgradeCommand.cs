@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Maps;
 using Semver;
 using System;
 
@@ -29,15 +30,17 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         public bool ThrowOnTooOldVersion { get; init; } = true;
 
         /// <summary>
-        /// If not empty, specifies which game the map is from. Uses the mod directory name.
+        /// Specifies which game the map is from.
+        /// If the map did not come from a game installation, use one of the generic game info objects.
         /// </summary>
-        public string GameName { get; init; } = string.Empty;
+        public GameInfo GameInfo { get; }
 
         /// <summary>Creates a new map upgrde command.</summary>
         /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
-        public MapUpgradeCommand(Map map)
+        public MapUpgradeCommand(Map map, GameInfo gameInfo)
         {
             Map = map ?? throw new ArgumentNullException(nameof(map));
+            GameInfo = gameInfo ?? throw new ArgumentNullException(nameof(gameInfo));
         }
     }
 }

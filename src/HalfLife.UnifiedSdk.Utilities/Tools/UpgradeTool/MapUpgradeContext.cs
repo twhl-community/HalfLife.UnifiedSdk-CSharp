@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Maps;
 using Semver;
 
 namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
@@ -17,7 +18,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// </param>
     /// <param name="Upgrade">The upgrade being applied.</param>
     /// <param name="Map">The map being upgraded.</param>
-    /// <param name="GameName"> If not empty, specifies which game the map is from. Uses the game directory name. </param>
+    /// <param name="GameInfo">Specifies which game the map is from.</param>
     public sealed record MapUpgradeContext(
         MapUpgradeTool Tool,
         SemVersion FromVersion,
@@ -25,5 +26,5 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         SemVersion OriginalVersion,
         MapUpgrade Upgrade,
         Map Map,
-        string GameName);
+        GameInfo GameInfo);
 }

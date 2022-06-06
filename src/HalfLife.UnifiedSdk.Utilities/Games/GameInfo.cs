@@ -10,6 +10,20 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
     /// </summary>
     public class GameInfo
     {
+        private static GameInfo CreateGenericGameInfo(GameEngine engine)
+        {
+            return new(engine, "generic", string.Empty, () => ImmutableDictionary<string, MapInfo>.Empty);
+        }
+
+        /// <summary>Generic GoldSource engine game info.</summary>
+        public static GameInfo GenericGoldSourceGame { get; } = CreateGenericGameInfo(GameEngine.GoldSource);
+
+        /// <summary>Generic Source engine game info.</summary>
+        public static GameInfo GenericSourceGame { get; } = CreateGenericGameInfo(GameEngine.Source);
+
+        /// <summary>Generic Source 2 engine game info.</summary>
+        public static GameInfo GenericSource2Game { get; } = CreateGenericGameInfo(GameEngine.Source2);
+
         private readonly Lazy<ImmutableDictionary<string, MapInfo>> _maps;
 
         /// <summary>Which engine this game is running on.</summary>
@@ -23,6 +37,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
         /// For GoldSource engine games this is the directory located in the Half-Life directory.
         /// For Source engine games this is the directory located in the sourcemods directory.
         /// Source 2 doesn't have mod support at present, so this value should be empty for that engine.
+        /// Will be empty if this is a generic game.
         /// </summary>
         public string ModDirectory { get; }
 

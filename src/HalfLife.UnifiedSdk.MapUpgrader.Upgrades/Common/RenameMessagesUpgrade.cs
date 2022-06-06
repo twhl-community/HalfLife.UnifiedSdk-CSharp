@@ -26,7 +26,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 
         public void Apply(MapUpgradeContext context)
         {
-            var prefix = context.GameName.ToUpperInvariant() + '_';
+            var prefix = context.GameInfo.ModDirectory.ToUpperInvariant() + '_';
 
             foreach (var envMessage in context.Map.Entities.OfClass("env_message"))
             {
