@@ -84,7 +84,7 @@ namespace HalfLife.UnifiedSdk.Packager
                 var flattened = manifest.PatternGroups.SelectMany(d => d.Paths.Select(p => new
                 {
                     p.Path,
-                    p.Optional,
+                    p.Required,
                     Exists = Directory.Exists(p.Path),
                     d.IncludePatterns,
                     d.ExcludePatterns
@@ -98,7 +98,7 @@ namespace HalfLife.UnifiedSdk.Packager
                     }
                     else
                     {
-                        if (directory.Optional)
+                        if (!directory.Required)
                         {
                             console.Out.WriteLine($"Directory \"{directory.Path}\" is optional and does not exist, skipping");
                         }

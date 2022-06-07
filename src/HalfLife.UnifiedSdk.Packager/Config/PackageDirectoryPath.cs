@@ -13,6 +13,6 @@ namespace HalfLife.UnifiedSdk.Packager.Config
         [JsonProperty(ItemConverterType = typeof(PathConverter))]
         public string Path { get; set; } = string.Empty;
 
-        public bool Optional { get; set; } = false;
+        public bool Required { get; set; } = true;
     }
 }
