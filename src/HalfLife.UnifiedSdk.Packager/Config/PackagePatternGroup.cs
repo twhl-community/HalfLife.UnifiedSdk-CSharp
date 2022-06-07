@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.Packager.Config
     /// See the MSDN documentation on the Matcher class for more information on what kind of patterns are supported:
     /// https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.filesystemglobbing.matcher
     /// </summary>
-    internal sealed class PackageDirectory
+    internal sealed class PackagePatternGroup
     {
         public List<PackageDirectoryPath> Paths { get; set; } = new();
 

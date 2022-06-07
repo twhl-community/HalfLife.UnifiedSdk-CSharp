@@ -55,14 +55,14 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 var manifest = JsonConvert.DeserializeObject<PackageManifest>(File.ReadAllText(packageManifest.FullName));
 
-                if (manifest is null || !manifest.Directories.Any())
+                if (manifest is null || !manifest.PatternGroups.Any())
                 {
                     console.Error.WriteLine("Manifest file is empty");
                     return;
                 }
 
                 //Resolve paths and make them absolute.
-                foreach (var directory in manifest.Directories)
+                foreach (var directory in manifest.PatternGroups)
                 {
                     directory.Paths = directory.Paths.ConvertAll(p =>
                     {
@@ -81,7 +81,7 @@ namespace HalfLife.UnifiedSdk.Packager
                 }
 
                 //Check if any required paths don't exist.
-                var flattened = manifest.Directories.SelectMany(d => d.Paths.Select(p => new
+                var flattened = manifest.PatternGroups.SelectMany(d => d.Paths.Select(p => new
                 {
                     p.Path,
                     p.Optional,
@@ -112,7 +112,7 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 var directories = flattened
                 .Where(d => d.Exists)
-                .Select(d => new PackageDirectoryEntry(d.Path, d.IncludePatterns, d.ExcludePatterns))
+                .Select(d => new PackageDirectory(d.Path, d.IncludePatterns, d.ExcludePatterns))
                 .ToList();
 
                 Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories, verbose);

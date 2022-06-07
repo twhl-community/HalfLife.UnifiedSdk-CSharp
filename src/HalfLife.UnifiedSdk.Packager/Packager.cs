@@ -15,7 +15,7 @@ namespace HalfLife.UnifiedSdk.Packager
         public const string PackageExtension = ".zip";
 
         public static void CreatePackage(
-            IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectoryEntry> directories, bool verbose)
+            IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories, bool verbose)
         {
             var completePackageName = packageName + PackageExtension;
 

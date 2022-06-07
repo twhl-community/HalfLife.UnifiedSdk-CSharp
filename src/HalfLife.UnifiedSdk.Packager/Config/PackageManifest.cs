@@ -2,6 +2,6 @@
 {
     internal sealed class PackageManifest
     {
-        public IEnumerable<PackageDirectory> Directories { get; set; } = Enumerable.Empty<PackageDirectory>();
+        public IEnumerable<PackagePatternGroup> PatternGroups { get; set; } = Enumerable.Empty<PackagePatternGroup>();
     }
 }
