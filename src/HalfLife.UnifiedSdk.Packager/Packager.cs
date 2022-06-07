@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.FileSystemGlobbing;
+﻿using HalfLife.UnifiedSdk.Packager.Config;
+using Microsoft.Extensions.FileSystemGlobbing;
 using System.CommandLine;
 using System.CommandLine.IO;
 using System.IO.Compression;
@@ -14,7 +15,7 @@ namespace HalfLife.UnifiedSdk.Packager
         public const string PackageExtension = ".zip";
 
         public static void CreatePackage(
-            IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories, bool verbose)
+            IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectoryEntry> directories, bool verbose)
         {
             var completePackageName = packageName + PackageExtension;
 

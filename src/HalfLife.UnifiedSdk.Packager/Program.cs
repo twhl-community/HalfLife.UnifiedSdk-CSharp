@@ -1,5 +1,5 @@
 ﻿
-using HalfLife.UnifiedSdk.Utilities.Tools;
+using HalfLife.UnifiedSdk.Packager.Config;
 using Newtonsoft.Json;
 using System.CommandLine;
 using System.CommandLine.IO;
@@ -46,25 +46,74 @@ namespace HalfLife.UnifiedSdk.Packager
                 // Get the name of the mod directory.
                 var modDirectoryName = Path.GetFileNameWithoutExtension(modDirectory.FullName);
 
+                string ResolveSymbols(string input)
+                {
+                    return input.Replace("%ModDirectory%", modDirectoryName);
+                }
+
                 console.Out.WriteLine($"Loading package manifest \"{packageManifest.FullName}\"");
 
                 var manifest = JsonConvert.DeserializeObject<PackageManifest>(File.ReadAllText(packageManifest.FullName));
 
-                if (manifest is null)
+                if (manifest is null || !manifest.Directories.Any())
                 {
                     console.Error.WriteLine("Manifest file is empty");
                     return;
                 }
 
-                var directories = new[]
+                //Resolve paths and make them absolute.
+                foreach (var directory in manifest.Directories)
                 {
-                    new PackageDirectory(modDirectory.FullName, manifest.IncludePatterns, manifest.ExcludePatterns)
+                    directory.Paths = directory.Paths.ConvertAll(p =>
+                    {
+                        var path = p.Path;
+
+                        path = ResolveSymbols(path);
+                        path = Path.Combine(halfLifeDirectory.FullName, path);
+
+                        p.Path = path;
+
+                        return p;
+                    });
+
+                    directory.IncludePatterns = directory.IncludePatterns.ConvertAll(ResolveSymbols);
+                    directory.ExcludePatterns = directory.ExcludePatterns.ConvertAll(ResolveSymbols);
                 }
-                    //Include content directories if they exist.
-                    .Concat(ModUtilities.AllPublicModDirectorySuffixes
-                        .Select(s => ModUtilities.FormatModDirectory(modDirectoryName, s))
-                        .Where(Directory.Exists)
-                        .Select(p => new PackageDirectory(p, manifest.IncludePatterns, manifest.ExcludePatterns)));
+
+                //Check if any required paths don't exist.
+                var flattened = manifest.Directories.SelectMany(d => d.Paths.Select(p => new
+                {
+                    p.Path,
+                    p.Optional,
+                    Exists = Directory.Exists(p.Path),
+                    d.IncludePatterns,
+                    d.ExcludePatterns
+                }));
+
+                foreach (var directory in flattened)
+                {
+                    if (directory.Exists)
+                    {
+                        console.Out.WriteLine($"Including directory \"{directory.Path}\"");
+                    }
+                    else
+                    {
+                        if (directory.Optional)
+                        {
+                            console.Out.WriteLine($"Directory \"{directory.Path}\" is optional and does not exist, skipping");
+                        }
+                        else
+                        {
+                            console.Error.WriteLine($"Directory \"{directory.Path}\" is required and does not exist, aborting");
+                            return;
+                        }
+                    }
+                }
+
+                var directories = flattened
+                .Where(d => d.Exists)
+                .Select(d => new PackageDirectoryEntry(d.Path, d.IncludePatterns, d.ExcludePatterns))
+                .ToList();
 
                 Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories, verbose);
 

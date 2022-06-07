@@ -1,14 +1,16 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Configuration;
 using Newtonsoft.Json;
 
-namespace HalfLife.UnifiedSdk.Packager
+namespace HalfLife.UnifiedSdk.Packager.Config
 {
     /// <summary>
     /// See the MSDN documentation on the Matcher class for more information on what kind of patterns are supported:
     /// https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.filesystemglobbing.matcher
     /// </summary>
-    internal class PackageManifest
+    internal sealed class PackageDirectory
     {
+        public List<PackageDirectoryPath> Paths { get; set; } = new();
+
         /// <summary>
         /// List of files and directories to package.
         /// Filenames ending with ".install" will be renamed to remove this extension after being added to the archive.
