@@ -21,8 +21,6 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
         {
             Play = 0,
             Loop,
-            Pause,
-            Resume,
             Fadeout,
             Stop
         }
