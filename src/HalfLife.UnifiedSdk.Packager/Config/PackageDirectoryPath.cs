@@ -10,9 +10,10 @@ namespace HalfLife.UnifiedSdk.Packager.Config
         /// This is a path relative to the game directory.
         /// The symbol <c>%ModDirectory%</c> is replaced with the mod directory.
         /// </summary>
-        [JsonProperty(ItemConverterType = typeof(PathConverter))]
+        [JsonProperty(Required = Newtonsoft.Json.Required.Always, ItemConverterType = typeof(PathConverter))]
         public string Path { get; set; } = string.Empty;
 
+        [JsonProperty(Required = Newtonsoft.Json.Required.DisallowNull)]
         public bool Required { get; set; } = true;
     }
 }
