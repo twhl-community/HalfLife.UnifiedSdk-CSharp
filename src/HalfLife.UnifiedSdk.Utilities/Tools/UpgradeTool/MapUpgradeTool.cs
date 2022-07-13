@@ -88,7 +88,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             var from = command.From ?? currentVersion;
             var to = command.To ?? LatestVersion;
 
-            if (command.ThrowOnTooOldVersion && from < currentVersion)
+            if (command.ThrowOnTooOldVersion && from.ComparePrecedenceTo(currentVersion) < 0)
             {
                 throw new MapUpgradeException(
                     $"Attempted to upgrade map with version {currentVersion} from older version {from} to version {to}");
@@ -97,13 +97,13 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             //If this map is newer than what we know of, do nothing.
             //If this happens the map has probably been upgraded already by a newer version of the script or tool being used.
             //If that's the case then the upgrades may not work at all when applied.
-            if (from > to)
+            if (from.ComparePrecedenceTo(to) > 0)
             {
                 return (from, from);
             }
 
             //Apply all upgrades starting at currentVersion + 1 up to and including targetVersion.
-            foreach (var upgrade in Upgrades.Where(v => v.Version > from && v.Version <= to))
+            foreach (var upgrade in Upgrades.Where(v => v.Version.ComparePrecedenceTo(from) > 0 && v.Version.ComparePrecedenceTo(to) <= 0))
             {
                 var context = new MapUpgradeContext(this, from, to, currentVersion, upgrade, command.Map, command.GameInfo);
                 upgrade.PerformUpgrade(context);
@@ -122,7 +122,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 
             if (map.Entities.Worldspawn.TryGetValue(GameVersionKey, out var currentVersionString))
             {
-                version = SemVersion.Parse(currentVersionString, true);
+                version = SemVersion.Parse(currentVersionString, SemVersionStyles.Strict);
                 return true;
             }
 

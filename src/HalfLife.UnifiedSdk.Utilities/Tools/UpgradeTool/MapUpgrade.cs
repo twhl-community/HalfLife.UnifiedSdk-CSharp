@@ -27,7 +27,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         }
 
         /// <inheritdoc/>
-        public int CompareTo(MapUpgrade? other) => Version.CompareTo(other?.Version);
+        public int CompareTo(MapUpgrade? other) => Version.ComparePrecedenceTo(other?.Version);
 
         /// <inheritdoc/>
         public override int GetHashCode() => Version.GetHashCode();
