@@ -47,7 +47,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
             //EmptyMapString uses line endings based on the platform the code was compiled on
             //while the writer always uses \n, so ignore the differences.
-            Assert.Equal(KeyValueUtilities.EmptyMapString, resultText, ignoreLineEndingDifferences: true);
+            Assert.Equal(KeyValueUtilities.EmptyMapString + '\0', resultText, ignoreLineEndingDifferences: true);
         }
     }
 }

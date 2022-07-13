@@ -57,7 +57,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             var map = CreateEmptyMap();
 
             var entity = map.Entities.CreateNewEntity("foo");
-            map.Entities.Add(entity);
 
             Assert.Throws<ArgumentException>(() => entity.ClassName = KeyValueUtilities.WorldspawnClassName);
         }
