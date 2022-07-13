@@ -1,4 +1,6 @@
-﻿namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
+﻿using System;
+
+namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 {
     /// <summary>
     /// Helper class to apply an upgrade to a specific map.

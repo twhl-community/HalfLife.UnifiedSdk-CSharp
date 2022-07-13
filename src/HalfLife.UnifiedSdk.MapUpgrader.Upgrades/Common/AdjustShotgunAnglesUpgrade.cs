@@ -18,7 +18,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 
         public void Apply(MapUpgradeContext context)
         {
-            if (!ValveGames.OpposingForce.IsMap(context.Map.BaseName) && !ValveGames.BlueShift.IsMap(context.Map.BaseName))
+            if (context.GameInfo != ValveGames.OpposingForce && context.GameInfo != ValveGames.BlueShift)
             {
                 return;
             }

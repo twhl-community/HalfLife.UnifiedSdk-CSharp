@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Converts the Opposing Force scientist <c>clipboard</c> and <c>stick</c> heads to use the <c>item</c> body group instead.
     /// </summary>
-    internal sealed class ConvertScientistItemUpgrade : IMapUpgradeAction
+    internal sealed class ConvertScientistItemUpgrade : GameSpecificMapUpgradeAction
     {
         //This hardcoded stuff is pretty ugly, but there is no way around it without loading the model.
         private const int StudioCount = 1;
@@ -21,13 +21,13 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
             Stick
         }
 
-        public void Apply(MapUpgradeContext context)
+        public ConvertScientistItemUpgrade()
+            : base(ValveGames.OpposingForce)
         {
-            if (!ValveGames.OpposingForce.IsMap(context.Map.BaseName))
-            {
-                return;
-            }
+        }
 
+        protected override void ApplyCore(MapUpgradeContext context)
+        {
             foreach (var scientist in context.Map.Entities
                 .Where(e => e.ClassName == "monster_scientist" && e.ContainsKey("body")))
             {

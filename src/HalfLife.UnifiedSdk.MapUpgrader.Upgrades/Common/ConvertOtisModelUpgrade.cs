@@ -52,8 +52,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                 otis.SetInteger("sleeves", (int)sleeves);
             }
 
-            //Only Blue Shift uses Otis models separately from Opposing Force so this section only applies to that game.
-            if (ValveGames.BlueShift.IsMap(context.Map.BaseName))
+            //Only Blue Shift uses Otis models separately from monster_otis so this section only applies to that game.
+            if (context.GameInfo == ValveGames.BlueShift)
             {
                 foreach (var entity in context.Map.Entities.WhereString("model", OtisModelName))
                 {
