@@ -17,10 +17,10 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
         {
             foreach (var entity in context.Map.Entities
                 .Where(e => e.ClassName == "monster_rosenberg"
-                    || e.ClassName == "monster_generic"
+                    || (e.ClassName == "monster_generic"
                         && e.GetModel() == "models/scientist.mdl"
                         && e.GetInteger("body") == 3
-                        && RosenbergNames.Contains(e.GetTargetName())))
+                        && RosenbergNames.Contains(e.GetTargetName()))))
             {
                 entity.SetModel("models/rosenberg.mdl");
                 entity.Remove("body");
