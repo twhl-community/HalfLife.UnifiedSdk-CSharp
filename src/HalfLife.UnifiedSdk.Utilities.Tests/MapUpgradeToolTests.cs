@@ -6,7 +6,6 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using Semver;
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Xunit;
 

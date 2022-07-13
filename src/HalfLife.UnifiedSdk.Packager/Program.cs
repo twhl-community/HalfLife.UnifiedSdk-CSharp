@@ -2,7 +2,6 @@
 using HalfLife.UnifiedSdk.Packager.Config;
 using HalfLife.UnifiedSdk.Utilities.Logging;
 using Newtonsoft.Json;
-using Serilog;
 using System.CommandLine;
 using System.Text.RegularExpressions;
 
@@ -25,7 +24,7 @@ namespace HalfLife.UnifiedSdk.Packager
                 verboseOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo modDirectory, FileInfo packageManifest, string packageName, bool verbose, ILogger logger) =>
+            rootCommand.SetHandler((modDirectory, packageManifest, packageName, verbose, logger) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
                 var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");

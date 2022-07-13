@@ -61,7 +61,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 Directory.CreateDirectory(_destination);
                 File.Copy(fileName, destinationFileName, true);
             }
-            catch(Exception e) when (e is IOException || e is UnauthorizedAccessException)
+            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
             {
                 //If anything goes wrong the user should know about it so they can correct the problem.
                 //E.g. trying to copy a file but a directory with the same name exists.

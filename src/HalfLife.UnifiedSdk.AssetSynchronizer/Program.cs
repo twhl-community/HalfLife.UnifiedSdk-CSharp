@@ -21,10 +21,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 assetManifestOption,
             };
 
-            rootCommand.SetHandler((
-                DirectoryInfo assetsDirectory, DirectoryInfo modDirectory,
-                FileInfo assetManifest,
-                ILogger logger) =>
+            rootCommand.SetHandler((assetsDirectory, modDirectory, assetManifest, logger) =>
             {
                 if (!modDirectory.Exists)
                 {

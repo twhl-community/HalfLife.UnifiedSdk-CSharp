@@ -1,7 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Formats.Skill;
 using HalfLife.UnifiedSdk.Utilities.Logging;
 using Newtonsoft.Json;
-using Serilog;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 
@@ -9,7 +8,7 @@ const string TargetExtension = ".json";
 
 var inputFileName = new Argument<FileInfo>("filename", "skill.cfg to convert");
 
-var outputFileName = new Option<FileInfo>("--output-filename", "If provided, the name of the file to write the skill.json contents to");
+var outputFileName = new Option<FileInfo?>("--output-filename", "If provided, the name of the file to write the skill.json contents to");
 
 var rootCommand = new RootCommand
 {
@@ -19,7 +18,7 @@ var rootCommand = new RootCommand
 
 rootCommand.Description = "Half-Life Unified SDK skill.cfg to skill.json converter";
 
-rootCommand.SetHandler((FileInfo fileName, FileInfo? outputFileName, ILogger logger) =>
+rootCommand.SetHandler((fileName, outputFileName, logger) =>
     {
         if (fileName.Extension == TargetExtension)
         {

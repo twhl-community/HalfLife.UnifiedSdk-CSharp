@@ -3,7 +3,6 @@ using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Logging;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
-using Serilog;
 using System.CommandLine;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader
@@ -39,7 +38,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
                 mapsOption
             };
 
-            rootCommand.SetHandler((string? game, IEnumerable<FileInfo> maps, ILogger logger) =>
+            rootCommand.SetHandler((game, maps, logger) =>
             {
                 game ??= defaultGame.ModDirectory;
 

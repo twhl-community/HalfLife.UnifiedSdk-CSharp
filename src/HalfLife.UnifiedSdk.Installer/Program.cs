@@ -1,7 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades;
 using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Logging;
-using Serilog;
 using System.CommandLine;
 
 namespace HalfLife.UnifiedSdk.Installer
@@ -19,7 +18,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 dryRunOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo modDirectory, bool dryRun, ILogger logger) =>
+            rootCommand.SetHandler((modDirectory, dryRun, logger) =>
             {
                 if (!modDirectory.Exists)
                 {
@@ -49,7 +48,7 @@ namespace HalfLife.UnifiedSdk.Installer
                     new GameInstallData(ValveGames.BlueShift, getTool, CopyBlueShiftSoundtrack)
                 };
 
-        installer.Install(modDirectory.FullName, games);
+                installer.Install(modDirectory.FullName, games);
             }, modDirectoryOption, dryRunOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);

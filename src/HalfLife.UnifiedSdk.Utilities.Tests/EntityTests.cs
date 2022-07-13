@@ -2,10 +2,6 @@
 using HalfLife.UnifiedSdk.Utilities.Serialization.EntFile;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace HalfLife.UnifiedSdk.Utilities.Tests
