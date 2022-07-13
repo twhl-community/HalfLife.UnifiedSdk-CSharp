@@ -6,7 +6,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using Serilog;
 using System.CommandLine;
 
-namespace HalfLife.UnifiedSdk.Installer
+namespace HalfLife.UnifiedSdk.MapUpgrader
 {
     internal static class Program
     {
