@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
     /// <summary>
     /// Provides information about a game, such as the engine it is running on and which maps it has.
     /// </summary>
-    public class GameInfo
+    public class GameInfo : IEquatable<GameInfo?>
     {
         private static GameInfo CreateGenericGameInfo(GameEngine engine)
         {
@@ -117,5 +117,41 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
 
         /// <summary>Returns whether the given map name is a multiplayer map in this game.</summary>
         public bool IsMultiplayerMap(string value) => IsMap(value, MapCategory.Multiplayer);
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as GameInfo);
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(GameInfo? other)
+        {
+            return other is not null &&
+                   Engine == other.Engine &&
+                   ModDirectory == other.ModDirectory;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Engine, ModDirectory);
+        }
+
+        /// <summary>
+        /// Indicates whether <paramref name="left"/> is equal to <paramref name="right"/>.
+        /// </summary>
+        public static bool operator ==(GameInfo? left, GameInfo? right)
+        {
+            return EqualityComparer<GameInfo>.Default.Equals(left, right);
+        }
+
+        /// <summary>
+        /// Indicates whether <paramref name="left"/> is not equal to <paramref name="right"/>.
+        /// </summary>
+        public static bool operator !=(GameInfo? left, GameInfo? right)
+        {
+            return !(left == right);
+        }
     }
 }
