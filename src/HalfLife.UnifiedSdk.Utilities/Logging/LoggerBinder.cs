@@ -5,7 +5,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Logging
 {
     /// <summary>
     /// Provides a <see cref="ILogger"/> in a <see cref="System.CommandLine.Command"/> handler.
-    /// The logger is configured to log to the console.
+    /// The logger is configured to log to the console and to the Visual Studio debug output window (when running with Visual Studio).
     /// </summary>
     public sealed class LoggerBinder : BinderBase<ILogger>
     {
@@ -17,6 +17,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Logging
         {
             return new LoggerConfiguration()
                 .WriteTo.Console()
+                .WriteTo.Debug()
                 .CreateLogger();
         }
     }
