@@ -1,8 +1,9 @@
 ﻿
 using HalfLife.UnifiedSdk.Packager.Config;
+using HalfLife.UnifiedSdk.Utilities.Logging;
 using Newtonsoft.Json;
+using Serilog;
 using System.CommandLine;
-using System.CommandLine.IO;
 using System.Text.RegularExpressions;
 
 namespace HalfLife.UnifiedSdk.Packager
@@ -24,18 +25,18 @@ namespace HalfLife.UnifiedSdk.Packager
                 verboseOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo modDirectory, FileInfo packageManifest, string packageName, bool verbose, IConsole console) =>
+            rootCommand.SetHandler((DirectoryInfo modDirectory, FileInfo packageManifest, string packageName, bool verbose, ILogger logger) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
                 var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
 
                 var completePackageName = $"{packageName}-{now}";
 
-                console.Out.WriteLine($"Mod directory is \"{modDirectory.FullName}\"");
+                logger.Information("Mod directory is \"{FullName}\"", modDirectory.FullName);
 
                 if (!modDirectory.Exists)
                 {
-                    console.Error.WriteLine($"Mod directory \"{modDirectory.FullName}\" does not exist");
+                    logger.Error("Mod directory \"{FullName}\" does not exist", modDirectory.FullName);
                     return;
                 }
 
@@ -51,13 +52,13 @@ namespace HalfLife.UnifiedSdk.Packager
                     return input.Replace("%ModDirectory%", modDirectoryName);
                 }
 
-                console.Out.WriteLine($"Loading package manifest \"{packageManifest.FullName}\"");
+                logger.Information("Loading package manifest \"{ManifestName}\"", packageManifest.FullName);
 
                 var manifest = JsonConvert.DeserializeObject<PackageManifest>(File.ReadAllText(packageManifest.FullName));
 
                 if (manifest is null || !manifest.PatternGroups.Any())
                 {
-                    console.Error.WriteLine("Manifest file is empty");
+                    logger.Error("Manifest file is empty");
                     return;
                 }
 
@@ -94,17 +95,17 @@ namespace HalfLife.UnifiedSdk.Packager
                 {
                     if (directory.Exists)
                     {
-                        console.Out.WriteLine($"Including directory \"{directory.Path}\"");
+                        logger.Information("Including directory \"{Path}\"", directory.Path);
                     }
                     else
                     {
                         if (!directory.Required)
                         {
-                            console.Out.WriteLine($"Directory \"{directory.Path}\" is optional and does not exist, skipping");
+                            logger.Information("Directory \"{Path}\" is optional and does not exist, skipping", directory.Path);
                         }
                         else
                         {
-                            console.Error.WriteLine($"Directory \"{directory.Path}\" is required and does not exist, aborting");
+                            logger.Error("Directory \"{Path}\" is required and does not exist, aborting", directory.Path);
                             return;
                         }
                     }
@@ -115,7 +116,7 @@ namespace HalfLife.UnifiedSdk.Packager
                 .Select(d => new PackageDirectory(d.Path, d.IncludePatterns, d.ExcludePatterns))
                 .ToList();
 
-                Packager.CreatePackage(console, completePackageName, halfLifeDirectory.FullName, directories, verbose);
+                Packager.CreatePackage(logger, completePackageName, halfLifeDirectory.FullName, directories, verbose);
 
                 //Now delete old packages.
                 var regex = new Regex($@"{Regex.Escape(packageName)}-(\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d){Packager.PackageExtension}$");
@@ -128,12 +129,12 @@ namespace HalfLife.UnifiedSdk.Packager
                     {
                         if (match.Groups[1].Captures[0].Value.CompareTo(now) < 0)
                         {
-                            console.Out.WriteLine($"Deleting old package \"{file.FullName}\"");
+                            logger.Information("Deleting old package \"{PackageName}\"", file.FullName);
                             file.Delete();
                         }
                     }
                 }
-            }, modDirectoryOption, packageManifestOption, packageNameOption, verboseOption);
+            }, modDirectoryOption, packageManifestOption, packageNameOption, verboseOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }

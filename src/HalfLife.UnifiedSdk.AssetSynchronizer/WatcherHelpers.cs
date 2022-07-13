@@ -1,19 +1,26 @@
-﻿using System.CommandLine;
-using System.CommandLine.IO;
+﻿using Serilog;
 
 namespace HalfLife.UnifiedSdk.AssetSynchronizer
 {
     internal static class WatcherHelpers
     {
-        public static void PrintException(IConsole console, Exception? ex)
+        public static void PrintException(ILogger logger, Exception? ex)
         {
             if (ex is not null)
             {
-                console.Error.WriteLine($"Message: {ex.Message}");
-                console.Error.WriteLine("Stacktrace:");
-                console.Error.WriteLine(ex.StackTrace ?? "No stack trace");
-                console.Error.WriteLine();
-                PrintException(console, ex.InnerException);
+                logger.Error("Message: {Message}", ex.Message);
+                logger.Error("Stacktrace:");
+
+                if (ex.StackTrace is not null)
+                {
+                    logger.Error("{StackTrace}", ex.StackTrace);
+                }
+                else
+                {
+                    logger.Error("No stack trace");
+                }
+
+                PrintException(logger, ex.InnerException);
             }
         }
     }

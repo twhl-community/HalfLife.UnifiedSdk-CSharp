@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using HalfLife.UnifiedSdk.Utilities.Logging;
+using Newtonsoft.Json;
+using Serilog;
 using System.Collections.Immutable;
 using System.CommandLine;
-using System.CommandLine.IO;
 
 namespace HalfLife.UnifiedSdk.AssetSynchronizer
 {
@@ -23,11 +24,11 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
             rootCommand.SetHandler((
                 DirectoryInfo assetsDirectory, DirectoryInfo modDirectory,
                 FileInfo assetManifest,
-                IConsole console) =>
+                ILogger logger) =>
             {
                 if (!modDirectory.Exists)
                 {
-                    console.Error.WriteLine($"The given mod directory \"{modDirectory}\" does not exist");
+                    logger.Error("The given mod directory \"{ModDirectory}\" does not exist", modDirectory);
                     return;
                 }
 
@@ -42,13 +43,13 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                     //Verify that the paths are valid.
                     if (File.Exists(filter.Source))
                     {
-                        console.Error.WriteLine($"The source directory \"{filter.Source}\" is a file");
+                        logger.Error("The source directory \"{Source}\" is a file", filter.Source);
                         return;
                     }
 
                     if (File.Exists(filter.Destination))
                     {
-                        console.Error.WriteLine($"The destination directory \"{filter.Destination}\" is a file");
+                        logger.Error("The destination directory \"{Destination}\" is a file", filter.Destination);
                         return;
                     }
                 }
@@ -56,19 +57,19 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 //Copy all changed files on startup.
                 foreach (var filter in manifest)
                 {
-                    CopyAllFiles(console, filter);
+                    CopyAllFiles(logger, filter);
                 }
 
                 {
                     var watchers = manifest
-                        .Select(f => new Watcher(console, f.Source, f.Destination, f.Pattern, f.Recursive))
+                        .Select(f => new Watcher(logger, f.Source, f.Destination, f.Pattern, f.Recursive))
                         .ToImmutableList();
 
-                    console.Out.WriteLine("Watching for file changes");
-                    console.Out.WriteLine("Press any key to stop...");
+                    logger.Information("Watching for file changes");
+                    logger.Information("Press any key to stop...");
                     //Block until told to stop.
                     Console.ReadKey();
-                    console.Out.Write("Stopping watchers...");
+                    logger.Information("Stopping watchers...");
 
                     foreach (var watcher in watchers)
                     {
@@ -76,13 +77,13 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                     }
                 }
 
-                console.Out.WriteLine("done");
-            }, assetsDirectoryOption, modDirectoryOption, assetManifestOption);
+                logger.Information("Done");
+            }, assetsDirectoryOption, modDirectoryOption, assetManifestOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }
 
-        private static void CopyAllFiles(IConsole console, ManifestFilter filter)
+        private static void CopyAllFiles(ILogger logger, ManifestFilter filter)
         {
             foreach (var fileName in Directory.EnumerateFiles(filter.Source, filter.Pattern, new EnumerationOptions
             {
@@ -92,11 +93,11 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 var relativePath = Path.GetRelativePath(filter.Source, fileName);
                 var destinationFileName = Path.Combine(filter.Destination, relativePath);
 
-                CopyIfDifferent(console, fileName, destinationFileName);
+                CopyIfDifferent(logger, fileName, destinationFileName);
             }
         }
 
-        private static void CopyIfDifferent(IConsole console, string sourceFileName, string destinationFileName)
+        private static void CopyIfDifferent(ILogger logger, string sourceFileName, string destinationFileName)
         {
             if (!FilesAreEqual(sourceFileName, destinationFileName))
             {
@@ -113,7 +114,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 }
                 catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
                 {
-                    WatcherHelpers.PrintException(console, e);
+                    WatcherHelpers.PrintException(logger, e);
                 }
             }
         }

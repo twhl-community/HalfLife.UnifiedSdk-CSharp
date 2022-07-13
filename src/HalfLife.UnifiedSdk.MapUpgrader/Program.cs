@@ -1,9 +1,10 @@
 ﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades;
 using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Logging;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
+using Serilog;
 using System.CommandLine;
-using System.CommandLine.IO;
 
 namespace HalfLife.UnifiedSdk.Installer
 {
@@ -16,7 +17,7 @@ namespace HalfLife.UnifiedSdk.Installer
             var defaultGame = ValveGames.HalfLife1;
 
             var gameOption = new Option<string>("--game", description: "The name of a game's mod directory to apply upgrades for that game."
-                + $"If not specified, uses \"{defaultGame.ModDirectory}\"");
+                + $"\nIf not specified, uses \"{defaultGame.ModDirectory}\"");
 
             gameOption.AddCompletions(games.Select(g => g.ModDirectory).ToArray());
 
@@ -38,7 +39,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 mapsOption
             };
 
-            rootCommand.SetHandler((string? game, IEnumerable<FileInfo> maps, IConsole console) =>
+            rootCommand.SetHandler((string? game, IEnumerable<FileInfo> maps, ILogger logger) =>
             {
                 game ??= defaultGame.ModDirectory;
 
@@ -52,13 +53,14 @@ namespace HalfLife.UnifiedSdk.Installer
 
                 if (!maps.Any())
                 {
-                    console.WriteLine("No maps to upgrade");
+                    logger.Information("No maps to upgrade");
                     return;
                 }
 
                 var upgradeTool = MapUpgradeToolFactory.Create();
 
-                console.WriteLine($"Upgrading maps for game {gameInfo.Name} ({gameInfo.ModDirectory}) to version {upgradeTool.LatestVersion}");
+                logger.Information("Upgrading maps for game {GameName} ({ModDirectory}) to version {LatestVersion}",
+                    gameInfo.Name, gameInfo.ModDirectory, upgradeTool.LatestVersion);
 
                 foreach (var map in maps)
                 {
@@ -66,7 +68,7 @@ namespace HalfLife.UnifiedSdk.Installer
 
                     var currentVersion = upgradeTool.GetVersion(mapData);
 
-                    console.Out.Write($"Upgrading \"{map.FullName}\" from version {currentVersion}");
+                    logger.Information("Upgrading \"{FullName}\" from version {CurrentVersion}", map.FullName, currentVersion);
 
                     upgradeTool.Upgrade(new MapUpgradeCommand(mapData, gameInfo));
 
@@ -74,7 +76,7 @@ namespace HalfLife.UnifiedSdk.Installer
 
                     mapData.Serialize(stream);
                 }
-            }, gameOption, mapsOption);
+            }, gameOption, mapsOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }

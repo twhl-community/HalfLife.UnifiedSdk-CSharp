@@ -1,7 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Packager.Config;
-using Microsoft.Extensions.FileSystemGlobbing;
-using System.CommandLine;
-using System.CommandLine.IO;
+﻿using Microsoft.Extensions.FileSystemGlobbing;
+using Serilog;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 
@@ -15,17 +13,17 @@ namespace HalfLife.UnifiedSdk.Packager
         public const string PackageExtension = ".zip";
 
         public static void CreatePackage(
-            IConsole console, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories, bool verbose)
+            ILogger logger, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories, bool verbose)
         {
             var completePackageName = packageName + PackageExtension;
 
-            console.Out.WriteLine($"Creating archive {completePackageName}");
+            logger.Information("Creating archive {PackageName}", completePackageName);
 
             using var archive = ZipFile.Open(completePackageName, ZipArchiveMode.Create);
 
             foreach (var directory in directories)
             {
-                console.Out.WriteLine($"Adding mod directory \"{directory.Path}\"");
+                logger.Information("Adding mod directory \"{Path}\"", directory.Path);
 
                 var matcher = new Matcher();
 
@@ -38,7 +36,7 @@ namespace HalfLife.UnifiedSdk.Packager
 
                     if (verbose)
                     {
-                        console.Out.WriteLine($"Adding file \"{relativePath}\"");
+                        logger.Information("Adding file \"{RelativePath}\"", relativePath);
                     }
 
                     var newName = relativePath;
@@ -48,7 +46,7 @@ namespace HalfLife.UnifiedSdk.Packager
 
                     if (relativePath != newName && verbose)
                     {
-                        console.Out.WriteLine($"Renaming \"{relativePath}\" to \"{newName}\"");
+                        logger.Information("Renaming \"{RelativePath}\" to \"{NewName}\"", relativePath, newName);
                     }
 
                     archive.CreateEntryFromFile(relativePath, newName);

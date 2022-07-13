@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta3.22114.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HalfLife.UnifiedSdk.MapUpgrader.Upgrades\HalfLife.UnifiedSdk.MapUpgrader.Upgrades.csproj" />
     <ProjectReference Include="..\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj" />
   </ItemGroup>

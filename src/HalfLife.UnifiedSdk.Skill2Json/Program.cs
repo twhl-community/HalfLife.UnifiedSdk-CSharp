@@ -1,7 +1,8 @@
 ﻿using HalfLife.UnifiedSdk.Formats.Skill;
+using HalfLife.UnifiedSdk.Utilities.Logging;
 using Newtonsoft.Json;
+using Serilog;
 using System.CommandLine;
-using System.CommandLine.IO;
 using System.CommandLine.Parsing;
 
 const string TargetExtension = ".json";
@@ -18,7 +19,7 @@ var rootCommand = new RootCommand
 
 rootCommand.Description = "Half-Life Unified SDK skill.cfg to skill.json converter";
 
-rootCommand.SetHandler((FileInfo fileName, FileInfo? outputFileName, IConsole console) =>
+rootCommand.SetHandler((FileInfo fileName, FileInfo? outputFileName, ILogger logger) =>
     {
         if (fileName.Extension == TargetExtension)
         {
@@ -40,12 +41,12 @@ rootCommand.SetHandler((FileInfo fileName, FileInfo? outputFileName, IConsole co
 
         var json = JsonConvert.SerializeObject(data.Sections, settings);
 
-        console.Out.WriteLine($"Writing output to \"{outputFileName.FullName}\"");
+        logger.Information("Writing output to \"{FileName}\"", outputFileName.FullName);
 
         using var writer = new StreamWriter(outputFileName.OpenWrite());
 
         writer.Write(json);
     },
-    inputFileName, outputFileName);
+    inputFileName, outputFileName, LoggerBinder.Instance);
 
 return await rootCommand.InvokeAsync(args);

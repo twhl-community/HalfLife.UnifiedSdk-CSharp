@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+﻿using Serilog;
 
 namespace HalfLife.UnifiedSdk.AssetSynchronizer
 {
@@ -7,15 +7,15 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
     /// </summary>
     internal sealed class Watcher : IDisposable
     {
-        private readonly IConsole _console;
+        private readonly ILogger _logger;
 
         private readonly FileSystemWatcher _watcher;
 
         private readonly string _destination;
 
-        public Watcher(IConsole console, string source, string destination, string pattern, bool recursive)
+        public Watcher(ILogger logger, string source, string destination, string pattern, bool recursive)
         {
-            _console = console;
+            _logger = logger;
 
             _watcher = new FileSystemWatcher(source, pattern)
             {
@@ -48,7 +48,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
 
         private void OnRenamed(object sender, RenamedEventArgs e) => CopyFile(e.FullPath);
 
-        private void OnError(object sender, ErrorEventArgs e) => WatcherHelpers.PrintException(_console, e.GetException());
+        private void OnError(object sender, ErrorEventArgs e) => WatcherHelpers.PrintException(_logger, e.GetException());
 
         private void CopyFile(string fileName)
         {
@@ -65,7 +65,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
             {
                 //If anything goes wrong the user should know about it so they can correct the problem.
                 //E.g. trying to copy a file but a directory with the same name exists.
-                WatcherHelpers.PrintException(_console, e);
+                WatcherHelpers.PrintException(_logger, e);
             }
         }
 

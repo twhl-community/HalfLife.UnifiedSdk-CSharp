@@ -1,7 +1,8 @@
 ﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades;
 using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Logging;
+using Serilog;
 using System.CommandLine;
-using System.CommandLine.IO;
 
 namespace HalfLife.UnifiedSdk.Installer
 {
@@ -18,20 +19,20 @@ namespace HalfLife.UnifiedSdk.Installer
                 dryRunOption
             };
 
-            rootCommand.SetHandler((DirectoryInfo modDirectory, bool dryRun, IConsole console) =>
+            rootCommand.SetHandler((DirectoryInfo modDirectory, bool dryRun, ILogger logger) =>
             {
                 if (!modDirectory.Exists)
                 {
-                    console.Error.WriteLine($"The given mod directory \"{modDirectory}\" does not exist");
+                    logger.Error("The given mod directory \"{ModDirectory}\" does not exist", modDirectory);
                     return;
                 }
 
                 if (dryRun)
                 {
-                    console.Out.WriteLine("Performing dry run.");
+                    logger.Information("Performing dry run.");
                 }
 
-                var installer = new GameContentInstaller(console)
+                var installer = new GameContentInstaller(logger)
                 {
                     IsDryRun = dryRun
                 };
@@ -49,7 +50,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 };
 
         installer.Install(modDirectory.FullName, games);
-            }, modDirectoryOption, dryRunOption);
+            }, modDirectoryOption, dryRunOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }
