@@ -34,6 +34,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new Of4a4BridgeUpgrade());
             builder.AddAction(new RenameBlackOpsAnimationsUpgrade());
             builder.AddAction(new AdjustBlackOpsSkinUpgrade());
+            builder.AddAction(new RenameIntroGruntAnimationsUpgrade());
             return builder;
         }
 
