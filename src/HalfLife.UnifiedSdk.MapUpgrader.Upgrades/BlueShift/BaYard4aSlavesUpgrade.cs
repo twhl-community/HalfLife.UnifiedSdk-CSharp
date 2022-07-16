@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
@@ -22,7 +23,9 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
         private static void ModifyScript(MapUpgradeContext context, string slaveName)
         {
             var breakable = context.Map.Entities.FirstOrDefault(e => e.ClassName == "func_breakable" && e.GetTarget() == slaveName);
-            var script = context.Map.Entities.FirstOrDefault(e => e.ClassName == "scripted_sequence" && e.GetString("m_iszEntity") == slaveName);
+            var script = context.Map.Entities.FirstOrDefault(e =>
+                e.ClassName == ScriptedSequenceUtilities.ClassName
+                && e.GetString(ScriptedSequenceUtilities.TargetKey) == slaveName);
 
             if (breakable is null || script is null)
             {

@@ -1,4 +1,4 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+﻿using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Collections.Immutable;
 
@@ -10,9 +10,6 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// </summary>
     internal sealed class RenameOtisAnimationsUpgrade : IMapUpgradeAction
     {
-        private const string ScriptedSequenceTargetKey = "m_iszEntity";
-        private const string ScriptedSequencePlayKey = "m_iszPlay";
-
         private static readonly ImmutableDictionary<string, string> AnimationRemap = new Dictionary<string, string>
         {
             { "fence", "otis_fence" },
@@ -21,30 +18,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
 
         public void Apply(MapUpgradeContext context)
         {
-            foreach (var script in context.Map.Entities
-                .OfClass("scripted_sequence")
-                .Where(e => e.ContainsKey(ScriptedSequenceTargetKey)))
-            {
-                var target = context.Map.Entities
-                    .WhereTargetName(script.GetString(ScriptedSequenceTargetKey))
-                    .FirstOrDefault();
-
-                if (target is null)
-                {
-                    continue;
-                }
-
-                if (target.ClassName != "monster_otis" && target.GetModel() != "models/otis.mdl")
-                {
-                    continue;
-                }
-
-                if (script.GetStringOrNull(ScriptedSequencePlayKey) is { } playAnimation
-                    && AnimationRemap.TryGetValue(playAnimation, out var replacement))
-                {
-                    script.SetString(ScriptedSequencePlayKey, replacement);
-                }
-            }
+            ScriptedSequenceUtilities.RenameAnimations(context, "monster_otis", "models/otis.mdl", AnimationRemap);
         }
     }
 }

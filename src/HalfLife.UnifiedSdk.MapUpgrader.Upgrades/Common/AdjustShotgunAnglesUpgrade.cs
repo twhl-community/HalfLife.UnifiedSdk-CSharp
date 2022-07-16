@@ -14,7 +14,6 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     internal sealed class AdjustShotgunAnglesUpgrade : IMapUpgradeAction
     {
         private const string ShotgunModelName = "models/w_shotgun.mdl";
-        private const string ScriptedSequenceTargetKey = "m_iszEntity";
 
         public void Apply(MapUpgradeContext context)
         {
@@ -32,11 +31,13 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             if (context.Map.BaseName == "ba_security2")
             {
                 foreach (var script in context.Map.Entities
-                    .OfClass("scripted_sequence")
-                    .Where(e => e.ContainsKey(ScriptedSequenceTargetKey))
+                    .OfClass(ScriptedSequenceUtilities.ClassName)
+                    .Where(e => e.ContainsKey(ScriptedSequenceUtilities.TargetKey))
                     .ToList())
                 {
-                    var shotgun = context.Map.Entities.WhereTargetName(script.GetString(ScriptedSequenceTargetKey)).FirstOrDefault();
+                    var shotgun = context.Map.Entities
+                        .WhereTargetName(script.GetString(ScriptedSequenceUtilities.TargetKey))
+                        .FirstOrDefault();
 
                     if (shotgun is null
                         || shotgun.ClassName != "monster_generic"
