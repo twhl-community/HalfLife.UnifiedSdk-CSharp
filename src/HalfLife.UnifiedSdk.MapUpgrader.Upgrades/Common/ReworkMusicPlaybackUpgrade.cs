@@ -67,7 +67,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                     trigger.SetTarget(targetName);
                 }
 
-                UpdateEntities(trigger, music, AmbientMusicTargetSelector.LocalPlayer, context.GameInfo);
+                UpdateEntities(trigger, music, AmbientMusicTargetSelector.AllPlayers, context.GameInfo);
             }
 
             var worldspawn = context.Map.Entities.Worldspawn;
@@ -90,7 +90,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                     music.SetString(FileNameKey, GetFileName(track, context.GameInfo));
                 }
 
-                music.SetInteger(TargetSelectorKey, (int)AmbientMusicTargetSelector.LocalPlayer);
+                music.SetInteger(TargetSelectorKey, (int)AmbientMusicTargetSelector.AllPlayers);
                 music.SetInteger(RemoveOnFireKey, 1);
 
                 music.SetTargetName("game_playeractivate");
