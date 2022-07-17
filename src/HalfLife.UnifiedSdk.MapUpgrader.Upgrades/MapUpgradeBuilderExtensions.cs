@@ -15,6 +15,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ConvertOtisModelUpgrade());
             builder.AddAction(new RenameMessagesUpgrade());
             builder.AddAction(new ReworkMusicPlaybackUpgrade());
+            builder.AddAction(new ConvertWorldspawnGameTitleValueUpgrade());
             return builder;
         }
 
