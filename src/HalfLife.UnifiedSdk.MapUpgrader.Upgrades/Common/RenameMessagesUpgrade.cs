@@ -6,11 +6,12 @@ using System.Text.RegularExpressions;
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 {
     /// <summary>
-    /// Renames the messages used in <c>env_message</c> entities to use a game-specific prefix.
+    /// Renames the messages used in <c>env_message</c> entities and <c>worldspawn</c> to use a game-specific prefix.
     /// </summary>
     internal sealed class RenameMessagesUpgrade : IMapUpgradeAction
     {
         private const string MessageKey = "message";
+        private const string WorldspawnKey = "chaptertitle";
 
         private static readonly ImmutableList<Regex> Patterns = ImmutableList.Create(
             new Regex(@"^CR\d+$"),
@@ -28,16 +29,22 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
         {
             var prefix = context.GameInfo.ModDirectory.ToUpperInvariant() + '_';
 
-            foreach (var envMessage in context.Map.Entities.OfClass("env_message"))
+            void CheckMessage(Entity entity, string key)
             {
-                if (envMessage.TryGetValue(MessageKey, out var message))
+                if (entity.TryGetValue(key, out var message)
+                    && Patterns.Any(p => p.IsMatch(message)))
                 {
-                    if (Patterns.Any(p => p.IsMatch(message)))
-                    {
-                        envMessage.SetString(MessageKey, prefix + message);
-                    }
+                    entity.SetString(key, prefix + message);
                 }
             }
+
+            foreach (var envMessage in context.Map.Entities.OfClass("env_message"))
+            {
+                CheckMessage(envMessage, MessageKey);
+            }
+
+            // Worldspawn creates an env_message to handle this, so make sure it also gets converted.
+            CheckMessage(context.Map.Entities.Worldspawn, WorldspawnKey);
         }
     }
 }
