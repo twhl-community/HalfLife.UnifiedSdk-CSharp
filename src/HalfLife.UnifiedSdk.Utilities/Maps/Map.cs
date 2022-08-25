@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using Serilog;
 using System;
 using System.IO;
 
@@ -36,11 +37,30 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
         internal abstract IMapEntity CreateNewEntity(string className);
 
+        internal abstract int IndexOf(IMapEntity entity);
+
         internal abstract void Add(IMapEntity entity);
 
         internal abstract void Remove(IMapEntity entity);
 
         /// <summary>Serializes this map to the given stream.</summary>
         public abstract void Serialize(Stream stream);
+
+        /// <summary>
+        /// Wraps this map instance with a map that logs all changes to the given logger.
+        /// </summary>
+        /// <param name="logger">Logger to use.</param>
+        /// <exception cref="InvalidOperationException">If this map is already wrapped for logging.</exception>
+        public Map WithLogger(ILogger logger)
+        {
+            ArgumentNullException.ThrowIfNull(logger);
+
+            if (this is LoggingMap)
+            {
+                throw new InvalidOperationException("Don't wrap maps that are already wrapped");
+            }
+
+            return new LoggingMap(this, logger);
+        }
     }
 }

@@ -45,6 +45,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             false);
         }
 
+        internal override int IndexOf(IMapEntity entity)
+        {
+            return _entities.IndexOf((BSPEntity)entity);
+        }
+
         internal override void Add(IMapEntity entity)
         {
             var bspEntity = (BSPEntity)entity;

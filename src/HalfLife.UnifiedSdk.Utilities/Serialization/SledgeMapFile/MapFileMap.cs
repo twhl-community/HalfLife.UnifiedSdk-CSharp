@@ -40,6 +40,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
             false);
         }
 
+        internal override int IndexOf(IMapEntity entity)
+        {
+            return _entities.IndexOf((MapFileEntity)entity);
+        }
+
         internal override void Add(IMapEntity entity)
         {
             var mapEntity = (MapFileEntity)entity;
