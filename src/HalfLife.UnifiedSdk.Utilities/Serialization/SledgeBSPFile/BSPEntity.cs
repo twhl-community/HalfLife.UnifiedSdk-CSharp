@@ -1,10 +1,11 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Maps;
 using Sledge.Formats.Bsp.Objects;
 using System.Collections.Immutable;
 
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 {
-    internal sealed class BSPEntity : IEntity
+    internal sealed class BSPEntity : IMapEntity
     {
         public Sledge.Formats.Bsp.Objects.Entity Entity { get; }
 

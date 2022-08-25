@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Tools;
+﻿using HalfLife.UnifiedSdk.Utilities.Maps;
+using HalfLife.UnifiedSdk.Utilities.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
     /// </summary>
     public sealed class Entity : IDictionary<string, string>
     {
-        internal readonly IEntity _entity;
+        internal readonly IMapEntity _entity;
 
         private readonly Dictionary<string, string> _currentKeyValues;
 
@@ -52,7 +53,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Whether this entity is the worldspawn entity.</summary>
         public bool IsWorldspawn => _entity.IsWorldspawn;
 
-        internal Entity(EntityList entityList, IEntity entity)
+        internal Entity(EntityList entityList, IMapEntity entity)
         {
             Entities = entityList;
             _entity = entity;

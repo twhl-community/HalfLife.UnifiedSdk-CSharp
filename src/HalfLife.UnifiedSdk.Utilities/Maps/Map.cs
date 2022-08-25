@@ -34,11 +34,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
             ContentType = contentType;
         }
 
-        internal abstract IEntity CreateNewEntity(string className);
+        internal abstract IMapEntity CreateNewEntity(string className);
 
-        internal abstract void Add(IEntity entity);
+        internal abstract void Add(IMapEntity entity);
 
-        internal abstract void Remove(IEntity entity);
+        internal abstract void Remove(IMapEntity entity);
 
         /// <summary>Serializes this map to the given stream.</summary>
         public abstract void Serialize(Stream stream);

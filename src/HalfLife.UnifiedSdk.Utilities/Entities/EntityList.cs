@@ -31,7 +31,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets the worldspawn entity.</summary>
         public Entity Worldspawn => _entities[0];
 
-        internal EntityList(Map map, IEnumerable<IEntity> entities)
+        internal EntityList(Map map, IEnumerable<IMapEntity> entities)
         {
             Map = map;
 

@@ -36,7 +36,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             Entities = new(this, _entities);
         }
 
-        internal override IEntity CreateNewEntity(string className)
+        internal override IMapEntity CreateNewEntity(string className)
         {
             return new BSPEntity(new Sledge.Formats.Bsp.Objects.Entity
             {
@@ -45,7 +45,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             false);
         }
 
-        internal override void Add(IEntity entity)
+        internal override void Add(IMapEntity entity)
         {
             var bspEntity = (BSPEntity)entity;
 
@@ -54,7 +54,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             _entitiesLump.Add(bspEntity.Entity);
         }
 
-        internal override void Remove(IEntity entity)
+        internal override void Remove(IMapEntity entity)
         {
             var bspEntity = (BSPEntity)entity;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
 
-namespace HalfLife.UnifiedSdk.Utilities.Entities
+namespace HalfLife.UnifiedSdk.Utilities.Maps
 {
-    internal interface IEntity
+    internal interface IMapEntity
     {
         /// <summary>
         /// Gets the entity's keyvalues. This is expected to perform conversions internally, so it is advised to cache the results.

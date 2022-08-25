@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Maps;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using Sledge.Formats.Map.Objects;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 {
-    internal sealed class MapFileEntity : IEntity
+    internal sealed class MapFileEntity : IMapEntity
     {
         public Sledge.Formats.Map.Objects.Entity Entity { get; }
 
