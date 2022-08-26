@@ -1,6 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Tools;
-using Sledge.Formats.Map.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,24 +7,23 @@ using System.Linq;
 
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 {
-    internal sealed class MapFileEntity : IMapEntity
+    internal sealed class MapFileEntity : Entity
     {
-        public Entity Entity { get; }
+        public Sledge.Formats.Map.Objects.Entity Entity { get; }
 
-        public ImmutableDictionary<string, string> KeyValues => Entity.Properties
-                .Append(new KeyValuePair<string, string>(KeyValueUtilities.ClassName, Entity.ClassName))
-                .Append(new KeyValuePair<string, string>(KeyValueUtilities.SpawnFlags, Entity.SpawnFlags.ToString()))
-                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value);
+        public override bool IsWorldspawn { get; }
 
-        public bool IsWorldspawn { get; }
-
-        public MapFileEntity(Entity entity, bool isWorldspawn)
+        public MapFileEntity(Sledge.Formats.Map.Objects.Entity entity, bool isWorldspawn)
+            : base(entity.Properties
+                .Append(new KeyValuePair<string, string>(KeyValueUtilities.ClassName, entity.ClassName))
+                .Append(new KeyValuePair<string, string>(KeyValueUtilities.SpawnFlags, entity.SpawnFlags.ToString()))
+                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value))
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;
         }
 
-        public void SetKeyValue(string key, string value)
+        protected override void SetKeyValue(string key, string value)
         {
             switch (key)
             {
@@ -43,7 +41,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
             }
         }
 
-        public void RemoveKeyValue(string key)
+        protected override void RemoveKeyValue(string key)
         {
             switch (key)
             {
@@ -60,7 +58,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
             }
         }
 
-        public void RemoveAllKeyValues()
+        protected override void RemoveAllKeyValues()
         {
             Entity.Properties.Clear();
         }

@@ -27,20 +27,13 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         public bool IsCompiled => ContentType == MapContentType.Compiled;
 
         /// <summary>List of entities in the map.</summary>
-        public abstract EntityList Entities { get; }
+        public EntityList Entities { get; }
 
         internal Map(MapData mapData)
         {
             _mapData = mapData;
+            Entities = _mapData.CreateEntities();
         }
-
-        internal virtual IMapEntity CreateNewEntity(string className) => _mapData.CreateNewEntity(className);
-
-        internal virtual int IndexOf(IMapEntity entity) => _mapData.IndexOf(entity);
-
-        internal virtual void Add(IMapEntity entity) => _mapData.Add(entity);
-
-        internal virtual void Remove(IMapEntity entity) => _mapData.Remove(entity);
 
         /// <summary>Serializes this map to the given stream.</summary>
         public void Serialize(Stream stream) => _mapData.Serialize(stream);
@@ -50,6 +43,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
             return new DefaultMap(mapData);
         }
 
+        /*
         /// <summary>
         /// Wraps this map instance with a map that logs all changes to the given logger.
         /// </summary>
@@ -66,5 +60,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
             return new LoggingMap(_mapData, logger);
         }
+        */
     }
 }

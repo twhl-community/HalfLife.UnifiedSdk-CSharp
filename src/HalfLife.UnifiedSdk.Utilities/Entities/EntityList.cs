@@ -11,13 +11,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
     /// Manages the list of entities.
     /// Implements most of the <see cref="IList{T}"/> interface, but not all of it due to limitations of the underlying data structures.
     /// </summary>
-    public sealed class EntityList : IReadOnlyList<Entity>, ICollection<Entity>
+    public abstract class EntityList : IReadOnlyList<Entity>, ICollection<Entity>
     {
         /// <summary>All entities currently in the map.</summary>
         private readonly List<Entity> _entities;
-
-        /// <summary>The map that this entity list belongs to.</summary>
-        public Map Map { get; }
 
         /// <summary>Total number of entities in the list, including <c>worldspawn</c>.</summary>
         public int Count => _entities.Count;
@@ -31,13 +28,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets the worldspawn entity.</summary>
         public Entity Worldspawn => _entities[0];
 
-        internal EntityList(Map map, IEnumerable<IMapEntity> entities)
+        internal EntityList(IEnumerable<Entity> entities)
         {
-            Map = map;
-
-            _entities = entities
-                .Select(e => new Entity(e))
-                .ToList();
+            _entities = entities.ToList();
 
             if (_entities.Count == 0)
             {
@@ -90,9 +83,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot create new worldspawn entity", nameof(className));
             }
 
-            var entity = new Entity(Map.CreateNewEntity(className));
+            var entity = CreateNewEntityCore(className);
 
-            AddCore(entity);
+            _entities.Add(entity);
 
             return entity;
         }
@@ -113,11 +106,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot clone worldspawn entities", nameof(entity));
             }
 
-            var newEntity = new Entity(Map.CreateNewEntity(entity.ClassName));
+            var newEntity = CreateNewEntity(entity.ClassName);
 
             newEntity.ReplaceKeyValues(entity);
-
-            AddCore(newEntity);
 
             return newEntity;
         }
@@ -128,12 +119,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         {
             throw new NotSupportedException(
                 $"Manually adding entities to an entity list is not supported. Use {nameof(CreateNewEntity)} or {nameof(CloneEntity)} instead.");
-        }
-
-        private void AddCore(Entity entity)
-        {
-            _entities.Add(entity);
-            Map.Add(entity._entity);
         }
 
         /// <inheritdoc/>
@@ -155,23 +140,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 return false;
             }
 
-            RemoveAtCore(index);
+            RemoveAtIndex(index);
 
             return true;
-        }
-
-        private void RemoveAtCore(int index)
-        {
-            var entity = _entities[index];
-
-            if (entity.IsWorldspawn)
-            {
-                throw new ArgumentException("Cannot remove worldspawn entity", nameof(index));
-            }
-
-            _entities.RemoveAt(index);
-
-            Map.Remove(entity._entity);
         }
 
         /// <inheritdoc/>
@@ -182,7 +153,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            RemoveAtCore(index);
+            RemoveAtIndex(index);
+        }
+
+        private void RemoveAtIndex(int index)
+        {
+            var entity = _entities[index];
+
+            if (entity.IsWorldspawn)
+            {
+                throw new ArgumentException("Cannot remove worldspawn entity", nameof(index));
+            }
+
+            _entities.RemoveAt(index);
+
+            RemoveAtCore(entity, index);
         }
 
         /// <summary>Removes all entities except worldspawn, and removes all keyvalues from worldspawn.</summary>
@@ -212,5 +197,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         {
             return GetEnumerator();
         }
+
+        /// <summary>Creates a new entity with the given classname.</summary>
+        protected abstract Entity CreateNewEntityCore(string className);
+
+        /// <summary>Removes the given entity from the underlying list.</summary>
+        protected abstract void RemoveAtCore(Entity entity, int index);
     }
 }

@@ -144,12 +144,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 return entityList;
             }
 
-            if (entityList.Map.ContentType != other.Map.ContentType)
-            {
-                throw new ArgumentException(
-                    $"Cannot replace an entity list of type {entityList.Map.ContentType} with {other.Map.ContentType}", nameof(entityList));
-            }
-
             entityList.Clear();
 
             entityList.Worldspawn.ReplaceWith(other.Worldspawn);
@@ -158,7 +152,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             {
                 var source = other[i];
 
-                var newEntity = entityList.CloneEntity(source);
+                entityList.CloneEntity(source);
             }
 
             return entityList;

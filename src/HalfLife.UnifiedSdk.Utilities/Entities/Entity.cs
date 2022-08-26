@@ -12,10 +12,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
     /// <summary>
     /// Encapsulates an entity and provides all of its keyvalues as two sets of dictionaries: a read-only original and a mutable current set.
     /// </summary>
-    public sealed class Entity : IDictionary<string, string>
+    public abstract class Entity : IDictionary<string, string>
     {
-        internal readonly IMapEntity _entity;
-
         private readonly Dictionary<string, string> _currentKeyValues;
 
         /// <summary>The keyvalues that the entity had stored in the map</summary>
@@ -48,19 +46,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         }
 
         /// <summary>Whether this entity is the worldspawn entity.</summary>
-        public bool IsWorldspawn => _entity.IsWorldspawn;
+        public abstract bool IsWorldspawn { get; }
 
-        internal Entity(IMapEntity entity)
+        /// <summary>
+        /// Creates a new entity with the given keyvalues that is part of the given entity list.
+        /// </summary>
+        /// <exception cref="ArgumentException">If the classname is missing or contains only whitespace.</exception>
+        protected Entity(ImmutableDictionary<string, string> keyValues)
         {
-            _entity = entity;
-
-            OriginalKeyValues = _entity.KeyValues;
+            OriginalKeyValues = keyValues;
 
             _currentKeyValues = OriginalKeyValues.ToDictionary(kv => kv.Key, kv => kv.Value);
 
             if (string.IsNullOrWhiteSpace(ClassName))
             {
-                throw new ArgumentException("Cannot set classname to null or empty strings", nameof(entity));
+                throw new ArgumentException("Cannot set classname to null or empty strings", nameof(keyValues));
             }
         }
 
@@ -138,7 +138,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             }
 
             _currentKeyValues[key] = value;
-            _entity.SetKeyValue(key, value);
+            SetKeyValue(key, value);
         }
 
         /// <inheritdoc/>
@@ -152,7 +152,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot remove classname key", nameof(key));
             }
 
-            _entity.RemoveKeyValue(key);
+            RemoveKeyValue(key);
             return _currentKeyValues.Remove(key);
         }
 
@@ -163,7 +163,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             _currentKeyValues.Clear();
             _currentKeyValues.Add(KeyValueUtilities.ClassName, className);
 
-            _entity.RemoveAllKeyValues();
+            RemoveAllKeyValues();
         }
 
         /// <inheritdoc/>
@@ -213,5 +213,14 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
             return Remove(item.Key);
         }
+
+        /// <summary>Sets the keyvalue in the underlying entity object.</summary>
+        protected abstract void SetKeyValue(string key, string value);
+
+        /// <summary>Removes the keyvalue from the underlying entity object.</summary>
+        protected abstract void RemoveKeyValue(string key);
+
+        /// <summary>Removes all keyvalues except for the classname.</summary>
+        protected abstract void RemoveAllKeyValues();
     }
 }

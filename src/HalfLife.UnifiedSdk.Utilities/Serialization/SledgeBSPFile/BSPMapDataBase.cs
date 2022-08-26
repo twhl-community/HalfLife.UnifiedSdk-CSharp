@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Maps;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
         /// <summary>The entities lump object containing this map's entity data.</summary>
         protected readonly Sledge.Formats.Bsp.Lumps.Entities _entitiesLump;
 
-        private readonly List<BSPEntity> _entities;
-
         /// <summary>Creates a new map with the given file name and entities lump.</summary>
         /// <exception cref="System.ArgumentNullException"><paramref name="fileName"/> is <see langword="null"/>.</exception>
         /// <exception cref="System.ArgumentException">
@@ -24,43 +23,36 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             : base(fileName, MapContentType.Compiled)
         {
             _entitiesLump = entitiesLump;
+        }
 
-            _entities = _entitiesLump
+        public override EntityList CreateEntities()
+        {
+            return new BSPEntityList(this);
+        }
+
+        public IEnumerable<Entity> GetEntities()
+        {
+            return _entitiesLump
                 .Select(e => new BSPEntity(e, e.ClassName == KeyValueUtilities.WorldspawnClassName))
                 .ToList();
         }
 
-        public override IEnumerable<IMapEntity> GetEntities() => _entities;
-
-        public override IMapEntity CreateNewEntity(string className)
+        public Entity CreateNewEntity(string className)
         {
-            return new BSPEntity(new Sledge.Formats.Bsp.Objects.Entity
+            var entity = new BSPEntity(new Sledge.Formats.Bsp.Objects.Entity
             {
                 ClassName = className
             },
             false);
+
+            _entitiesLump.Add(entity.Entity);
+
+            return entity;
         }
 
-        public override int IndexOf(IMapEntity entity)
-        {
-            return _entities.IndexOf((BSPEntity)entity);
-        }
-
-        public override void Add(IMapEntity entity)
-        {
-            var bspEntity = (BSPEntity)entity;
-
-            _entities.Add(bspEntity);
-
-            _entitiesLump.Add(bspEntity.Entity);
-        }
-
-        public override void Remove(IMapEntity entity)
+        public void Remove(Entity entity)
         {
             var bspEntity = (BSPEntity)entity;
-
-            _entities.Remove(bspEntity);
-
             _entitiesLump.Remove(bspEntity.Entity);
         }
     }

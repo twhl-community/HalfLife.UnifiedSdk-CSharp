@@ -1,34 +1,32 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Maps;
-using Sledge.Formats.Bsp.Objects;
+﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using System.Collections.Immutable;
 
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 {
-    internal sealed class BSPEntity : IMapEntity
+    internal sealed class BSPEntity : Entity
     {
-        public Entity Entity { get; }
+        public Sledge.Formats.Bsp.Objects.Entity Entity { get; }
 
-        public ImmutableDictionary<string, string> KeyValues => Entity.KeyValues.ToImmutableDictionary(kv => kv.Key, kv => kv.Value);
+        public override bool IsWorldspawn { get; }
 
-        public bool IsWorldspawn { get; }
-
-        public BSPEntity(Entity entity, bool isWorldspawn)
+        public BSPEntity(Sledge.Formats.Bsp.Objects.Entity entity, bool isWorldspawn)
+            : base(entity.KeyValues.ToImmutableDictionary(kv => kv.Key, kv => kv.Value))
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;
         }
 
-        public void SetKeyValue(string key, string value)
+        protected override void SetKeyValue(string key, string value)
         {
             Entity.KeyValues[key] = value;
         }
 
-        public void RemoveKeyValue(string key)
+        protected override void RemoveKeyValue(string key)
         {
             Entity.KeyValues.Remove(key);
         }
 
-        public void RemoveAllKeyValues()
+        protected override void RemoveAllKeyValues()
         {
             //Never remove the classname.
             var className = Entity.ClassName;
