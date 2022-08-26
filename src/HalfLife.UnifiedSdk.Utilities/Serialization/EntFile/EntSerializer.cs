@@ -23,7 +23,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.EntFile
 
             var data = new EntMapData(fileName, entitiesLump);
 
-            return new Map(data);
+            return Map.Create(data);
         }
     }
 }

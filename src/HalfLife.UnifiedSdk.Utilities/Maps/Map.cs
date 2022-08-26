@@ -6,9 +6,9 @@ using System.IO;
 namespace HalfLife.UnifiedSdk.Utilities.Maps
 {
     /// <summary>Provides access to map data.</summary>
-    public class Map
+    public abstract class Map
     {
-        private readonly MapData _mapData;
+        private protected readonly MapData _mapData;
 
         /// <summary>File name of this map.</summary>
         public string FileName => _mapData.FileName;
@@ -27,17 +27,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         public bool IsCompiled => ContentType == MapContentType.Compiled;
 
         /// <summary>List of entities in the map.</summary>
-        public EntityList Entities { get; protected set; } = default!;
+        public abstract EntityList Entities { get; }
 
-        /// <summary>Creates a new map with the given file name and content type.</summary>
-        internal Map(MapData mapData, bool createEntities = true)
+        internal Map(MapData mapData)
         {
             _mapData = mapData;
-
-            if (createEntities)
-            {
-                Entities = new(this, _mapData.GetEntities());
-            }
         }
 
         internal virtual IMapEntity CreateNewEntity(string className) => _mapData.CreateNewEntity(className);
@@ -50,6 +44,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
         /// <summary>Serializes this map to the given stream.</summary>
         public void Serialize(Stream stream) => _mapData.Serialize(stream);
+
+        internal static Map Create(MapData mapData)
+        {
+            return new DefaultMap(mapData);
+        }
 
         /// <summary>
         /// Wraps this map instance with a map that logs all changes to the given logger.

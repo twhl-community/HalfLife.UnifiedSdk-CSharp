@@ -1,7 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using Serilog;
-using System.IO;
 using System.Linq;
 
 namespace HalfLife.UnifiedSdk.Utilities.Maps
@@ -10,8 +9,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
     {
         private readonly ILogger _logger;
 
+        public override EntityList Entities { get; }
+
         public LoggingMap(MapData mapData, ILogger logger)
-            : base(mapData, false)
+            : base(mapData)
         {
             _logger = logger;
             Entities = new EntityList(this, mapData.GetEntities().Select(e => new LoggingMapEntity(e, this, _logger)));

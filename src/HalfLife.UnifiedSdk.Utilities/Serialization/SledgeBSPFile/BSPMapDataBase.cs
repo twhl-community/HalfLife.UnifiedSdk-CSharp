@@ -1,5 +1,4 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Entities;
-using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Maps;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using System.Collections.Generic;
 using System.Linq;

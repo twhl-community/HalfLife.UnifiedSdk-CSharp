@@ -19,7 +19,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 
             var data = new BSPMapData(fileName, bspFile);
 
-            return new Map(data);
+            return Map.Create(data);
         }
     }
 }
