@@ -38,17 +38,15 @@ namespace HalfLife.UnifiedSdk.Installer
 
                 var tool = MapUpgradeToolFactory.Create();
 
-                var getTool = () => tool;
-
                 //List of games whose content can be installed with this tool.
                 var games = new[]
                 {
-                    new GameInstallData(ValveGames.HalfLife1, getTool),
-                    new GameInstallData(ValveGames.OpposingForce, getTool, CopyOpposingForceSoundtrack),
-                    new GameInstallData(ValveGames.BlueShift, getTool, CopyBlueShiftSoundtrack)
+                    new GameInstallData(ValveGames.HalfLife1),
+                    new GameInstallData(ValveGames.OpposingForce, CopyOpposingForceSoundtrack),
+                    new GameInstallData(ValveGames.BlueShift, CopyBlueShiftSoundtrack)
                 };
 
-                installer.Install(modDirectory.FullName, games);
+                installer.Install(modDirectory.FullName, tool, games);
             }, modDirectoryOption, dryRunOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);

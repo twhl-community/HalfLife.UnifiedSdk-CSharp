@@ -25,7 +25,7 @@ namespace HalfLife.UnifiedSdk.Installer
             _logger = logger;
         }
 
-        private bool CopyFiles(string rootDirectory, GameInstallData game)
+        private bool CopyFiles(string rootDirectory, MapUpgradeTool upgradeTool, GameInstallData game)
         {
             // Resolve the path so the printed out path looks cleaner.
             string rootGameDirectory = Path.GetFullPath(Path.Combine(rootDirectory, ".."));
@@ -57,7 +57,6 @@ namespace HalfLife.UnifiedSdk.Installer
                 sourceMapsDirectory, destinationMapsDirectory);
             _logger.Information("Node graph files in destination for maps being copied will be deleted.");
 
-            var upgradeTool = game.GetUpgradeTool();
 
             //Process maps in sorted order to make it easier to read the output and spot problems.
             foreach (var map in mapsToInstall.OrderBy(m => m.Name))
@@ -132,7 +131,7 @@ namespace HalfLife.UnifiedSdk.Installer
             return File.Exists(liblistLocation);
         }
 
-        public void Install(string rootDirectory, IEnumerable<GameInstallData> games)
+        public void Install(string rootDirectory, MapUpgradeTool upgradeTool, IEnumerable<GameInstallData> games)
         {
             //Sanity check in case things go seriously wrong somehow.
             if (!Directory.Exists(rootDirectory))
@@ -158,7 +157,7 @@ namespace HalfLife.UnifiedSdk.Installer
 
                 _logger.Information("Installing {GameName} content...", game.Info.Name);
 
-                CopyFiles(rootDirectory, game);
+                CopyFiles(rootDirectory, upgradeTool, game);
 
                 _logger.Information("Finished installing {GameName} content.", game.Info.Name);
             }
