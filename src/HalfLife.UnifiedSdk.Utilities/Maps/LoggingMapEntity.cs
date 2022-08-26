@@ -25,21 +25,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         public void SetKeyValue(string key, string value)
         {
             _logger.Information("[{ClassName}, {Index}] Setting {Key} to {Value}",
-                KeyValues[KeyValueUtilities.ClassName], _map.IndexOf(Entity), key, value);
+                KeyValues[KeyValueUtilities.ClassName], _map.IndexOf(this), key, value);
             Entity.SetKeyValue(key, value);
         }
 
         public void RemoveKeyValue(string key)
         {
             _logger.Information("[{ClassName}, {Index}] Removing {Key}",
-                KeyValues[KeyValueUtilities.ClassName], _map.IndexOf(Entity), key);
+                KeyValues[KeyValueUtilities.ClassName], _map.IndexOf(this), key);
             Entity.RemoveKeyValue(key);
         }
 
         public void RemoveAllKeyValues()
         {
             _logger.Information("[{ClassName}, {Index}] Removing all keyvalues",
-                KeyValues[KeyValueUtilities.ClassName], _map.IndexOf(Entity));
+                KeyValues[KeyValueUtilities.ClassName], _map.IndexOf(this));
             Entity.RemoveAllKeyValues();
         }
     }

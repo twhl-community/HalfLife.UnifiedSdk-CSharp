@@ -1,5 +1,4 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Maps;
-using HalfLife.UnifiedSdk.Utilities.Serialization.EntFile;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using System;
 using Xunit;
@@ -10,15 +9,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
     {
         private static Map CreateEmptyMap()
         {
-            var entities = new Sledge.Formats.Bsp.Lumps.Entities
-            {
-                new Sledge.Formats.Bsp.Objects.Entity
-                {
-                    ClassName = KeyValueUtilities.WorldspawnClassName
-                }
-            };
-
-            return new EntMap("EmptyMap", entities);
+            return MapFormats.CreateEntMap("EmptyMap");
         }
 
         [Fact]

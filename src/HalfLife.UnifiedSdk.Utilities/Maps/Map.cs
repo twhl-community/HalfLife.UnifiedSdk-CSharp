@@ -6,10 +6,12 @@ using System.IO;
 namespace HalfLife.UnifiedSdk.Utilities.Maps
 {
     /// <summary>Provides access to map data.</summary>
-    public abstract class Map
+    public class Map
     {
+        private readonly MapData _mapData;
+
         /// <summary>File name of this map.</summary>
-        public string FileName { get; }
+        public string FileName => _mapData.FileName;
 
         /// <summary>
         /// Base name of the map, used in trigger_changelevel and the changelevel command among other things.
@@ -18,33 +20,36 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
         /// <summary>Which content type the map data is in.</summary>
         /// <seealso cref="MapContentType"/>
-        public MapContentType ContentType { get; }
+        public MapContentType ContentType => _mapData.ContentType;
 
         /// <summary>Whether this map is a compiled or in a source content type.</summary>
         /// <seealso cref="MapContentType"/>
         public bool IsCompiled => ContentType == MapContentType.Compiled;
 
         /// <summary>List of entities in the map.</summary>
-        public abstract EntityList Entities { get; }
+        public EntityList Entities { get; protected set; } = default!;
 
         /// <summary>Creates a new map with the given file name and content type.</summary>
-        /// <exception cref="ArgumentNullException"><paramref name="fileName"/> is <see langword="null"/>.</exception>
-        protected Map(string fileName, MapContentType contentType)
+        internal Map(MapData mapData, bool createEntities = true)
         {
-            FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
-            ContentType = contentType;
+            _mapData = mapData;
+
+            if (createEntities)
+            {
+                Entities = new(this, _mapData.GetEntities());
+            }
         }
 
-        internal abstract IMapEntity CreateNewEntity(string className);
+        internal virtual IMapEntity CreateNewEntity(string className) => _mapData.CreateNewEntity(className);
 
-        internal abstract int IndexOf(IMapEntity entity);
+        internal virtual int IndexOf(IMapEntity entity) => _mapData.IndexOf(entity);
 
-        internal abstract void Add(IMapEntity entity);
+        internal virtual void Add(IMapEntity entity) => _mapData.Add(entity);
 
-        internal abstract void Remove(IMapEntity entity);
+        internal virtual void Remove(IMapEntity entity) => _mapData.Remove(entity);
 
         /// <summary>Serializes this map to the given stream.</summary>
-        public abstract void Serialize(Stream stream);
+        public void Serialize(Stream stream) => _mapData.Serialize(stream);
 
         /// <summary>
         /// Wraps this map instance with a map that logs all changes to the given logger.
@@ -60,7 +65,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
                 throw new InvalidOperationException("Don't wrap maps that are already wrapped");
             }
 
-            return new LoggingMap(this, logger);
+            return new LoggingMap(_mapData, logger);
         }
     }
 }

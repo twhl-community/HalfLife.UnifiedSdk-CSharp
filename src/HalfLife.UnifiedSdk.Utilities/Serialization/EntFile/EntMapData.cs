@@ -6,10 +6,10 @@ using System.Text;
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.EntFile
 {
     /// <summary>A Ripent <c>.ent</c> file. Contains only entity data in compiled form.</summary>
-    public sealed class EntMap : BSPMapBase
+    internal sealed class EntMapData : BSPMapDataBase
     {
         /// <inheritdoc/>
-        public EntMap(string fileName, Sledge.Formats.Bsp.Lumps.Entities entitiesLump)
+        public EntMapData(string fileName, Sledge.Formats.Bsp.Lumps.Entities entitiesLump)
             : base(fileName, entitiesLump)
         {
         }

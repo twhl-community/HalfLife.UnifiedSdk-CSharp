@@ -21,7 +21,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.EntFile
             },
             Version.Goldsource);
 
-            return new EntMap(fileName, entitiesLump);
+            var data = new EntMapData(fileName, entitiesLump);
+
+            return new Map(data);
         }
     }
 }

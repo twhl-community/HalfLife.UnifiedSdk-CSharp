@@ -7,15 +7,12 @@ using System.Linq;
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 {
     /// <summary>Base class for compiled maps.</summary>
-    public abstract class BSPMapBase : Map
+    internal abstract class BSPMapDataBase : MapData
     {
         /// <summary>The entities lump object containing this map's entity data.</summary>
         protected readonly Sledge.Formats.Bsp.Lumps.Entities _entitiesLump;
 
         private readonly List<BSPEntity> _entities;
-
-        /// <inheritdoc/>
-        public override EntityList Entities { get; }
 
         /// <summary>Creates a new map with the given file name and entities lump.</summary>
         /// <exception cref="System.ArgumentNullException"><paramref name="fileName"/> is <see langword="null"/>.</exception>
@@ -24,7 +21,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
         /// -or- <paramref name="entitiesLump"/>'s first entity is not <c>worldspawn</c>.
         /// -or- <paramref name="entitiesLump"/> has more than one <c>worldspawn</c>.
         /// </exception>
-        protected BSPMapBase(string fileName, Sledge.Formats.Bsp.Lumps.Entities entitiesLump)
+        protected BSPMapDataBase(string fileName, Sledge.Formats.Bsp.Lumps.Entities entitiesLump)
             : base(fileName, MapContentType.Compiled)
         {
             _entitiesLump = entitiesLump;
@@ -32,11 +29,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             _entities = _entitiesLump
                 .Select(e => new BSPEntity(e, e.ClassName == KeyValueUtilities.WorldspawnClassName))
                 .ToList();
-
-            Entities = new(this, _entities);
         }
 
-        internal override IMapEntity CreateNewEntity(string className)
+        public override IEnumerable<IMapEntity> GetEntities() => _entities;
+
+        public override IMapEntity CreateNewEntity(string className)
         {
             return new BSPEntity(new Sledge.Formats.Bsp.Objects.Entity
             {
@@ -45,12 +42,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             false);
         }
 
-        internal override int IndexOf(IMapEntity entity)
+        public override int IndexOf(IMapEntity entity)
         {
             return _entities.IndexOf((BSPEntity)entity);
         }
 
-        internal override void Add(IMapEntity entity)
+        public override void Add(IMapEntity entity)
         {
             var bspEntity = (BSPEntity)entity;
 
@@ -59,7 +56,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             _entitiesLump.Add(bspEntity.Entity);
         }
 
-        internal override void Remove(IMapEntity entity)
+        public override void Remove(IMapEntity entity)
         {
             var bspEntity = (BSPEntity)entity;
 

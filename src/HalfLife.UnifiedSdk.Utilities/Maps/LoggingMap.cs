@@ -8,36 +8,31 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 {
     internal sealed class LoggingMap : Map
     {
-        private readonly Map _map;
-
         private readonly ILogger _logger;
 
-        public override EntityList Entities { get; }
-
-        public LoggingMap(Map map, ILogger logger)
-            : base(map.FileName, map.ContentType)
+        public LoggingMap(MapData mapData, ILogger logger)
+            : base(mapData, false)
         {
-            _map = map;
             _logger = logger;
-            Entities = new EntityList(this, _map.Entities.Select(e => new LoggingMapEntity(e._entity, _map, _logger)));
+            Entities = new EntityList(this, mapData.GetEntities().Select(e => new LoggingMapEntity(e, this, _logger)));
         }
 
         internal override IMapEntity CreateNewEntity(string className)
         {
-            _logger.Verbose("Created entity of class {ClassName}", className);
-            return new LoggingMapEntity(_map.CreateNewEntity(className), _map, _logger);
+            _logger.Verbose("Creating entity of class {ClassName}", className);
+            return new LoggingMapEntity(base.CreateNewEntity(className), this, _logger);
         }
 
         internal override int IndexOf(IMapEntity entity)
         {
             var loggingEntity = (LoggingMapEntity)entity;
-            return _map.IndexOf(loggingEntity.Entity);
+            return base.IndexOf(loggingEntity.Entity);
         }
 
         internal override void Add(IMapEntity entity)
         {
             var loggingEntity = (LoggingMapEntity)entity;
-            _map.Add(loggingEntity.Entity);
+            base.Add(loggingEntity.Entity);
             _logger.Verbose("[{ClassName}, {Index}] Adding entity", entity.KeyValues[KeyValueUtilities.ClassName], IndexOf(entity));
         }
 
@@ -45,12 +40,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
         {
             var loggingEntity = (LoggingMapEntity)entity;
             _logger.Verbose("[{ClassName}, {Index}] Removing entity", entity.KeyValues[KeyValueUtilities.ClassName], IndexOf(entity));
-            _map.Remove(loggingEntity.Entity);
-        }
-
-        public override void Serialize(Stream stream)
-        {
-            _map.Serialize(stream);
+            base.Remove(loggingEntity.Entity);
         }
     }
 }

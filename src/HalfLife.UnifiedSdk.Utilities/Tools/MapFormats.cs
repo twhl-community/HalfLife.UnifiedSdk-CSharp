@@ -126,5 +126,24 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
                 }
             }
         }
+
+        /// <summary>
+        /// Creates an empty <c>.ent</c> map.
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static Map CreateEntMap(string fileName)
+        {
+            ArgumentNullException.ThrowIfNull(fileName);
+
+            var entities = new Sledge.Formats.Bsp.Lumps.Entities
+            {
+                new Sledge.Formats.Bsp.Objects.Entity
+                {
+                    ClassName = KeyValueUtilities.WorldspawnClassName
+                }
+            };
+
+            return new Map(new EntMapData(fileName, entities));
+        }
     }
 }
