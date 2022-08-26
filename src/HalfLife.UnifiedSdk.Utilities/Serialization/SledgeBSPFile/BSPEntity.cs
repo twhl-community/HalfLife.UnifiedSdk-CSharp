@@ -1,5 +1,4 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Entities;
-using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Maps;
 using Sledge.Formats.Bsp.Objects;
 using System.Collections.Immutable;
 
@@ -7,13 +6,13 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 {
     internal sealed class BSPEntity : IMapEntity
     {
-        public Sledge.Formats.Bsp.Objects.Entity Entity { get; }
+        public Entity Entity { get; }
 
         public ImmutableDictionary<string, string> KeyValues => Entity.KeyValues.ToImmutableDictionary(kv => kv.Key, kv => kv.Value);
 
         public bool IsWorldspawn { get; }
 
-        public BSPEntity(Sledge.Formats.Bsp.Objects.Entity entity, bool isWorldspawn)
+        public BSPEntity(Entity entity, bool isWorldspawn)
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;

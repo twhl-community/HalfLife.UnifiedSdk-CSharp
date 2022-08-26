@@ -1,5 +1,4 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Entities;
-using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Maps;
 using HalfLife.UnifiedSdk.Utilities.Tools;
 using Sledge.Formats.Map.Objects;
 using System;
@@ -11,7 +10,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 {
     internal sealed class MapFileEntity : IMapEntity
     {
-        public Sledge.Formats.Map.Objects.Entity Entity { get; }
+        public Entity Entity { get; }
 
         public ImmutableDictionary<string, string> KeyValues => Entity.Properties
                 .Append(new KeyValuePair<string, string>(KeyValueUtilities.ClassName, Entity.ClassName))
@@ -20,7 +19,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 
         public bool IsWorldspawn { get; }
 
-        public MapFileEntity(Sledge.Formats.Map.Objects.Entity entity, bool isWorldspawn)
+        public MapFileEntity(Entity entity, bool isWorldspawn)
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;
