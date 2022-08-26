@@ -202,7 +202,16 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <inheritdoc/>
         public override string ToString()
         {
-            return ClassName + ":" + this.GetTargetName();
+            var result = ClassName + ":" + _entityList.IndexOf(this);
+
+            var targetName = this.GetTargetName();
+
+            if (!string.IsNullOrEmpty(targetName))
+            {
+                result = result + ":" + targetName;
+            }
+
+            return result;
         }
 
         void ICollection<KeyValuePair<string, string>>.Add(KeyValuePair<string, string> item) => SetString(item.Key, item.Value);
