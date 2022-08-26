@@ -4,22 +4,22 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 {
     internal sealed class MapFileEntityList : EntityList
     {
-        private readonly MapFileMapData _mapData;
+        private readonly MapFileMap _map;
 
-        public MapFileEntityList(MapFileMapData mapData)
-            : base(mapData.GetEntities)
+        public MapFileEntityList(MapFileMap map)
+            : base(map.GetEntities)
         {
-            _mapData = mapData;
+            _map = map;
         }
 
         protected override Entity CreateNewEntityCore(string className)
         {
-            return _mapData.CreateNewEntity(className);
+            return _map.CreateNewEntity(className);
         }
 
         protected override void RemoveAtCore(Entity entity, int index)
         {
-            _mapData.Remove(entity);
+            _map.Remove(entity);
         }
     }
 }

@@ -143,7 +143,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
                 }
             };
 
-            return Maps.Map.Create(new EntMapData(fileName, entities));
+            return new EntMap(fileName, entities);
         }
     }
 }

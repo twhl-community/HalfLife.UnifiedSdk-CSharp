@@ -19,9 +19,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
         {
             var mapFile = _format.Read(stream);
 
-            var data = new MapFileMapData(fileName, mapFile, _format, "Worldcraft");
-
-            return Map.Create(data);
+            return new MapFileMap(fileName, mapFile, _format, "Worldcraft");
         }
     }
 }

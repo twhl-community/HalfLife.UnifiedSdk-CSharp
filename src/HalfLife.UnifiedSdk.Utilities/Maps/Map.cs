@@ -1,5 +1,4 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
-using Serilog;
 using System;
 using System.IO;
 
@@ -8,10 +7,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
     /// <summary>Provides access to map data.</summary>
     public abstract class Map
     {
-        private protected readonly MapData _mapData;
-
         /// <summary>File name of this map.</summary>
-        public string FileName => _mapData.FileName;
+        public string FileName { get; }
 
         /// <summary>
         /// Base name of the map, used in trigger_changelevel and the changelevel command among other things.
@@ -20,28 +17,30 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
         /// <summary>Which content type the map data is in.</summary>
         /// <seealso cref="MapContentType"/>
-        public MapContentType ContentType => _mapData.ContentType;
+        public MapContentType ContentType { get; }
 
         /// <summary>Whether this map is a compiled or in a source content type.</summary>
         /// <seealso cref="MapContentType"/>
         public bool IsCompiled => ContentType == MapContentType.Compiled;
 
-        /// <summary>List of entities in the map.</summary>
-        public EntityList Entities { get; }
+        private EntityList? _entityList;
 
-        internal Map(MapData mapData)
+        /// <summary>List of entities in the map.</summary>
+        public EntityList Entities => _entityList ??= CreateEntities();
+
+        /// <summary>Creates a map data object.</summary>
+        /// <exception cref="ArgumentNullException">If <paramref name="fileName"/> is <see langword="null"/>.</exception>
+        protected Map(string fileName, MapContentType contentType)
         {
-            _mapData = mapData;
-            Entities = _mapData.CreateEntities();
+            FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
+            ContentType = contentType;
         }
+
+        /// <summary>Creates an entity list from this map's data. The entity list can modify the map's entities.</summary>
+        protected abstract EntityList CreateEntities();
 
         /// <summary>Serializes this map to the given stream.</summary>
-        public void Serialize(Stream stream) => _mapData.Serialize(stream);
-
-        internal static Map Create(MapData mapData)
-        {
-            return new DefaultMap(mapData);
-        }
+        public abstract void Serialize(Stream stream);
 
         /*
         /// <summary>

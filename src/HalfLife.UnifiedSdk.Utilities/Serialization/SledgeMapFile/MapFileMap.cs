@@ -6,15 +6,13 @@ using System.IO;
 
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 {
-    internal sealed class MapFileMapData : MapData
+    internal sealed class MapFileMap : Map
     {
         private readonly Sledge.Formats.Map.Objects.MapFile _mapFile;
         private readonly IMapFormat _format;
         private readonly string _styleHint;
 
-        private EntityList? _entityList;
-
-        internal MapFileMapData(string fileName, Sledge.Formats.Map.Objects.MapFile mapFile, IMapFormat format, string styleHint)
+        internal MapFileMap(string fileName, Sledge.Formats.Map.Objects.MapFile mapFile, IMapFormat format, string styleHint)
             : base(fileName, MapContentType.Source)
         {
             _mapFile = mapFile;
@@ -22,9 +20,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
             _styleHint = styleHint;
         }
 
-        public override EntityList CreateEntities()
+        protected override EntityList CreateEntities()
         {
-            return _entityList??= new MapFileEntityList(this);
+            return new MapFileEntityList(this);
         }
 
         public IEnumerable<Entity> GetEntities(EntityList entityList)
@@ -38,7 +36,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 
         public Entity CreateNewEntity(string className)
         {
-            var entity = new MapFileEntity(_entityList!, new Sledge.Formats.Map.Objects.Entity()
+            var entity = new MapFileEntity(Entities, new Sledge.Formats.Map.Objects.Entity()
             {
                 ClassName = className
             },

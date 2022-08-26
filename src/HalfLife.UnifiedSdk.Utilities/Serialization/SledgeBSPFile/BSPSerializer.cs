@@ -17,9 +17,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             //but that's not something you should be doing with this tool.
             bspFile.Options.UseBlueShiftFormat = false;
 
-            var data = new BSPMapData(fileName, bspFile);
-
-            return Map.Create(data);
+            return new BSPMap(fileName, bspFile);
         }
     }
 }
