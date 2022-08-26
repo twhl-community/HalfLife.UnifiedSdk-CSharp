@@ -9,8 +9,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 
         public override bool IsWorldspawn { get; }
 
-        public BSPEntity(Sledge.Formats.Bsp.Objects.Entity entity, bool isWorldspawn)
-            : base(entity.KeyValues.ToImmutableDictionary(kv => kv.Key, kv => kv.Value))
+        public BSPEntity(EntityList entityList, Sledge.Formats.Bsp.Objects.Entity entity, bool isWorldspawn)
+            : base(entityList, entity.KeyValues.ToImmutableDictionary(kv => kv.Key, kv => kv.Value))
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;

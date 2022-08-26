@@ -12,6 +12,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
         /// <summary>The entities lump object containing this map's entity data.</summary>
         protected readonly Sledge.Formats.Bsp.Lumps.Entities _entitiesLump;
 
+        private EntityList? _entityList;
+
         /// <summary>Creates a new map with the given file name and entities lump.</summary>
         /// <exception cref="System.ArgumentNullException"><paramref name="fileName"/> is <see langword="null"/>.</exception>
         /// <exception cref="System.ArgumentException">
@@ -27,19 +29,19 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
 
         public override EntityList CreateEntities()
         {
-            return new BSPEntityList(this);
+            return _entityList ??= new BSPEntityList(this);
         }
 
-        public IEnumerable<Entity> GetEntities()
+        internal IEnumerable<Entity> GetEntities(EntityList entityList)
         {
             return _entitiesLump
-                .Select(e => new BSPEntity(e, e.ClassName == KeyValueUtilities.WorldspawnClassName))
+                .Select(e => new BSPEntity(entityList, e, e.ClassName == KeyValueUtilities.WorldspawnClassName))
                 .ToList();
         }
 
-        public Entity CreateNewEntity(string className)
+        internal Entity CreateNewEntity(string className)
         {
-            var entity = new BSPEntity(new Sledge.Formats.Bsp.Objects.Entity
+            var entity = new BSPEntity(_entityList!, new Sledge.Formats.Bsp.Objects.Entity
             {
                 ClassName = className
             },
@@ -50,7 +52,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
             return entity;
         }
 
-        public void Remove(Entity entity)
+        internal void Remove(Entity entity)
         {
             var bspEntity = (BSPEntity)entity;
             _entitiesLump.Remove(bspEntity.Entity);

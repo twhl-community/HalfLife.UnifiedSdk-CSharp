@@ -14,6 +14,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
     /// </summary>
     public abstract class Entity : IDictionary<string, string>
     {
+        private readonly EntityList _entityList;
+
         private readonly Dictionary<string, string> _currentKeyValues;
 
         /// <summary>The keyvalues that the entity had stored in the map</summary>
@@ -52,8 +54,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// Creates a new entity with the given keyvalues that is part of the given entity list.
         /// </summary>
         /// <exception cref="ArgumentException">If the classname is missing or contains only whitespace.</exception>
-        protected Entity(ImmutableDictionary<string, string> keyValues)
+        protected Entity(EntityList entityList, ImmutableDictionary<string, string> keyValues)
         {
+            _entityList = entityList;
+
             OriginalKeyValues = keyValues;
 
             _currentKeyValues = OriginalKeyValues.ToDictionary(kv => kv.Key, kv => kv.Value);
@@ -137,8 +141,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 }
             }
 
+            _currentKeyValues.TryGetValue(key, out var previousValue);
+
             _currentKeyValues[key] = value;
             SetKeyValue(key, value);
+
+            _entityList.ChangedKeyValue(this, key, previousValue, value);
         }
 
         /// <inheritdoc/>
@@ -152,6 +160,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot remove classname key", nameof(key));
             }
 
+            _entityList.InternalRemovingKeyValue(this, key);
+
             RemoveKeyValue(key);
             return _currentKeyValues.Remove(key);
         }
@@ -162,6 +172,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             var className = ClassName;
             _currentKeyValues.Clear();
             _currentKeyValues.Add(KeyValueUtilities.ClassName, className);
+
+            _entityList.InternalRemovingAllKeyValues(this);
 
             RemoveAllKeyValues();
         }

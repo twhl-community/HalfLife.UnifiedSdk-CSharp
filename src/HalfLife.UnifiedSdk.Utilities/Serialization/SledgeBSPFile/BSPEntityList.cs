@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
         private readonly BSPMapDataBase _mapData;
 
         public BSPEntityList(BSPMapDataBase mapData)
-            : base(mapData.GetEntities())
+            : base(mapData.GetEntities)
         {
             _mapData = mapData;
         }

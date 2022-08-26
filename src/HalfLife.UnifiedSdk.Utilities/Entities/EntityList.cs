@@ -28,25 +28,41 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets the worldspawn entity.</summary>
         public Entity Worldspawn => _entities[0];
 
-        internal EntityList(IEnumerable<Entity> entities)
+        /// <summary>Raised when an entity is created.</summary>
+        public event EventHandler<EntityEventArgs>? EntityCreated;
+
+        /// <summary>Raised when an entity is about to be removed.</summary>
+        public event EventHandler<EntityEventArgs>? RemovingEntity;
+
+        /// <summary>Raised when a keyvalue is changed in the given entity.</summary>
+        public event EventHandler<EntityKeyValueChangedEventArgs>? KeyValueChanged;
+
+        /// <summary>Raised when a keyvalue is about to be removed from the given entity.</summary>
+        public event EventHandler<EntityKeyValueRemovingEventArgs>? RemovingKeyValue;
+
+        /// <summary>Raised when all keyvalues are about to be removed from the given entity.</summary>
+        public event EventHandler<EntityEventArgs>? RemovingAllKeyValues;
+
+        internal EntityList(Func<EntityList, IEnumerable<Entity>> getEntitiesCallback)
         {
-            _entities = entities.ToList();
+            _entities = getEntitiesCallback(this).ToList();
 
             if (_entities.Count == 0)
             {
-                throw new ArgumentException("Entity list must contain at least one entity", nameof(entities));
+                throw new ArgumentException("Entity list must contain at least one entity", nameof(getEntitiesCallback));
             }
 
             if (_entities[0].ClassName != KeyValueUtilities.WorldspawnClassName)
             {
-                throw new ArgumentException("First entity in the entity list must be worldspawn", nameof(entities));
+                throw new ArgumentException("First entity in the entity list must be worldspawn", nameof(getEntitiesCallback));
             }
 
             int numberOfWorldspawn = _entities.Count(e => e.ClassName == KeyValueUtilities.WorldspawnClassName);
 
             if (numberOfWorldspawn > 1)
             {
-                throw new ArgumentException($"Too many worldspawn entities in the entity list ({numberOfWorldspawn} found)", nameof(entities));
+                throw new ArgumentException(
+                    $"Too many worldspawn entities in the entity list ({numberOfWorldspawn} found)", nameof(getEntitiesCallback));
             }
         }
 
@@ -86,6 +102,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             var entity = CreateNewEntityCore(className);
 
             _entities.Add(entity);
+
+            EntityCreated?.Invoke(this, new EntityEventArgs(entity));
 
             return entity;
         }
@@ -165,6 +183,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot remove worldspawn entity", nameof(index));
             }
 
+            RemovingEntity?.Invoke(this, new EntityEventArgs(entity));
+
             _entities.RemoveAt(index);
 
             RemoveAtCore(entity, index);
@@ -203,5 +223,20 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         /// <summary>Removes the given entity from the underlying list.</summary>
         protected abstract void RemoveAtCore(Entity entity, int index);
+
+        internal void ChangedKeyValue(Entity entity, string key, string? previousValue, string currentValue)
+        {
+            KeyValueChanged?.Invoke(this, new EntityKeyValueChangedEventArgs(entity, key, previousValue, currentValue));
+        }
+
+        internal void InternalRemovingKeyValue(Entity entity, string key)
+        {
+            RemovingKeyValue?.Invoke(this, new EntityKeyValueRemovingEventArgs(entity, key));
+        }
+
+        internal void InternalRemovingAllKeyValues(Entity entity)
+        {
+            RemovingAllKeyValues?.Invoke(this, new EntityEventArgs(entity));
+        }
     }
 }

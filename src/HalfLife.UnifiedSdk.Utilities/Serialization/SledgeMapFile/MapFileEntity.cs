@@ -13,8 +13,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 
         public override bool IsWorldspawn { get; }
 
-        public MapFileEntity(Sledge.Formats.Map.Objects.Entity entity, bool isWorldspawn)
-            : base(entity.Properties
+        public MapFileEntity(EntityList entityList, Sledge.Formats.Map.Objects.Entity entity, bool isWorldspawn)
+            : base(entityList, entity.Properties
                 .Append(new KeyValuePair<string, string>(KeyValueUtilities.ClassName, entity.ClassName))
                 .Append(new KeyValuePair<string, string>(KeyValueUtilities.SpawnFlags, entity.SpawnFlags.ToString()))
                 .ToImmutableDictionary(kv => kv.Key, kv => kv.Value))

@@ -12,6 +12,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
         private readonly IMapFormat _format;
         private readonly string _styleHint;
 
+        private EntityList? _entityList;
+
         internal MapFileMapData(string fileName, Sledge.Formats.Map.Objects.MapFile mapFile, IMapFormat format, string styleHint)
             : base(fileName, MapContentType.Source)
         {
@@ -22,21 +24,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
 
         public override EntityList CreateEntities()
         {
-            return new MapFileEntityList(this);
+            return _entityList??= new MapFileEntityList(this);
         }
 
-        public IEnumerable<Entity> GetEntities()
+        public IEnumerable<Entity> GetEntities(EntityList entityList)
         {
             List<Entity> entities = new();
 
-            GetEntities(entities, _mapFile.Worldspawn);
+            GetEntities(entityList, entities, _mapFile.Worldspawn);
 
             return entities;
         }
 
         public Entity CreateNewEntity(string className)
         {
-            var entity = new MapFileEntity(new Sledge.Formats.Map.Objects.Entity()
+            var entity = new MapFileEntity(_entityList!, new Sledge.Formats.Map.Objects.Entity()
             {
                 ClassName = className
             },
@@ -58,11 +60,11 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
             _format.Write(stream, _mapFile, _styleHint);
         }
 
-        private static void GetEntities(List<Entity> entities, Sledge.Formats.Map.Objects.MapObject obj)
+        private static void GetEntities(EntityList entityList, List<Entity> entities, Sledge.Formats.Map.Objects.MapObject obj)
         {
             if (obj is Sledge.Formats.Map.Objects.Entity entity)
             {
-                entities.Add(new MapFileEntity(entity, entity is Sledge.Formats.Map.Objects.Worldspawn));
+                entities.Add(new MapFileEntity(entityList, entity, entity is Sledge.Formats.Map.Objects.Worldspawn));
             }
 
             switch (obj)
@@ -71,7 +73,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
                 case Sledge.Formats.Map.Objects.Group:
                     foreach (var child in obj.Children)
                     {
-                        GetEntities(entities, child);
+                        GetEntities(entityList, entities, child);
                     }
 
                     break;

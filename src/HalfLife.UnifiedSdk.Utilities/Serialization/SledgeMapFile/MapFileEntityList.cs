@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
         private readonly MapFileMapData _mapData;
 
         public MapFileEntityList(MapFileMapData mapData)
-            : base(mapData.GetEntities())
+            : base(mapData.GetEntities)
         {
             _mapData = mapData;
         }
