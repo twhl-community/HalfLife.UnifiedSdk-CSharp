@@ -36,7 +36,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             Map = map;
 
             _entities = entities
-                .Select(e => new Entity(this, e))
+                .Select(e => new Entity(e))
                 .ToList();
 
             if (_entities.Count == 0)
@@ -81,7 +81,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <paramref name="className"/> is invalid.
         /// -or- <paramref name="className"/> is <c>worldspawn</c>.
         /// </exception>
-        /// <seealso cref="Add(Entity)"/>
         public Entity CreateNewEntity(string className)
         {
             KeyValueUtilities.ValidateClassName(className);
@@ -91,7 +90,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot create new worldspawn entity", nameof(className));
             }
 
-            var entity = new Entity(this, Map.CreateNewEntity(className));
+            var entity = new Entity(Map.CreateNewEntity(className));
 
             AddCore(entity);
 
@@ -114,7 +113,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                 throw new ArgumentException("Cannot clone worldspawn entities", nameof(entity));
             }
 
-            var newEntity = new Entity(this, Map.CreateNewEntity(entity.ClassName));
+            var newEntity = new Entity(Map.CreateNewEntity(entity.ClassName));
 
             newEntity.ReplaceKeyValues(entity);
 
@@ -123,33 +122,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             return newEntity;
         }
 
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="entity"/>belongs to another entity list.
-        /// -or- <paramref name="entity"/> is worldspawn.
-        /// -or- <paramref name="entity"/> is already in this entity list.
-        /// </exception>
-        public void Add(Entity entity)
+        /// <summary>Not supported. Use <see cref="CreateNewEntity"/> or <see cref="CloneEntity"/> instead.</summary>
+        /// <exception cref="NotSupportedException">Always thrown.</exception>
+        void ICollection<Entity>.Add(Entity entity)
         {
-            ArgumentNullException.ThrowIfNull(entity);
-
-            if (entity.Entities != this)
-            {
-                throw new ArgumentException("Cannot add entities made by another entity list", nameof(entity));
-            }
-
-            if (entity.IsWorldspawn)
-            {
-                throw new ArgumentException("Cannot add a second worldspawn entity", nameof(entity));
-            }
-
-            if (_entities.Contains(entity))
-            {
-                throw new ArgumentException($"Trying to add entity {entity} that is already in the list", nameof(entity));
-            }
-
-            AddCore(entity);
+            throw new NotSupportedException(
+                $"Manually adding entities to an entity list is not supported. Use {nameof(CreateNewEntity)} or {nameof(CloneEntity)} instead.");
         }
 
         private void AddCore(Entity entity)

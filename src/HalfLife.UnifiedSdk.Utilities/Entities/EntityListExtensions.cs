@@ -158,11 +158,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             {
                 var source = other[i];
 
-                var newEntity = entityList.CreateNewEntity(source.ClassName);
-
-                newEntity.ReplaceKeyValues(source);
-
-                entityList.Add(newEntity);
+                var newEntity = entityList.CloneEntity(source);
             }
 
             return entityList;

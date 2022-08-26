@@ -18,9 +18,6 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         private readonly Dictionary<string, string> _currentKeyValues;
 
-        /// <summary>Entity list this entity belongs to.</summary>
-        public EntityList Entities { get; }
-
         /// <summary>The keyvalues that the entity had stored in the map</summary>
         public ImmutableDictionary<string, string> OriginalKeyValues { get; }
 
@@ -53,9 +50,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Whether this entity is the worldspawn entity.</summary>
         public bool IsWorldspawn => _entity.IsWorldspawn;
 
-        internal Entity(EntityList entityList, IMapEntity entity)
+        internal Entity(IMapEntity entity)
         {
-            Entities = entityList;
             _entity = entity;
 
             OriginalKeyValues = _entity.KeyValues;
