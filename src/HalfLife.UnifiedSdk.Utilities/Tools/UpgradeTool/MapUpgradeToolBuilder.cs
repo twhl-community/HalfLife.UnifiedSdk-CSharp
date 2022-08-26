@@ -85,5 +85,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 
             return this;
         }
+
+        /// <summary>Adds a diagnostics engine to use.</summary>
+        /// <exception cref="InvalidOperationException">If there is already a diagnostics engine.</exception>
+        public MapUpgradeToolBuilder WithDiagnostics(MapDiagnosticsEngine diagnosticsEngine)
+        {
+            ArgumentNullException.ThrowIfNull(diagnosticsEngine);
+
+            if (_diagnosticsEngine is not null)
+            {
+                throw new InvalidOperationException("Cannot add more than one diagnostics engine");
+            }
+
+            _diagnosticsEngine = diagnosticsEngine;
+
+            return this;
+        }
     }
 }
