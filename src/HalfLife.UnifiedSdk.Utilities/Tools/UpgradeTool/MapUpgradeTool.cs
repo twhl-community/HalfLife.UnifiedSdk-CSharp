@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Maps;
+﻿using HalfLife.UnifiedSdk.Utilities.Logging.MapDiagnostics;
+using HalfLife.UnifiedSdk.Utilities.Maps;
 using Semver;
 using System;
 using System.Collections.Immutable;
@@ -23,6 +24,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 
         /// <summary>The first version that any map can be.</summary>
         public static readonly SemVersion FirstVersion = new(0, 0, 0);
+
+        private readonly MapDiagnosticsEngine _diagnosticsEngine;
 
         /// <summary>Gets a sorted immutable list containing the upgrades used by this tool.</summary>
         public ImmutableList<MapUpgrade> Upgrades { get; }
@@ -58,9 +61,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             }
         }
 
-        internal MapUpgradeTool(ImmutableList<MapUpgrade> upgrades)
+        internal MapUpgradeTool(ImmutableList<MapUpgrade> upgrades, MapDiagnosticsEngine diagnosticsEngine)
         {
             Upgrades = upgrades;
+            _diagnosticsEngine = diagnosticsEngine;
 
             //If there are no upgrades then we can't do anything anyway, so use the first version.
             LatestVersion = Upgrades.LastOrDefault()?.Version ?? FirstVersion;
@@ -102,14 +106,23 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
                 return (from, from);
             }
 
-            //Apply all upgrades starting at currentVersion + 1 up to and including targetVersion.
-            foreach (var upgrade in Upgrades.Where(v => v.Version.ComparePrecedenceTo(from) > 0 && v.Version.ComparePrecedenceTo(to) <= 0))
+            try
             {
-                var context = new MapUpgradeContext(this, from, to, currentVersion, upgrade, command.Map, command.GameInfo);
-                upgrade.PerformUpgrade(context);
-            }
+                _diagnosticsEngine.AddTo(command.Map);
 
-            SetVersion(command.Map, to);
+                //Apply all upgrades starting at currentVersion + 1 up to and including targetVersion.
+                foreach (var upgrade in Upgrades.Where(v => v.Version.ComparePrecedenceTo(from) > 0 && v.Version.ComparePrecedenceTo(to) <= 0))
+                {
+                    var context = new MapUpgradeContext(this, from, to, currentVersion, upgrade, command.Map, command.GameInfo);
+                    upgrade.PerformUpgrade(context);
+                }
+
+                SetVersion(command.Map, to);
+            }
+            finally
+            {
+                _diagnosticsEngine.RemoveFrom(command.Map);
+            }
 
             return (from, to);
         }

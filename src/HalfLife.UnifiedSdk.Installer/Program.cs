@@ -11,14 +11,16 @@ namespace HalfLife.UnifiedSdk.Installer
         {
             var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
             var dryRunOption = new Option<bool>("--dry-run", description: "If provided no file changes will be written to disk");
+            var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level", description: "The diagnostics level to set");
 
             var rootCommand = new RootCommand("Half-Life game content installer")
             {
                 modDirectoryOption,
-                dryRunOption
+                dryRunOption,
+                diagnosticsLevelOption
             };
 
-            rootCommand.SetHandler((modDirectory, dryRun, logger) =>
+            rootCommand.SetHandler((modDirectory, dryRun, diagnosticsLevel, logger) =>
             {
                 if (!modDirectory.Exists)
                 {
@@ -36,7 +38,7 @@ namespace HalfLife.UnifiedSdk.Installer
                     IsDryRun = dryRun
                 };
 
-                var tool = MapUpgradeToolFactory.Create();
+                var tool = MapUpgradeToolFactory.Create(logger, diagnosticsLevel);
 
                 //List of games whose content can be installed with this tool.
                 var games = new[]
@@ -47,7 +49,7 @@ namespace HalfLife.UnifiedSdk.Installer
                 };
 
                 installer.Install(modDirectory.FullName, tool, games);
-            }, modDirectoryOption, dryRunOption, LoggerBinder.Instance);
+            }, modDirectoryOption, dryRunOption, diagnosticsLevelOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }

@@ -1,4 +1,7 @@
-﻿using Semver;
+﻿using HalfLife.UnifiedSdk.Utilities.Logging.MapDiagnostics;
+using Semver;
+using Serilog;
+using Serilog.Core;
 using System;
 using System.Collections.Immutable;
 
@@ -10,6 +13,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     public sealed class MapUpgradeToolBuilder
     {
         private readonly ImmutableList<MapUpgrade>.Builder _upgrades = ImmutableList.CreateBuilder<MapUpgrade>();
+
+        private MapDiagnosticsEngine? _diagnosticsEngine;
 
         private MapUpgradeToolBuilder()
         {
@@ -32,7 +37,13 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 
         private MapUpgradeTool BuildCore()
         {
-            return new MapUpgradeTool(_upgrades.ToImmutable().Sort());
+            if (_diagnosticsEngine is null)
+            {
+                //Build a default engine that does nothing.
+                _diagnosticsEngine = MapDiagnosticsEngine.Create(Logger.None, _ => { });
+            }
+
+            return new MapUpgradeTool(_upgrades.ToImmutable().Sort(), _diagnosticsEngine);
         }
 
         /// <summary>
@@ -56,6 +67,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             callback(builder);
 
             _upgrades.Add(builder.Build(version));
+
+            return this;
+        }
+
+        /// <summary>Adds a diagnostics engine to use.</summary>
+        /// <exception cref="InvalidOperationException">If there is already a diagnostics engine.</exception>
+        /// <seealso cref="MapDiagnosticsEngine.Create(ILogger, Action{MapDiagnosticsBuilder}?)"/>
+        public MapUpgradeToolBuilder WithDiagnostics(ILogger logger, Action<MapDiagnosticsBuilder>? configurator = null)
+        {
+            if (_diagnosticsEngine is not null)
+            {
+                throw new InvalidOperationException("Cannot add more than one diagnostics engine");
+            }
+
+            _diagnosticsEngine = MapDiagnosticsEngine.Create(logger, configurator);
 
             return this;
         }

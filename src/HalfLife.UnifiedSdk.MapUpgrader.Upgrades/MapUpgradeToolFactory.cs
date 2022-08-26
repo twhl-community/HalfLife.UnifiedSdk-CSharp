@@ -1,5 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using Semver;
+using Serilog;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
@@ -8,7 +9,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         /// <summary>
         /// Creates an upgrade tool that applies the actions needed to upgrade a map to the latest version of the Unified SDK.
         /// </summary>
-        public static MapUpgradeTool Create()
+        public static MapUpgradeTool Create(ILogger logger, DiagnosticsLevel diagnosticsLevel)
         {
             return MapUpgradeToolBuilder.Build(builder =>
             {
@@ -19,6 +20,19 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
                         .AddHalfLifeUpgrades()
                         .AddOpposingForceUpgrades()
                         .AddBlueShiftUpgrades();
+                });
+
+                builder.WithDiagnostics(logger, diagnosticsBuilder =>
+                {
+                    if (diagnosticsLevel != DiagnosticsLevel.Disabled)
+                    {
+                        diagnosticsBuilder.WithAllEventTypes();
+
+                        if (diagnosticsLevel != DiagnosticsLevel.All)
+                        {
+                            diagnosticsBuilder.IgnoreKeys("angle", "angles", MapUpgradeTool.DefaultGameVersionKey);
+                        }
+                    }
                 });
             });
         }

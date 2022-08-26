@@ -57,7 +57,6 @@ namespace HalfLife.UnifiedSdk.Installer
                 sourceMapsDirectory, destinationMapsDirectory);
             _logger.Information("Node graph files in destination for maps being copied will be deleted.");
 
-
             //Process maps in sorted order to make it easier to read the output and spot problems.
             foreach (var map in mapsToInstall.OrderBy(m => m.Name))
             {

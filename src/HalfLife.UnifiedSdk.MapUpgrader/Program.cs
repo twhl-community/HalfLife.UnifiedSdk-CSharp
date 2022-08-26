@@ -31,14 +31,16 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
             });
 
             var mapsOption = new Option<IEnumerable<FileInfo>>("--maps", description: "List of maps to upgrade");
+            var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level", description: "The diagnostics level to set");
 
             var rootCommand = new RootCommand("Half-Life Unified SDK map upgrader")
             {
                 gameOption,
-                mapsOption
+                mapsOption,
+                diagnosticsLevelOption
             };
 
-            rootCommand.SetHandler((game, maps, logger) =>
+            rootCommand.SetHandler((game, maps, diagnosticsLevel, logger) =>
             {
                 game ??= defaultGame.ModDirectory;
 
@@ -56,7 +58,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
                     return;
                 }
 
-                var upgradeTool = MapUpgradeToolFactory.Create();
+                var upgradeTool = MapUpgradeToolFactory.Create(logger, diagnosticsLevel);
 
                 logger.Information("Upgrading maps for game {GameName} ({ModDirectory}) to version {LatestVersion}",
                     gameInfo.Name, gameInfo.ModDirectory, upgradeTool.LatestVersion);
@@ -75,7 +77,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
 
                     mapData.Serialize(stream);
                 }
-            }, gameOption, mapsOption, LoggerBinder.Instance);
+            }, gameOption, mapsOption, diagnosticsLevelOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }
