@@ -41,24 +41,5 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
         /// <summary>Serializes this map to the given stream.</summary>
         public abstract void Serialize(Stream stream);
-
-        /*
-        /// <summary>
-        /// Wraps this map instance with a map that logs all changes to the given logger.
-        /// </summary>
-        /// <param name="logger">Logger to use.</param>
-        /// <exception cref="InvalidOperationException">If this map is already wrapped for logging.</exception>
-        public Map WithLogger(ILogger logger)
-        {
-            ArgumentNullException.ThrowIfNull(logger);
-
-            if (this is LoggingMap)
-            {
-                throw new InvalidOperationException("Don't wrap maps that are already wrapped");
-            }
-
-            return new LoggingMap(_mapData, logger);
-        }
-        */
     }
 }
