@@ -41,5 +41,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Maps
 
         /// <summary>Serializes this map to the given stream.</summary>
         public abstract void Serialize(Stream stream);
+
+        /// <inheritdoc/>
+        public override string ToString() => BaseName;
     }
 }

@@ -207,6 +207,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         }
 
         /// <inheritdoc/>
+        public override string ToString() => $"{Count} Entities";
+
+        /// <inheritdoc/>
         public IEnumerator<Entity> GetEnumerator()
         {
             return _entities.GetEnumerator();
