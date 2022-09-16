@@ -38,6 +38,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new AdjustBlackOpsSkinUpgrade());
             builder.AddAction(new RenameIntroGruntAnimationsUpgrade());
             builder.AddAction(new ConvertOtisBodyStateUpgrade());
+            builder.AddAction(new FixBlackOpsSpawnDelayUpgrade());
             return builder;
         }
 
