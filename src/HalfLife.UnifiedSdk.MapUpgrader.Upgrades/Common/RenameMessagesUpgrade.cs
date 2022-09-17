@@ -13,6 +13,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
         private const string MessageKey = "message";
         private const string WorldspawnKey = "chaptertitle";
 
+        private static readonly ImmutableArray<string> ClassNames = ImmutableArray.Create(
+            "env_message",
+            "player_loadsaved"
+            );
+
         private static readonly ImmutableList<Regex> Patterns = ImmutableList.Create(
             new Regex(@"^CR\d+$"),
             new Regex(@"^END\d+$"),
@@ -38,9 +43,9 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                 }
             }
 
-            foreach (var envMessage in context.Map.Entities.OfClass("env_message"))
+            foreach (var entity in context.Map.Entities.Where(e => ClassNames.Contains(e.ClassName)))
             {
-                CheckMessage(envMessage, MessageKey);
+                CheckMessage(entity, MessageKey);
             }
 
             // Worldspawn creates an env_message to handle this, so make sure it also gets converted.
