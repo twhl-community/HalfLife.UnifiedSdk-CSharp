@@ -1,5 +1,9 @@
 ﻿using Serilog;
+using Serilog.Events;
+using System;
+using System.CommandLine;
 using System.CommandLine.Binding;
+using System.Reflection.Metadata.Ecma335;
 
 namespace HalfLife.UnifiedSdk.Utilities.Logging
 {
@@ -12,12 +16,34 @@ namespace HalfLife.UnifiedSdk.Utilities.Logging
         /// <summary>Singleton binder instance.</summary>
         public static LoggerBinder Instance { get; } = new();
 
+        private readonly Func<BindingContext, LogEventLevel> _getLogEventLevel;
+
+        /// <summary>Creates a binder that uses the <see cref="LogEventLevel.Information"/> log level.</summary>
+        public LoggerBinder()
+        {
+            _getLogEventLevel = _ => LogEventLevel.Information;
+        }
+
+        /// <summary>Creates a binder that uses the given option to indicate verbose logging.</summary>
+        public LoggerBinder(Option<bool> verboseOption)
+        {
+            _getLogEventLevel = bindingContext =>
+                bindingContext.ParseResult.GetValueForOption(verboseOption) ? LogEventLevel.Verbose : LogEventLevel.Information;
+        }
+
+        /// <summary>Creates a binder that uses the given delegate to get the log event level.</summary>
+        public LoggerBinder(Func<BindingContext, LogEventLevel> getLogEventLevel)
+        {
+            _getLogEventLevel = getLogEventLevel;
+        }
+
         /// <inheritdoc/>
         protected override ILogger GetBoundValue(BindingContext bindingContext)
         {
             return new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.Debug()
+                .MinimumLevel.Is(_getLogEventLevel(bindingContext))
                 .CreateLogger();
         }
     }

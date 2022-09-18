@@ -1,7 +1,8 @@
-﻿
-using HalfLife.UnifiedSdk.Packager.Config;
+﻿using HalfLife.UnifiedSdk.Packager.Config;
 using HalfLife.UnifiedSdk.Utilities.Logging;
+using Serilog.Events;
 using System.CommandLine;
+using System.CommandLine.Binding;
 
 namespace HalfLife.UnifiedSdk.Packager
 {
@@ -24,7 +25,20 @@ namespace HalfLife.UnifiedSdk.Packager
                 listOmittedOption
             };
 
-            rootCommand.SetHandler((modDirectory, packageManifest, packageName, verbose, listOmitted, logger) =>
+            LogEventLevel DetermineLogEventLevel(BindingContext bindingContext)
+            {
+                // Listing omitted files implies verbose because the list of added files is logged verbose.
+                if (bindingContext.ParseResult.GetValueForOption(verboseOption) || bindingContext.ParseResult.GetValueForOption(listOmittedOption))
+                {
+                    return LogEventLevel.Verbose;
+                }
+                else
+                {
+                    return LogEventLevel.Information;
+                }
+            }
+
+            rootCommand.SetHandler((modDirectory, packageManifest, packageName, listOmitted, logger) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
                 var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
@@ -54,7 +68,6 @@ namespace HalfLife.UnifiedSdk.Packager
 
                     var options = new PackagerOptions(completePackageName, halfLifeDirectory.FullName, directories)
                     {
-                        Verbose = verbose,
                         ListOmittedFiles = listOmitted
                     };
 
@@ -68,8 +81,8 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 Packager.DeleteOldPackages(logger, packageName, halfLifeDirectory, now);
             }, modDirectoryOption, packageManifestOption, packageNameOption,
-            verboseOption, listOmittedOption,
-            LoggerBinder.Instance);
+            listOmittedOption,
+            new LoggerBinder(DetermineLogEventLevel));
 
             return rootCommand.Invoke(args);
         }

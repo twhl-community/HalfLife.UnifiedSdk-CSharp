@@ -39,19 +39,16 @@ namespace HalfLife.UnifiedSdk.Packager
 
                     includedFiles?.Add(file);
 
-                    if (options.Verbose)
-                    {
-                        logger.Information("Adding file \"{RelativePath}\"", relativePath);
-                    }
+                    logger.Verbose("Adding file \"{RelativePath}\"", relativePath);
 
                     var newName = relativePath;
 
                     // Files ending with ".install" need to be renamed.
                     newName = Regex.Replace(newName, "\\.install$", "");
 
-                    if (relativePath != newName && options.Verbose)
+                    if (relativePath != newName)
                     {
-                        logger.Information("Renaming \"{RelativePath}\" to \"{NewName}\"", relativePath, newName);
+                        logger.Verbose("Renaming \"{RelativePath}\" to \"{NewName}\"", relativePath, newName);
                     }
 
                     archive.CreateEntryFromFile(relativePath, newName);
@@ -72,14 +69,14 @@ namespace HalfLife.UnifiedSdk.Packager
                     foreach (var file in excludedFiles)
                     {
                         var relativeFileName = Path.GetRelativePath(options.RootDirectory, file);
-                        logger.Information("Excluded file \"{RelativePath}\"", relativeFileName);
+                        logger.Verbose("Excluded file \"{RelativePath}\"", relativeFileName);
                     }
 
                     foreach (var file in Directory.EnumerateFiles(directory.Path)
                         .Where(f => !includedFiles!.Contains(f) && !excludedFiles.Contains(f)))
                     {
                         var relativeFileName = Path.GetRelativePath(options.RootDirectory, file);
-                        logger.Information("Ignored file \"{RelativePath}\"", relativeFileName);
+                        logger.Verbose("Ignored file \"{RelativePath}\"", relativeFileName);
                     }
                 }
             }
