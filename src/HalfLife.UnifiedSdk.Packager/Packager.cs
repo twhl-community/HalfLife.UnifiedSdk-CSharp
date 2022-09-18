@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.FileSystemGlobbing;
 using Serilog;
+using Serilog.Core;
 using System.Collections.Immutable;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
@@ -79,6 +80,25 @@ namespace HalfLife.UnifiedSdk.Packager
                     {
                         var relativeFileName = Path.GetRelativePath(options.RootDirectory, file);
                         logger.Information("Ignored file \"{RelativePath}\"", relativeFileName);
+                    }
+                }
+            }
+        }
+
+        public static void DeleteOldPackages(ILogger logger, string packageName, DirectoryInfo rootDirectory, string now)
+        {
+            var regex = new Regex($@"{Regex.Escape(packageName)}-(\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d){PackageExtension}$");
+
+            foreach (var file in rootDirectory.EnumerateFiles($"{packageName}-*{PackageExtension}"))
+            {
+                var match = regex.Match(file.FullName);
+
+                if (match.Success)
+                {
+                    if (match.Groups[1].Captures[0].Value.CompareTo(now) < 0)
+                    {
+                        logger.Information("Deleting old package \"{PackageName}\"", file.FullName);
+                        file.Delete();
                     }
                 }
             }
