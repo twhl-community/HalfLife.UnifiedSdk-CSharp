@@ -15,16 +15,18 @@ namespace HalfLife.UnifiedSdk.Packager
             var packageManifestOption = new Option<FileInfo>("--package-manifest", description: "Path to the package manifest file");
             var packageNameOption = new Option<string>("--package-name", description: "Base name of the package");
             var verboseOption = new Option<bool>("--verbose", description: "Log additional information");
+            var listOmittedOption = new Option<bool>("--list-omitted", description: "List files that were omitted from the package");
 
             var rootCommand = new RootCommand("Half-Life mod packager")
             {
                 modDirectoryOption,
                 packageManifestOption,
                 packageNameOption,
-                verboseOption
+                verboseOption,
+                listOmittedOption
             };
 
-            rootCommand.SetHandler((modDirectory, packageManifest, packageName, verbose, logger) =>
+            rootCommand.SetHandler((modDirectory, packageManifest, packageName, verbose, listOmitted, logger) =>
             {
                 //Generate name now so the timestamp matches the start of generation.
                 var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
@@ -117,7 +119,8 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 var options = new PackagerOptions(completePackageName, halfLifeDirectory.FullName, directories)
                 {
-                    Verbose = verbose
+                    Verbose = verbose,
+                    ListOmittedFiles = listOmitted
                 };
 
                 Packager.CreatePackage(logger, options);
@@ -138,7 +141,9 @@ namespace HalfLife.UnifiedSdk.Packager
                         }
                     }
                 }
-            }, modDirectoryOption, packageManifestOption, packageNameOption, verboseOption, LoggerBinder.Instance);
+            }, modDirectoryOption, packageManifestOption, packageNameOption,
+            verboseOption, listOmittedOption,
+            LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }

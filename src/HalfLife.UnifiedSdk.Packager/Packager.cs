@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.FileSystemGlobbing;
 using Serilog;
+using System.Collections.Immutable;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 
@@ -18,6 +19,8 @@ namespace HalfLife.UnifiedSdk.Packager
 
             logger.Information("Creating archive {PackageName}", completePackageName);
 
+            var includedFiles = options.ListOmittedFiles ? new HashSet<string>(StringComparer.InvariantCultureIgnoreCase) : null;
+
             using var archive = ZipFile.Open(completePackageName, ZipArchiveMode.Create);
 
             foreach (var directory in options.Directories)
@@ -32,6 +35,8 @@ namespace HalfLife.UnifiedSdk.Packager
                 foreach (var file in matcher.GetResultsInFullPath(directory.Path))
                 {
                     var relativePath = Path.GetRelativePath(options.RootDirectory, file);
+
+                    includedFiles?.Add(file);
 
                     if (options.Verbose)
                     {
@@ -49,6 +54,32 @@ namespace HalfLife.UnifiedSdk.Packager
                     }
 
                     archive.CreateEntryFromFile(relativePath, newName);
+                }
+
+                if (options.ListOmittedFiles)
+                {
+                    var excludeMatcher = new Matcher();
+
+                    excludeMatcher.AddIncludePatterns(directory.ExcludePatterns);
+
+                    var excludedFiles = excludeMatcher
+                        .GetResultsInFullPath(directory.Path)
+                        .ToHashSet(StringComparer.InvariantCultureIgnoreCase);
+
+                    excludedFiles.ExceptWith(includedFiles!);
+
+                    foreach (var file in excludedFiles)
+                    {
+                        var relativeFileName = Path.GetRelativePath(options.RootDirectory, file);
+                        logger.Information("Excluded file \"{RelativePath}\"", relativeFileName);
+                    }
+
+                    foreach (var file in Directory.EnumerateFiles(directory.Path)
+                        .Where(f => !includedFiles!.Contains(f) && !excludedFiles.Contains(f)))
+                    {
+                        var relativeFileName = Path.GetRelativePath(options.RootDirectory, file);
+                        logger.Information("Ignored file \"{RelativePath}\"", relativeFileName);
+                    }
                 }
             }
         }

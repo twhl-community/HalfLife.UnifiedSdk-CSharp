@@ -2,6 +2,8 @@
 {
     internal sealed record PackagerOptions(string PackageName, string RootDirectory, IEnumerable<PackageDirectory> Directories)
     {
-        public bool Verbose { get; set; }
+        public bool Verbose { get; init; }
+
+        public bool ListOmittedFiles { get; init; }
     }
 }
