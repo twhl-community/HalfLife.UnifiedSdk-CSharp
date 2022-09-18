@@ -12,16 +12,15 @@ namespace HalfLife.UnifiedSdk.Packager
     {
         public const string PackageExtension = ".zip";
 
-        public static void CreatePackage(
-            ILogger logger, string packageName, string rootDirectory, IEnumerable<PackageDirectory> directories, bool verbose)
+        public static void CreatePackage(ILogger logger, PackagerOptions options)
         {
-            var completePackageName = packageName + PackageExtension;
+            var completePackageName = options.PackageName + PackageExtension;
 
             logger.Information("Creating archive {PackageName}", completePackageName);
 
             using var archive = ZipFile.Open(completePackageName, ZipArchiveMode.Create);
 
-            foreach (var directory in directories)
+            foreach (var directory in options.Directories)
             {
                 logger.Information("Adding mod directory \"{Path}\"", directory.Path);
 
@@ -32,9 +31,9 @@ namespace HalfLife.UnifiedSdk.Packager
 
                 foreach (var file in matcher.GetResultsInFullPath(directory.Path))
                 {
-                    var relativePath = Path.GetRelativePath(rootDirectory, file);
+                    var relativePath = Path.GetRelativePath(options.RootDirectory, file);
 
-                    if (verbose)
+                    if (options.Verbose)
                     {
                         logger.Information("Adding file \"{RelativePath}\"", relativePath);
                     }
@@ -44,7 +43,7 @@ namespace HalfLife.UnifiedSdk.Packager
                     // Files ending with ".install" need to be renamed.
                     newName = Regex.Replace(newName, "\\.install$", "");
 
-                    if (relativePath != newName && verbose)
+                    if (relativePath != newName && options.Verbose)
                     {
                         logger.Information("Renaming \"{RelativePath}\" to \"{NewName}\"", relativePath, newName);
                     }

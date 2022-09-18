@@ -115,7 +115,12 @@ namespace HalfLife.UnifiedSdk.Packager
                 .Select(d => new PackageDirectory(d.Path, d.IncludePatterns, d.ExcludePatterns))
                 .ToList();
 
-                Packager.CreatePackage(logger, completePackageName, halfLifeDirectory.FullName, directories, verbose);
+                var options = new PackagerOptions(completePackageName, halfLifeDirectory.FullName, directories)
+                {
+                    Verbose = verbose
+                };
+
+                Packager.CreatePackage(logger, options);
 
                 //Now delete old packages.
                 var regex = new Regex($@"{Regex.Escape(packageName)}-(\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d){Packager.PackageExtension}$");
