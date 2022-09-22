@@ -72,10 +72,9 @@ namespace HalfLife.UnifiedSdk.Installer
 
                 upgradeTool.Upgrade(new MapUpgradeCommand(mapData, game.Info));
 
-                using var stream = File.Open(destinationMapName, FileMode.Create, FileAccess.Write);
-
                 if (!IsDryRun)
                 {
+                    using var stream = File.Open(destinationMapName, FileMode.Create, FileAccess.Write);
                     mapData.Serialize(stream);
 
                     //Delete any node graph files that exist.
