@@ -14,6 +14,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     internal sealed class AdjustShotgunAnglesUpgrade : IMapUpgradeAction
     {
         private const string ShotgunModelName = "models/w_shotgun.mdl";
+        private static readonly Vector3 AngleAdjust = new(0, 180, 90);
+        private static readonly Vector3 Security2AngleAdjust = new(270, 180, 0);
 
         public void Apply(MapUpgradeContext context)
         {
@@ -24,7 +26,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 
             foreach (var entity in context.Map.Entities.OfClass("weapon_shotgun"))
             {
-                UpdateAngles(entity);
+                UpdateAngles(entity, AngleAdjust);
                 UpdateOrigin(entity, entity.GetOrigin());
             }
 
@@ -50,8 +52,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                     //Wipe all spawnflags since they don't match between the two.
                     shotgun.SetSpawnFlags(0);
 
-                    //No need to update angles; original angles are correct.
-                    //UpdateAngles(shotgun);
+                    UpdateAngles(shotgun, Security2AngleAdjust);
                     UpdateOrigin(shotgun, script.GetOrigin());
 
                     //No longer needed.
@@ -60,12 +61,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             }
         }
 
-        private static void UpdateAngles(Entity entity)
+        private static void UpdateAngles(Entity entity, Vector3 adjust)
         {
             var angles = entity.GetAngles();
 
-            angles.Z += 90;
-            angles.X += 180;
+            angles += adjust;
 
             entity.SetAngles(angles);
         }
