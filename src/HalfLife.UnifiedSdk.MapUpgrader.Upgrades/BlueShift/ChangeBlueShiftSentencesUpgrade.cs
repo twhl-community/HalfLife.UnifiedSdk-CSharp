@@ -1,5 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Entities;
-using HalfLife.UnifiedSdk.Utilities.Games;
+﻿using HalfLife.UnifiedSdk.Utilities.Games;
+using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Collections.Immutable;
 
@@ -17,12 +17,55 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
             { "!NA1", "!EA0" },
             // ba_security2 armory guard greets players as Freeman if using the original line.
             { "!BA_HELLO1", "!BSBA_HELLO1" },
-        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
-
-        private static readonly ImmutableList<(string ClassName, string Key)> EntitiesToCheck = ImmutableList.Create(
-            ("ambient_generic", "message"),
-            ("scripted_sentence", "sentence")
-            );
+        }
+        // Renames HOLO_* sentences to BSHOLO_*.
+        .Concat(new[]
+        {
+            "HOLO_4JUMPS",
+            "HOLO_ARMOR",
+            "HOLO_BREAKBOX",
+            "HOLO_BREATH",
+            "HOLO_BUTTON",
+            "HOLO_CHARGER",
+            "HOLO_COMMENCING",
+            "HOLO_CONGRATS",
+            "HOLO_DONE",
+            "HOLO_DROWN",
+            "HOLO_DUCK",
+            "HOLO_FALLSHORT",
+            "HOLO_FANTASTIC",
+            "HOLO_FLASHLIGHT",
+            "HOLO_GREATWORK",
+            "HOLO_GRENADE",
+            "HOLO_HITALL",
+            "HOLO_INJURY",
+            "HOLO_INTRO",
+            "HOLO_JDUCK",
+            "HOLO_JUMP",
+            "HOLO_JUMPDOWN",
+            "HOLO_JUMPGAP",
+            "HOLO_KEEPTRYING",
+            "HOLO_LADDER",
+            "HOLO_LEADGUARD",
+            "HOLO_LIGHTOFF",
+            "HOLO_LONGJUMP",
+            "HOLO_MEDKIT",
+            "HOLO_MOVE",
+            "HOLO_NICEJOB",
+            "HOLO_PIPEDUCK",
+            "HOLO_PULLBOX",
+            "HOLO_PUSHBOX",
+            "HOLO_RADIATION",
+            "HOLO_RETRY",
+            "HOLO_RUNSTART",
+            "HOLO_SPINBRIDGE",
+            "HOLO_STARTLIFT",
+            "HOLO_STEAM",
+            "HOLO_TARGET",
+            "HOLO_TRYAGAIN",
+            "HOLO_USETRAIN"
+        }.Select(s => new KeyValuePair<string, string>("!" + s, "!BS" + s)))
+        .ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public void Apply(MapUpgradeContext context)
         {
@@ -31,16 +74,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
                 return;
             }
 
-            foreach (var (className, key) in EntitiesToCheck)
-            {
-                foreach (var entity in context.Map.Entities.OfClass(className))
-                {
-                    if (entity.TryGetValue(key, out var value) && SentenceMap.TryGetValue(value, out var replacement))
-                    {
-                        entity.SetString(key, replacement);
-                    }
-                }
-            }
+            SentenceUtilities.ReplaceSentences(context.Map.Entities, SentenceMap);
         }
     }
 }
