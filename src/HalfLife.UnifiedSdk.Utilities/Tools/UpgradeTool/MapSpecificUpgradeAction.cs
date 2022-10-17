@@ -1,4 +1,8 @@
-﻿namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+
+namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 {
     /// <summary>
     /// Helper class to apply an upgrade to a specific map.
@@ -6,25 +10,34 @@
     public abstract class MapSpecificUpgradeAction : IMapUpgradeAction
     {
         /// <summary>
-        /// The map that this upgrade applies to.
+        /// The maps that this upgrade applies to.
         /// </summary>
-        public string MapName { get; }
+        public ImmutableList<string> MapNames { get; }
 
         /// <summary>
-        /// Creates an upgrade that applies only to the specified map.
+        /// Creates an upgrade that applies only to the specified maps.
         /// </summary>
-        /// <param name="mapName"></param>
-        protected MapSpecificUpgradeAction(string mapName)
+        /// <param name="mapNames"></param>
+        protected MapSpecificUpgradeAction(params string[] mapNames)
         {
-            MapName = mapName;
+            MapNames = mapNames.ToImmutableList();
         }
 
         /// <summary>
-        /// Upgrades the given map if its name matches <see cref="MapName"/>.
+        /// Creates an upgrade that applies only to the specified maps.
+        /// </summary>
+        /// <param name="mapNames"></param>
+        protected MapSpecificUpgradeAction(IEnumerable<string> mapNames)
+        {
+            MapNames = mapNames.ToImmutableList();
+        }
+
+        /// <summary>
+        /// Upgrades the given map if its name matches <see cref="MapNames"/>.
         /// </summary>
         public void Apply(MapUpgradeContext context)
         {
-            if (context.Map.BaseName == MapName)
+            if (MapNames.Contains(context.Map.BaseName))
             {
                 ApplyCore(context);
             }
