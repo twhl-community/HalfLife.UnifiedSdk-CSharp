@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <Authors>SamVanheer</Authors>
+    <Copyright>2022 Sam Vanheer</Copyright>
+    <Description>Searches through Half-Life 1 BSP files in a given directory, printing entities that match the given regular expression patterns</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
+    <PackageTags>halflife;half-life;valve</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
