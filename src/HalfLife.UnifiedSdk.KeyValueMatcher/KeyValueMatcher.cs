@@ -16,7 +16,7 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
 
         public bool IsMatch(Entity entity)
         {
-            if (ClassNamePattern is not null && !ClassNamePattern.IsMatch(entity.ClassName))
+            if (ClassNamePattern?.IsMatch(entity.ClassName) == false)
             {
                 return false;
             }
@@ -26,22 +26,7 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                 return true;
             }
 
-            foreach (var keyValue in entity.WithoutClassName())
-            {
-                if (KeyPattern is not null && !KeyPattern.IsMatch(keyValue.Key))
-                {
-                    continue;
-                }
-
-                if (ValuePattern is not null && !ValuePattern.IsMatch(keyValue.Value))
-                {
-                    continue;
-                }
-
-                return true;
-            }
-
-            return false;
+            return entity.WithoutClassName().Any(kv => KeyPattern?.IsMatch(kv.Key) != false && ValuePattern?.IsMatch(kv.Value) != false);
         }
     }
 }
