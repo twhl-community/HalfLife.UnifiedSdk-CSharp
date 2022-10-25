@@ -29,7 +29,6 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
         {
             AllPlayers = 0,
             Activator,
-            LocalPlayer,
             Radius
         }
 
