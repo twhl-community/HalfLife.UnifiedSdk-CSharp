@@ -54,6 +54,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
 
         private static ReadOnlySpan<float> ParseVectorValues(string value, Span<float> values)
         {
+            values.Clear();
+
             var parts = ParseVectorComponents(value);
 
             //The game parses out up to values.Length components.
