@@ -9,10 +9,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
     {
         public static async Task<int> Main(string[] args)
         {
-            var bspFileNameOption = new Option<FileInfo>("--filename", description: "Path to the BSP filename")
-            {
-                IsRequired = true,
-            };
+            var bspFileNameArgument = new Argument<FileInfo>("filename", description: "Path to the BSP file");
 
             var destinationDirectoryOption = new Option<DirectoryInfo?>("--destination",
                 description: "Directory to save the OBJ file to."
@@ -20,7 +17,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
 
             var rootCommand = new RootCommand("Half-Life game content installer")
             {
-                bspFileNameOption,
+                bspFileNameArgument,
                 destinationDirectoryOption
             };
 
@@ -46,7 +43,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
 
                 try
                 {
-                    logger.Information("Reading BSP file");
+                    logger.Information("Reading BSP file {FileName}", bspFileName.FullName);
                     using var stream = bspFileName.OpenRead();
                     bspFile = new(stream);
                 }
@@ -89,7 +86,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
                     logger.Error(e, "An error occurred while writing the obj file");
                     return;
                 }
-            }, bspFileNameOption, destinationDirectoryOption, LoggerBinder.Instance);
+            }, bspFileNameArgument, destinationDirectoryOption, LoggerBinder.Instance);
 
             return await rootCommand.InvokeAsync(args);
         }
