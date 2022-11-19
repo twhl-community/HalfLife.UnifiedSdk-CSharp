@@ -13,7 +13,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
 
             var destinationDirectoryOption = new Option<DirectoryInfo?>("--destination",
                 description: "Directory to save the OBJ file to."
-                + "If not provided the file will be saved to the directory that the source file is located in");
+                + " If not provided the file will be saved to the directory that the source file is located in");
 
             var rootCommand = new RootCommand("Half-Life game content installer")
             {
