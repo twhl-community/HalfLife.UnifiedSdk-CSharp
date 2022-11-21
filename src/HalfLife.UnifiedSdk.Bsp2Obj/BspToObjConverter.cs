@@ -32,8 +32,6 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
 
         private readonly ObjMaterialFile _objMaterialFile = new();
 
-        private ObjMaterial? _dummyMaterial;
-
         private ImmutableDictionary<int, ObjMaterial> _materialsMap = ImmutableDictionary<int, ObjMaterial>.Empty;
 
         private BspToObjConverter(ILogger logger, string destinationDirectory, string bspFileName, BspFile bspFile)
@@ -120,10 +118,12 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
                 return material;
             }
 
+            ObjMaterial? dummyMaterial = null;
+
             // All textures embedded in the map can be added, others use a dummy material.
             if (_bspFile.Textures.Any(t => t.NumMips == 0))
             {
-                _dummyMaterial = CreateMaterial();
+                dummyMaterial = CreateMaterial();
             }
 
             var mapBuilder = ImmutableDictionary.CreateBuilder<int, ObjMaterial>();
@@ -143,7 +143,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
 
                 if (texture.NumMips == 0)
                 {
-                    mapBuilder.Add(i, _dummyMaterial!);
+                    mapBuilder.Add(i, dummyMaterial!);
                 }
                 else
                 {
