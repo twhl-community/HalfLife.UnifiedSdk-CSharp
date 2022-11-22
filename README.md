@@ -5,7 +5,9 @@ Tools for the [Half-Life Unified SDK](https://github.com/SamVanheer/halflife-uni
 Note: the Unified SDK itself is written in C++.
 
 You will need to install the NET 6 runtime or newer to run the tools included in this repository.
-You can download the runtime here: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+You can download the runtime here (included with the NET SDK): https://dotnet.microsoft.com/en-us/download
+
+Uses ImageSharp to handle image encoding: https://github.com/SixLabors/ImageSharp
 
 ## Install using NuGet
 
@@ -39,24 +41,11 @@ The `HalfLife.UnifiedSdk.Utilities.Tools` namespace provides various tools for t
 
 The [`Sledge.Formats.Bsp` and `Sledge.Formats.Map`](https://github.com/LogicAndTrick/sledge-formats) libraries are used to load Half-Life 1 maps and map source files. Many thanks to Daniel Walder for creating these libraries.
 
-## HalfLife.UnifiedSdk.AssetSynchronizer
+## Documentation
 
-This tool copies a set of directories to a target directory.
+The documentation for these tools can be found in the main Unified SDK repository: https://github.com/SamVanheer/halflife-unified-sdk/blob/master/docs/README.md#tools
 
-## HalfLife.UnifiedSdk.Installer
+# LICENSE
 
-This tool copies, converts and upgrades Half-Life game assets for use in a mod.
-
-## HalfLife.UnifiedSdk.MapUpgrader
-
-This tool upgrades Half-Life maps to the latest version of the Unified SDK.
-
-## HalfLife.UnifiedSdk.Packager
-
-This tool packages Half-Life mods into a zip archive.
-
-## HalfLife.UnifiedSdk.Skill2Json
-
-This tool converts original Half-Life `skill.cfg` files to the Unified SDK's `skill.json` format.
-
-Usage: `dotnet path/to/HalfLife.UnifiedSdk.Json.dll <filename> [--output-filename <output-filename>]`
+See [LICENSE](/LICENSE) for the MIT license
+See [ImageSharp_LICENSE](/ImageSharp_LICENSE) for the Apache License, Version 2.0
