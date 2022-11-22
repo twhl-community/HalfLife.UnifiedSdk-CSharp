@@ -19,6 +19,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="..\..\ImageSharp_LICENSE" />
+    <None Remove="..\..\LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\ImageSharp_LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JeremyAnsel.Media.WavefrontObj" Version="3.0.20" />
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
   </ItemGroup>
