@@ -14,19 +14,26 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
 
         public Regex? ValuePattern { get; set; }
 
-        public bool IsMatch(Entity entity)
+        public KeyValuePair<string, string>? Match(Entity entity)
         {
             if (ClassNamePattern?.IsMatch(entity.ClassName) == false)
             {
-                return false;
+                return null;
             }
 
             if (KeyPattern is null && ValuePattern is null)
             {
-                return true;
+                return new("classname", entity.ClassName);
             }
 
-            return entity.WithoutClassName().Any(kv => KeyPattern?.IsMatch(kv.Key) != false && ValuePattern?.IsMatch(kv.Value) != false);
+            var result = entity.WithoutClassName().FirstOrDefault(kv => KeyPattern?.IsMatch(kv.Key) != false && ValuePattern?.IsMatch(kv.Value) != false);
+
+            if (result.Key is null)
+            {
+                return null;
+            }
+
+            return result;
         }
     }
 }

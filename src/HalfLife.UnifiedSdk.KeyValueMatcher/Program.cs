@@ -17,9 +17,9 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                 IsRequired = true
             };
 
-            var printKeyValuesOption = new Option<bool>("--print-keyvalues",
-                getDefaultValue: () => true,
-                description: "Print the keyvalues of matched entities");
+            var printModeOption = new Option<PrintMode>("--print-mode",
+                getDefaultValue: () => PrintMode.KeyValue,
+                description: "What to print when a match is found");
 
             var classNamePatternOption = new Option<string?>("--classname", description: "Classname regex pattern");
             var keyPatternOption = new Option<string?>("--key", description: "Key regex pattern");
@@ -28,13 +28,13 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
             var rootCommand = new RootCommand("Half-Life Unified SDK map batch search tool")
             {
                 mapsDirectoryOption,
-                printKeyValuesOption,
+                printModeOption,
                 classNamePatternOption,
                 keyPatternOption,
                 valuePatternOption
             };
 
-            rootCommand.SetHandler((mapsDirectory, printKeyValues, classNamePattern, keyPattern, valuePattern, logger) =>
+            rootCommand.SetHandler((mapsDirectory, printMode, classNamePattern, keyPattern, valuePattern, logger) =>
             {
                 if (!mapsDirectory.Exists)
                 {
@@ -55,19 +55,19 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                     {
                         var map = MapFormats.Deserialize(mapName.FullName);
 
-                        PrintMatches(map, matcher, logger, printKeyValues);
+                        PrintMatches(map, matcher, logger, printMode);
                     }
                     catch (IOException e)
                     {
                         logger.Error(e, "Error loading BSP file {MapName}", mapName.FullName);
                     }
                 }
-            }, mapsDirectoryOption, printKeyValuesOption, classNamePatternOption, keyPatternOption, valuePatternOption, LoggerBinder.Instance);
+            }, mapsDirectoryOption, printModeOption, classNamePatternOption, keyPatternOption, valuePatternOption, LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }
 
-        private static void PrintMatches(Map map, KeyValueMatcher matcher, ILogger logger, bool printKeyValues)
+        private static void PrintMatches(Map map, KeyValueMatcher matcher, ILogger logger, PrintMode matchPrinting)
         {
             logger.Information("Map {MapName}", map.FileName);
 
@@ -75,21 +75,27 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
 
             foreach (var entity in map.Entities)
             {
-                if (matcher.IsMatch(entity))
+                if (matcher.Match(entity) is { } match)
                 {
-                    if (printKeyValues)
+                    builder.Clear();
+
+                    switch (matchPrinting)
                     {
-                        builder.Clear();
+                        case PrintMode.KeyValue:
+                            builder.Append($" \"{match.Key}\" \"{match.Value}\"");
+                            break;
 
-                        builder.AppendLine();
-                        builder.AppendLine("{");
+                        case PrintMode.Entity:
+                            builder.AppendLine();
+                            builder.AppendLine("{");
 
-                        foreach (var keyValue in entity)
-                        {
-                            builder.AppendFormat("\"{0}\" \"{1}\"", keyValue.Key, keyValue.Value).AppendLine();
-                        }
+                            foreach (var keyValue in entity)
+                            {
+                                builder.AppendFormat("\"{0}\" \"{1}\"", keyValue.Key, keyValue.Value).AppendLine();
+                            }
 
-                        builder.Append('}');
+                            builder.Append('}');
+                            break;
                     }
 
                     logger.Information("{Entity}{KeyValues}", entity.ToString(), builder);
