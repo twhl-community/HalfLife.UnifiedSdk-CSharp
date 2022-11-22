@@ -35,7 +35,7 @@ namespace HalfLife.UnifiedSdk.Installer
             string destinationGraphsDirectory = Path.Combine(destinationMapsDirectory, "graphs");
 
             //Install campaign and training maps.
-            var mapsToInstall = game.Info.Maps.Values.Where(m => m.Category == MapCategory.Campaign || m.Category == MapCategory.Training);
+            var mapsToInstall = game.Info.Maps.Values;
 
             //Verify that everything exists before continuing.
             if (!VerifyFilesExist(
