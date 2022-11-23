@@ -191,6 +191,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                     // Use original game parsing behavior.
                     var value = entity.GetStringOrNull("message");
 
+                    entity.Remove("message");
+
                     if (string.IsNullOrEmpty(value))
                     {
                         return null;
