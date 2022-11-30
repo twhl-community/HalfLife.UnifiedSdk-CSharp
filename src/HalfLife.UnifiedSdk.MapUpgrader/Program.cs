@@ -15,8 +15,9 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
 
             var defaultGame = ValveGames.HalfLife1;
 
-            var gameOption = new Option<string>("--game", description: "The name of a game's mod directory to apply upgrades for that game."
-                + $"\nIf not specified, uses \"{defaultGame.ModDirectory}\"");
+            var gameOption = new Option<string>("--game",
+                getDefaultValue: () => defaultGame.ModDirectory,
+                description: "The name of a game's mod directory to apply upgrades for that game");
 
             gameOption.AddCompletions(games.Select(g => g.ModDirectory).ToArray());
 
@@ -45,8 +46,6 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
 
             rootCommand.SetHandler((game, diagnosticsLevel, maps, logger) =>
             {
-                game ??= defaultGame.ModDirectory;
-
                 var gameInfo = games.SingleOrDefault(g => g.ModDirectory == game);
 
                 if (gameInfo is null)
@@ -55,16 +54,16 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
                     return;
                 }
 
+                var upgradeTool = MapUpgradeToolFactory.Create(logger, diagnosticsLevel);
+
+                logger.Information("Upgrading maps for game {GameName} ({ModDirectory}) to version {LatestVersion}",
+                    gameInfo.Name, gameInfo.ModDirectory, upgradeTool.LatestVersion);
+
                 if (!maps.Any())
                 {
                     logger.Information("No maps to upgrade");
                     return;
                 }
-
-                var upgradeTool = MapUpgradeToolFactory.Create(logger, diagnosticsLevel);
-
-                logger.Information("Upgrading maps for game {GameName} ({ModDirectory}) to version {LatestVersion}",
-                    gameInfo.Name, gameInfo.ModDirectory, upgradeTool.LatestVersion);
 
                 foreach (var map in maps)
                 {
