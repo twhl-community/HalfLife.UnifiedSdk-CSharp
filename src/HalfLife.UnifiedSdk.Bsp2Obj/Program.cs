@@ -11,16 +11,15 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
             var bspFileNameArgument = new Argument<FileInfo>("filename", description: "Path to the BSP file");
 
             var destinationDirectoryOption = new Option<DirectoryInfo?>("--destination",
-                description: "Directory to save the OBJ file to."
-                + " If not provided the file will be saved to the directory that the source file is located in");
+                getDefaultValue: () => null,
+                description: "Directory to save the OBJ, material and texture files to."
+                + " If not provided the files will be saved to the directory that the source file is located in");
 
-            var rootCommand = new RootCommand("Half-Life game content installer")
+            var rootCommand = new RootCommand("Half-Life Unified SDK BSP to OBJ converter")
             {
                 bspFileNameArgument,
                 destinationDirectoryOption
             };
-
-            rootCommand.Description = "Half-Life Unified SDK BSP to OBJ converter";
 
             rootCommand.SetHandler((bspFileName, destinationDirectory, logger) =>
             {

@@ -31,7 +31,9 @@ namespace HalfLife.UnifiedSdk.MapUpgrader
             });
 
             var mapsOption = new Option<IEnumerable<FileInfo>>("--maps", description: "List of maps to upgrade");
-            var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level", description: "The diagnostics level to set");
+            var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level",
+                getDefaultValue: () => DiagnosticsLevel.Disabled,
+                description: "The diagnostics level to set");
 
             var rootCommand = new RootCommand("Half-Life Unified SDK map upgrader")
             {

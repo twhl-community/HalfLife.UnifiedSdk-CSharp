@@ -10,11 +10,28 @@ namespace HalfLife.UnifiedSdk.Packager
     {
         public static int Main(string[] args)
         {
-            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
-            var packageManifestOption = new Option<FileInfo>("--package-manifest", description: "Path to the package manifest file");
-            var packageNameOption = new Option<string>("--package-name", description: "Base name of the package");
-            var verboseOption = new Option<bool>("--verbose", description: "Log additional information");
-            var listOmittedOption = new Option<bool>("--list-omitted", description: "List files that were omitted from the package");
+            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory")
+            {
+                IsRequired = true,
+            };
+
+            var packageManifestOption = new Option<FileInfo>("--package-manifest", description: "Path to the package manifest file")
+            {
+                IsRequired = true,
+            };
+
+            var packageNameOption = new Option<string>("--package-name", description: "Base name of the package")
+            {
+                IsRequired = true,
+            };
+
+            var verboseOption = new Option<bool>("--verbose",
+                getDefaultValue: () => false,
+                description: "Log additional information");
+
+            var listOmittedOption = new Option<bool>("--list-omitted",
+                getDefaultValue:() => false,
+                description: "List files that were omitted from the package");
 
             var rootCommand = new RootCommand("Half-Life mod packager")
             {

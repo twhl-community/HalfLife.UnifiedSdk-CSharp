@@ -8,15 +8,15 @@ const string TargetExtension = ".json";
 
 var inputFileName = new Argument<FileInfo>("filename", "skill.cfg to convert");
 
-var outputFileName = new Option<FileInfo?>("--output-filename", "If provided, the name of the file to write the skill.json contents to");
+var outputFileName = new Option<FileInfo?>("--output-filename",
+    getDefaultValue: () => null,
+    "If provided, the name of the file to write the skill.json contents to");
 
-var rootCommand = new RootCommand
+var rootCommand = new RootCommand("Half-Life Unified SDK skill.cfg to skill.json converter")
 {
     inputFileName,
     outputFileName
 };
-
-rootCommand.Description = "Half-Life Unified SDK skill.cfg to skill.json converter";
 
 rootCommand.SetHandler((fileName, outputFileName, logger) =>
     {

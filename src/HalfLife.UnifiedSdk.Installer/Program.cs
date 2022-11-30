@@ -11,7 +11,9 @@ namespace HalfLife.UnifiedSdk.Installer
         {
             var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
             var dryRunOption = new Option<bool>("--dry-run", description: "If provided no file changes will be written to disk");
-            var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level", description: "The diagnostics level to set");
+            var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level",
+                getDefaultValue: () => DiagnosticsLevel.Disabled,
+                description: "The diagnostics level to set");
 
             var rootCommand = new RootCommand("Half-Life game content installer")
             {
