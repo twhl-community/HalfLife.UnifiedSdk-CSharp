@@ -184,6 +184,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             new Dictionary<string, ImmutableArray<KeyData>>
             {
                 ["func_door"] = DoorData,
+                ["func_water"] = DoorData,
                 ["func_door_rotating"] = DoorData,
                 ["momentary_door"] = ImmutableArray.Create(new KeyData("movesnd", DefaultSound, MomentaryDoorMoveSounds)),
                 ["func_rotating"] = ImmutableArray.Create(new KeyData("sounds", DefaultSound, RotatingMoveSounds, entity =>
@@ -203,6 +204,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                 ["func_button"] = ButtonData,
                 ["func_rot_button"] = ButtonData,
                 ["momentary_rot_button"] = ImmutableArray.Create(new KeyData("sounds", DefaultMomentaryButtonSound, ButtonSounds)),
+                ["func_train"] = PlatData,
                 ["func_plat"] = PlatData,
                 ["func_platrot"] = PlatData,
                 ["func_trackchange"] = PlatData,
