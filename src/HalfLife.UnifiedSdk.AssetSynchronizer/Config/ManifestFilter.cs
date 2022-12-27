@@ -1,7 +1,7 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Configuration;
 using Newtonsoft.Json;
 
-namespace HalfLife.UnifiedSdk.AssetSynchronizer
+namespace HalfLife.UnifiedSdk.AssetSynchronizer.Config
 {
     internal class ManifestFilter
     {

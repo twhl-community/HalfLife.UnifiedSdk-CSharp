@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Logging;
+﻿using HalfLife.UnifiedSdk.AssetSynchronizer.Config;
+using HalfLife.UnifiedSdk.Utilities.Logging;
 using Newtonsoft.Json;
 using Serilog;
 using System.Collections.Immutable;
@@ -29,27 +30,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                     return;
                 }
 
-                var manifest = JsonConvert.DeserializeObject<List<ManifestFilter>>(File.ReadAllText(assetManifest.FullName)) ?? new();
-
-                //Convert paths to absolute.
-                foreach (var filter in manifest)
-                {
-                    filter.Source = Path.Combine(assetsDirectory.FullName, filter.Source);
-                    filter.Destination = Path.Combine(modDirectory.FullName, filter.Destination);
-
-                    //Verify that the paths are valid.
-                    if (File.Exists(filter.Source))
-                    {
-                        logger.Error("The source directory \"{Source}\" is a file", filter.Source);
-                        return;
-                    }
-
-                    if (File.Exists(filter.Destination))
-                    {
-                        logger.Error("The destination directory \"{Destination}\" is a file", filter.Destination);
-                        return;
-                    }
-                }
+                var manifest = AssetManifest.Load(logger, assetManifest.FullName, assetsDirectory.FullName, modDirectory.FullName);
 
                 //Copy all changed files on startup.
                 foreach (var filter in manifest)
@@ -82,15 +63,18 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
 
         private static void CopyAllFiles(ILogger logger, ManifestFilter filter)
         {
-            foreach (var fileName in Directory.EnumerateFiles(filter.Source, filter.Pattern, new EnumerationOptions
+            if (Directory.Exists(filter.Source))
             {
-                RecurseSubdirectories = filter.Recursive
-            }))
-            {
-                var relativePath = Path.GetRelativePath(filter.Source, fileName);
-                var destinationFileName = Path.Combine(filter.Destination, relativePath);
+                foreach (var fileName in Directory.EnumerateFiles(filter.Source, filter.Pattern, new EnumerationOptions
+                {
+                    RecurseSubdirectories = filter.Recursive
+                }))
+                {
+                    var relativePath = Path.GetRelativePath(filter.Source, fileName);
+                    var destinationFileName = Path.Combine(filter.Destination, relativePath);
 
-                CopyIfDifferent(logger, fileName, destinationFileName);
+                    CopyIfDifferent(logger, fileName, destinationFileName);
+                }
             }
         }
 
