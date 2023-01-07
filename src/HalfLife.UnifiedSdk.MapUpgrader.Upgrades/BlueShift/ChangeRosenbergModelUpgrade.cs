@@ -19,9 +19,22 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
                         && e.GetModel() == "models/scientist.mdl"
                         && e.GetInteger("body") == 3)))
             {
-                entity.SetModel("models/rosenberg.mdl");
-                entity.Remove("body");
+                UpdateEntity(entity);
             }
+
+            // Remap Rosenberg monster_scientist to monster_rosenberg.
+            foreach (var entity in context.Map.Entities
+                .Where(e => e.ClassName == "monster_scientist"
+                    && e.GetInteger("body") == 3))
+            {
+                entity.ClassName = "monster_rosenberg";
+                UpdateEntity(entity);
+            }
+        }
+        private static void UpdateEntity(Entity entity)
+        {
+            entity.SetModel("models/rosenberg.mdl");
+            entity.Remove("body");
         }
     }
 }
