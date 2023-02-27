@@ -194,5 +194,27 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             //Unlikely to happen unless a map has way more entities than the engine supports.
             throw new ArgumentException($"Could not generate unique targetname for \"{baseName}\"", nameof(baseName));
         }
+
+        /// <summary>
+        /// Finds the first entity with the given targetname or <see langword="null"/> if no entity with that targetname exists.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="entityList"/> or <paramref name="targetName"/> are <see langword="null"/>.
+        /// </exception>
+        public static Entity? Find(this EntityList entityList, string targetName)
+        {
+            ArgumentNullException.ThrowIfNull(entityList);
+            ArgumentNullException.ThrowIfNull(targetName);
+
+            foreach (var entity in entityList)
+            {
+                if (entity.GetTargetName() == targetName)
+                {
+                    return entity;
+                }
+            }
+
+            return null;
+        }
     }
 }

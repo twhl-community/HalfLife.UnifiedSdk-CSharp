@@ -1,5 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift;
 using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common;
+using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife;
 using HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
@@ -22,7 +23,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 
         public static MapUpgradeBuilder AddHalfLifeUpgrades(this MapUpgradeBuilder builder)
         {
-            //Nothing.
+            builder.AddAction(new C2a5FixBarrelPushTriggersUpgrade());
             return builder;
         }
 
