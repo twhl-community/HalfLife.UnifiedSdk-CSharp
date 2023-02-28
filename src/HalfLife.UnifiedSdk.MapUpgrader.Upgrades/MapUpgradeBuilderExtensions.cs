@@ -19,6 +19,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ConvertWorldspawnGameTitleValueUpgrade());
             builder.AddAction(new ConvertSoundIndicesToNamesUpgrade());
             builder.AddAction(new SetCustomHullForGenericMonstersUpgrade());
+            builder.AddAction(new FixRenderColorFormatUpgrade());
             return builder;
         }
 
