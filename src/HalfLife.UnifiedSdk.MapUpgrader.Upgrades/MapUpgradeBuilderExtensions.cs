@@ -44,6 +44,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ConvertOtisBodyStateUpgrade());
             builder.AddAction(new FixBlackOpsSpawnDelayUpgrade());
             builder.AddAction(new ChangeFuncTankOfToFuncTankUpgrade());
+            builder.AddAction(new Of2a2FixGruntBodyUpgrade());
             return builder;
         }
 
