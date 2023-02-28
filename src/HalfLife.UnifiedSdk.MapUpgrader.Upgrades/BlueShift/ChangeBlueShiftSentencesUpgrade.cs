@@ -17,6 +17,9 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
             { "!NA1", "!EA0" },
             // ba_security2 armory guard greets players as Freeman if using the original line.
             { "!BA_HELLO1", "!BSBA_HELLO1" },
+            // ba_power1 grunts playing alert sounds.
+            { "!HG_ALERT0", "!BSHG_ALERT0" },
+            { "!HG_ALERT2", "!BSHG_ALERT2" },
         }
         // Renames HOLO_* sentences to BSHOLO_*.
         .Concat(new[]
