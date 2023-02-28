@@ -48,6 +48,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 
         public static MapUpgradeBuilder AddBlueShiftUpgrades(this MapUpgradeBuilder builder)
         {
+            builder.AddAction(new BaYard1FixDeadScientistModelUpgrade());
             builder.AddAction(new BaYard4aSlavesUpgrade());
             builder.AddAction(new RenameConsoleCivAnimationsUpgrade());
             builder.AddAction(new ChangeRosenbergModelUpgrade());

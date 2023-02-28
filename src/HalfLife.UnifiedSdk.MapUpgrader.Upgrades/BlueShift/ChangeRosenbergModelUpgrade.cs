@@ -1,30 +1,40 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
-using System.Collections.Immutable;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
-    internal sealed class ChangeRosenbergModelUpgrade : IMapUpgradeAction
+    internal sealed class ChangeRosenbergModelUpgrade : GameSpecificMapUpgradeAction
     {
-        private static readonly ImmutableHashSet<string> RosenbergNames = ImmutableHashSet.Create(
-            "dr_rosenberg",
-            "dr_rosenberg1",
-            "dr_rosenberg2",
-            "dr_rosenberg_fake"
-            );
+        public ChangeRosenbergModelUpgrade()
+            : base(ValveGames.BlueShift)
+        {
+        }
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var entity in context.Map.Entities
                 .Where(e => e.ClassName == "monster_rosenberg"
                     || (e.ClassName == "monster_generic"
                         && e.GetModel() == "models/scientist.mdl"
-                        && e.GetInteger("body") == 3
-                        && RosenbergNames.Contains(e.GetTargetName()))))
+                        && e.GetInteger("body") == 3)))
             {
-                entity.SetModel("models/rosenberg.mdl");
-                entity.Remove("body");
+                UpdateEntity(entity);
             }
+
+            // Remap Rosenberg monster_scientist to monster_rosenberg.
+            foreach (var entity in context.Map.Entities
+                .Where(e => e.ClassName == "monster_scientist"
+                    && e.GetInteger("body") == 3))
+            {
+                entity.ClassName = "monster_rosenberg";
+                UpdateEntity(entity);
+            }
+        }
+        private static void UpdateEntity(Entity entity)
+        {
+            entity.SetModel("models/rosenberg.mdl");
+            entity.Remove("body");
         }
     }
 }
