@@ -11,11 +11,11 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
     {
         public static void Convert(Stream inputStream, Stream outputStream, string description)
         {
-            using var reader = new StreamReader(inputStream);
+            using var reader = new StreamReader(inputStream, leaveOpen: true);
 
             HashSet<string> knownVariables = new();
 
-            using var writer = new JsonTextWriter(new StreamWriter(outputStream));
+            using var writer = new JsonTextWriter(new StreamWriter(outputStream, leaveOpen: true));
 
             writer.Formatting = Formatting.Indented;
             writer.Indentation = 1;
