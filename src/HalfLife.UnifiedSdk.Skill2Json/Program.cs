@@ -1,6 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Formats.Skill;
 using HalfLife.UnifiedSdk.Utilities.Logging;
-using Newtonsoft.Json;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 
@@ -28,29 +27,20 @@ namespace HalfLife.UnifiedSdk.Skill2Json
                 {
                     if (fileName.Extension == TargetExtension)
                     {
-                        throw new ArgumentException($"Input file \"{fileName.FullName}\" has the same extension as the target file type", nameof(fileName));
+                        throw new ArgumentException(
+                            $"Input file \"{fileName.FullName}\" has the same extension as the target file type", nameof(fileName));
                     }
 
                     //Default to input with different extension.
                     outputFileName ??= new FileInfo(Path.ChangeExtension(fileName.FullName, TargetExtension));
 
-                    var data = SkillConverter.Convert(fileName.OpenRead());
-
-                    data.Sections[0].Description = $"Converted skill.cfg values from {Path.Combine(fileName.Directory?.Name ?? string.Empty, fileName.Name)}";
-
-                    var settings = new JsonSerializerSettings
-                    {
-                        Formatting = Formatting.Indented,
-                        NullValueHandling = NullValueHandling.Ignore
-                    };
-
-                    var json = JsonConvert.SerializeObject(data.Sections, settings);
-
                     logger.Information("Writing output to \"{FileName}\"", outputFileName.FullName);
 
-                    using var writer = new StreamWriter(outputFileName.OpenWrite());
+                    using var inputStream = fileName.OpenRead();
+                    using var outputStream = outputFileName.Open(FileMode.Create);
 
-                    writer.Write(json);
+                    SkillConverter.Convert(inputStream, outputStream,
+                        $"Converted skill.cfg values from {Path.Combine(fileName.Directory?.Name ?? string.Empty, fileName.Name)}");
                 },
                 inputFileName, outputFileName, LoggerBinder.Instance);
 

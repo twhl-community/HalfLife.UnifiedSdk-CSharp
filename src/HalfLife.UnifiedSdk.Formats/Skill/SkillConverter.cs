@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Tools;
+using Newtonsoft.Json;
 using System.Globalization;
 
 namespace HalfLife.UnifiedSdk.Formats.Skill
@@ -8,30 +9,49 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
     /// </summary>
     public static class SkillConverter
     {
-        public static SkillData Convert(Stream stream)
+        public static void Convert(Stream inputStream, Stream outputStream, string description)
         {
-            using var reader = new StreamReader(stream);
+            using var reader = new StreamReader(inputStream);
 
-            var data = new SkillData();
+            HashSet<string> knownVariables = new();
 
-            var section = new SkillSection();
+            using var writer = new JsonTextWriter(new StreamWriter(outputStream));
 
-            data.Sections.Add(section);
+            writer.Formatting = Formatting.Indented;
+            writer.Indentation = 1;
+            writer.IndentChar = '\t';
+
+            writer.WriteStartArray();
+            writer.WriteStartObject();
+
+            writer.WritePropertyName("Description");
+            writer.WriteValue(description);
+
+            writer.WritePropertyName("Variables");
+
+            writer.WriteStartObject();
 
             int lineNumber = 0;
 
             string? line;
 
+            string comments = string.Empty;
+
             while ((line = reader.ReadLine()) != null)
             {
                 ++lineNumber;
 
-                var tokenizer = new Tokenizer(line);
+                var tokenizer = new Tokenizer(line, allowComments: true);
 
-                //Each line should be two tokens.
-                if (!tokenizer.Next())
+                //Each line should be two tokens. Comments can occur on their own line or after the tokens.
+                while (tokenizer.Next() && tokenizer.Type == TokenType.Comment)
                 {
-                    //Empty or comment.
+                    comments = StringUtilities.ConcatComments(comments, tokenizer.Token);
+                }
+
+                if (tokenizer.Type != TokenType.Text && !tokenizer.Next())
+                {
+                    //Empty or comments. Keep comments for next valid token.
                     continue;
                 }
 
@@ -53,6 +73,14 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
                     };
                 }
 
+                if (tokenizer.Type != TokenType.Text)
+                {
+                    throw new ConverterException($"Skill variable \"{key}\" missing value (commented out?)")
+                    {
+                        LineNumber = lineNumber
+                    };
+                }
+
                 if (!float.TryParse(tokenizer.Token, NumberStyles.Float, CultureInfo.InvariantCulture, out var value))
                 {
                     throw new ConverterException($"Skill variable \"{key}\" has invalid value \"{tokenizer.Token.ToString()}\"")
@@ -61,7 +89,7 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
                     };
                 }
 
-                if (!section.Variables.TryAdd(key, value))
+                if (knownVariables.Contains(key))
                 {
                     throw new ConverterException($"Duplicate skill variable \"{key}\"")
                     {
@@ -69,7 +97,38 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
                     };
                 }
 
-                if (tokenizer.Next())
+                if (!string.IsNullOrEmpty(comments))
+                {
+                    // Force a newline before the comment. This will still place it before the comma.
+                    if (knownVariables.Count > 0)
+                    {
+                        writer.WriteWhitespace(Environment.NewLine);
+                        writer.WriteWhitespace("\t\t\t");
+                    }
+
+                    writer.WriteComment(StringUtilities.IndentLines(comments, 3, '\t', false));
+                    comments = string.Empty;
+                }
+
+                knownVariables.Add(key);
+
+                bool isInteger = Math.Abs(value % 1) <= (double.Epsilon * 100);
+
+                writer.WritePropertyName(key);
+                writer.WriteRawValue(value.ToString(isInteger ? "F0" : "F2", CultureInfo.InvariantCulture));
+
+                while (tokenizer.Next() && tokenizer.Type == TokenType.Comment)
+                {
+                    comments = StringUtilities.ConcatComments(comments, tokenizer.Token);
+                }
+
+                if (!string.IsNullOrEmpty(comments))
+                {
+                    writer.WriteComment(comments);
+                    comments = string.Empty;
+                }
+
+                if (tokenizer.Type != TokenType.None)
                 {
                     throw new ConverterException("Too many tokens on line")
                     {
@@ -78,7 +137,18 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
                 }
             }
 
-            return data;
+            // Write any remaining comments.
+            if (!string.IsNullOrEmpty(comments))
+            {
+                writer.WriteComment(comments);
+                comments = string.Empty;
+            }
+
+            writer.WriteEndObject();
+
+            writer.WriteEndObject();
+
+            writer.WriteEndArray();
         }
     }
 }
