@@ -8,6 +8,24 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
     /// </summary>
     public ref struct Tokenizer
     {
+        private readonly ref struct CommentParseResult
+        {
+            public readonly bool HasValue;
+            public readonly ReadOnlySpan<char> Value;
+
+            public CommentParseResult()
+            {
+                HasValue = false;
+                Value = default;
+            }
+
+            public CommentParseResult(bool hasValue, ReadOnlySpan<char> value)
+            {
+                HasValue = hasValue;
+                Value = value;
+            }
+        }
+
         /// <summary>
         /// List of special characters.
         /// </summary>
@@ -19,6 +37,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         public static readonly ImmutableArray<char> SpecialCharactersWithColon = SpecialCharacters.Add(':');
 
         private readonly ImmutableArray<char> _specialCharacters = SpecialCharacters;
+
+        private readonly bool _allowComments;
 
         /// <summary>
         /// Text span being operated on.
@@ -36,14 +56,23 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         public ReadOnlySpan<char> RemainingText { get; private set; }
 
         /// <summary>
+        /// The type of the current token.
+        /// </summary>
+        public TokenType Type { get; private set; }
+
+        /// <summary>
         /// Constructs a new tokenizer that operates on the given text span.
         /// </summary>
         /// <param name="text">Text to process.</param>
         /// <param name="ignoreColon">If <see langword="true"/> the colon character <c>':'</c> will be treated as special.</param>
-        public Tokenizer(ReadOnlySpan<char> text, bool ignoreColon = false)
+        /// <param name="allowComments">
+        /// If <see langword="true"/> comments will be parsed with <see cref="Type"/> set to <see cref="TokenType.Comment"/>.
+        /// </param>
+        public Tokenizer(ReadOnlySpan<char> text, bool ignoreColon = false, bool allowComments = false)
         {
             Text = text;
             Token = ReadOnlySpan<char>.Empty;
+            Type = TokenType.None;
 
             RemainingText = Text;
 
@@ -51,6 +80,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
             {
                 _specialCharacters = SpecialCharactersWithColon;
             }
+
+            _allowComments = allowComments;
         }
 
         /// <summary>
@@ -60,17 +91,31 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         public bool Next()
         {
             Token = ReadOnlySpan<char>.Empty;
+            Type = TokenType.None;
 
             if (RemainingText.IsEmpty)
             {
                 return false;
             }
 
-            do
+            while (true)
             {
                 RemainingText = RemainingText.TrimStart();
+
+                var comment = TryParseComment();
+
+                if (!comment.HasValue)
+                {
+                    break;
+                }
+
+                if (_allowComments)
+                {
+                    Token = comment.Value;
+                    Type = TokenType.Comment;
+                    return true;
+                }
             }
-            while (SkipComments());
 
             if (RemainingText.IsEmpty)
             {
@@ -87,28 +132,35 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
             }
         }
 
-        private bool SkipComments()
+        private CommentParseResult TryParseComment()
         {
-            bool skipped = false;
+            CommentParseResult result = new(false, new());
 
             while (!RemainingText.IsEmpty && RemainingText.StartsWith("//"))
             {
-                skipped = true;
-
                 var end = RemainingText.IndexOf('\n');
 
-                if (end != -1)
+                if (end == -1)
                 {
-                    RemainingText = RemainingText[(end + 1)..];
+                    //There is no newline left, so the rest of the text is comments.
+                    end = RemainingText.Length;
                 }
                 else
                 {
-                    //There is no newline left, so the rest of the text is comments.
-                    RemainingText = ReadOnlySpan<char>.Empty;
+                    ++end;
+                }
+
+                result = new CommentParseResult(true, RemainingText[2..end]);
+                RemainingText = RemainingText[end..];
+
+                // When parsing comments each comment line is its own token.
+                if (_allowComments)
+                {
+                    break;
                 }
             }
 
-            return skipped;
+            return result;
         }
 
         private bool NextQuotedToken()
@@ -130,11 +182,13 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
             if (endIndex < RemainingText.Length && RemainingText[endIndex] == '\"')
             {
                 RemainingText = RemainingText[(endIndex + 1)..];
+                Type = TokenType.Text;
             }
             else
             {
                 //Unexpected EOF.
                 RemainingText = ReadOnlySpan<char>.Empty;
+                Type = TokenType.None;
             }
 
             return true;
@@ -165,6 +219,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
             Token = RemainingText[0..endIndex];
 
             RemainingText = RemainingText[endIndex..];
+
+            Type = TokenType.Text;
 
             return true;
         }
