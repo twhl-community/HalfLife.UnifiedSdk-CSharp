@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Authors>SamVanheer</Authors>
+    <Version>0.1.0</Version>
+    <Description>This program converts original Half-Life materials.txt files to the Unified SDK's materials.json format.</Description>
+    <Copyright>2023 Sam Vanheer</Copyright>
+    <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>halflife;half-life;valve;json</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+  </PropertyGroup>
+    
+  <ItemGroup>
+    <None Remove="..\..\LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.Formats\HalfLife.UnifiedSdk.Formats.csproj" />
+    <ProjectReference Include="..\HalfLife.UnifiedSdk.Utilities\HalfLife.UnifiedSdk.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

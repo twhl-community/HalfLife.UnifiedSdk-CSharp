@@ -29,7 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Programs", "Programs", "{3F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{550BDB5E-801F-4B44-8FF4-A4C54DBC213A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.Bsp2Obj", "src\HalfLife.UnifiedSdk.Bsp2Obj\HalfLife.UnifiedSdk.Bsp2Obj.csproj", "{9EC5BF77-D0AA-4944-A442-C86EF548E332}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Bsp2Obj", "src\HalfLife.UnifiedSdk.Bsp2Obj\HalfLife.UnifiedSdk.Bsp2Obj.csproj", "{9EC5BF77-D0AA-4944-A442-C86EF548E332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalfLife.UnifiedSdk.Materials2Json", "src\HalfLife.UnifiedSdk.Materials2Json\HalfLife.UnifiedSdk.Materials2Json.csproj", "{DBDB4335-C539-44EF-8370-4EBDAB771BCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{9EC5BF77-D0AA-4944-A442-C86EF548E332}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EC5BF77-D0AA-4944-A442-C86EF548E332}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EC5BF77-D0AA-4944-A442-C86EF548E332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBDB4335-C539-44EF-8370-4EBDAB771BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBDB4335-C539-44EF-8370-4EBDAB771BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBDB4335-C539-44EF-8370-4EBDAB771BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBDB4335-C539-44EF-8370-4EBDAB771BCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{A6E9C2F6-1648-4F06-B50C-F2049E61C235} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
 		{EBB29A0D-3216-4380-A568-E0A46FEBF7BD} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
 		{9EC5BF77-D0AA-4944-A442-C86EF548E332} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
+		{DBDB4335-C539-44EF-8370-4EBDAB771BCC} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A8903C6-2AEF-4B94-8DBD-C978E383F5C4}
