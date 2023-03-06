@@ -12,6 +12,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         {
             //Must come before any other upgrades.
             builder.AddAction(new ConvertAngleToAnglesUpgrade());
+            builder.AddAction(new RenameEntityClassNamesUpgrade());
+
             builder.AddAction(new AdjustShotgunAnglesUpgrade());
             builder.AddAction(new ConvertOtisModelUpgrade());
             builder.AddAction(new RenameMessagesUpgrade());
