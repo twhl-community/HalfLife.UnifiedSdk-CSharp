@@ -50,11 +50,19 @@ namespace HalfLife.UnifiedSdk.Formats.Materials
 
                 line = line.Trim();
 
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+
                 var match = LineRegex.Match(line);
 
                 if (!match.Success)
                 {
-                    continue;
+                    throw new ConverterException("Invalid entry")
+                    {
+                        LineNumber = lineNumber
+                    };
                 }
 
                 var materialName = match.Groups[2].Value;
