@@ -55,11 +55,19 @@ namespace HalfLife.UnifiedSdk.Formats.Materials
                     continue;
                 }
 
+                // Special case: the original materials file has an incorrectly commented out entry that won't match the regex.
+                if (line == "/D OUT_RK1")
+                {
+                    logger.Information("Ignoring line {LineNumber} (\"{Line}\"): known bad syntax, treating as comment",
+                        lineNumber, line);
+                    continue;
+                }
+
                 var match = LineRegex.Match(line);
 
                 if (!match.Success)
                 {
-                    throw new ConverterException("Invalid entry")
+                    throw new ConverterException($"Invalid entry: {line}")
                     {
                         LineNumber = lineNumber
                     };
