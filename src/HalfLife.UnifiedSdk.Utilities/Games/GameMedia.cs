@@ -101,7 +101,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Games
             { 23, "Half-Life06" },
             { 24, "Prospero03" },
             { 25, "Half-Life17" },
-            { 26, "Prospero06" },
+            { 26, "Prospero05" },
             { 27, "Suspense05" },
             { 28, "Suspense07" }
         }.ToImmutableDictionary();
