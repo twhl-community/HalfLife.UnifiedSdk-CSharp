@@ -24,6 +24,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ConvertSoundIndicesToNamesUpgrade());
             builder.AddAction(new SetCustomHullForGenericMonstersUpgrade());
             builder.AddAction(new FixRenderColorFormatUpgrade());
+            builder.AddAction(new RemoveDMDelayFromChargersUpgrade());
             return builder;
         }
 
