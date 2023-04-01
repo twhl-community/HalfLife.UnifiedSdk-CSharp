@@ -16,6 +16,10 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                 getDefaultValue: () => PrintMode.KeyValue,
                 description: "What to print when a match is found");
 
+            var alwaysPrintMapNameOption = new Option<bool>("--always-print-mapname",
+                getDefaultValue: () => false,
+                description: "Whether to always print the map name or only when a match is found");
+
             var classNamePatternOption = new Option<string?>("--classname", description: "Classname regex pattern");
             var keyPatternOption = new Option<string?>("--key", description: "Key regex pattern");
             var valuePatternOption = new Option<string?>("--value", description: "Value regex pattern");
@@ -32,7 +36,8 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                 mapsDirectoriesArgument
             };
 
-            rootCommand.SetHandler((printMode, classNamePattern, keyPattern, valuePattern, mapsDirectories, logger) =>
+            rootCommand.SetHandler((printMode, alwaysPrintMapName, classNamePattern, keyPattern, valuePattern,
+                mapsDirectories, logger) =>
             {
                 if (!mapsDirectories.Any())
                 {
@@ -54,7 +59,13 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                     ValuePattern = valuePattern is not null ? new Regex(valuePattern) : null
                 };
 
-                foreach (var directory in validatedMapsDirectories[true])
+                var directoriesToSearch = validatedMapsDirectories[true].ToList();
+
+                logger.Information("Searching {Count} directories", directoriesToSearch.Count);
+
+                int numberOfMatches = 0;
+
+                foreach (var directory in directoriesToSearch)
                 {
                     foreach (var mapName in directory.EnumerateFiles("*.bsp"))
                     {
@@ -62,7 +73,7 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                         {
                             var map = MapFormats.Deserialize(mapName.FullName);
 
-                            PrintMatches(map, matcher, logger, printMode);
+                            numberOfMatches += PrintMatches(map, matcher, logger, printMode, alwaysPrintMapName);
                         }
                         catch (IOException e)
                         {
@@ -70,15 +81,31 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                         }
                     }
                 }
-            }, printModeOption, classNamePatternOption, keyPatternOption, valuePatternOption, mapsDirectoriesArgument,
+
+                logger.Information("Found {Count} matches", numberOfMatches);
+            }, printModeOption, alwaysPrintMapNameOption, classNamePatternOption, keyPatternOption, valuePatternOption,
+            mapsDirectoriesArgument,
             LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }
 
-        private static void PrintMatches(Map map, KeyValueMatcher matcher, ILogger logger, PrintMode matchPrinting)
+        private static int PrintMatches(Map map, KeyValueMatcher matcher, ILogger logger,
+            PrintMode matchPrinting, bool alwaysPrintMapName)
         {
-            logger.Information("Map {MapName}", map.FileName);
+            void PrintMapName()
+            {
+                logger.Information("Map {MapName}", map.FileName);
+            }
+
+            if (alwaysPrintMapName)
+            {
+                PrintMapName();
+            }
+
+            bool printedMapName = alwaysPrintMapName;
+
+            int numberOfMatches = 0;
 
             StringBuilder builder = new();
 
@@ -86,6 +113,12 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
             {
                 if (matcher.Match(entity) is { } match)
                 {
+                    if (!printedMapName)
+                    {
+                        printedMapName = true;
+                        PrintMapName();
+                    }
+
                     builder.Clear();
 
                     switch (matchPrinting)
@@ -108,8 +141,11 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                     }
 
                     logger.Information("{Entity}{KeyValues}", entity.ToString(), builder);
+                    ++numberOfMatches;
                 }
             }
+
+            return numberOfMatches;
         }
     }
 }
