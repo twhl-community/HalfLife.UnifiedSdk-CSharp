@@ -10,13 +10,20 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     {
         private static readonly ImmutableDictionary<string, string> ClassNames = new Dictionary<string, string>
         {
+            // Old weapon classnames.
             ["weapon_glock"] = "weapon_9mmhandgun",
             ["ammo_glockclip"] = "ammo_9mmclip",
-            ["weapon_mp5"] = "weapon_9mmAR",
-            ["ammo_mp5clip"] = "ammo_9mmAR",
-            ["ammo_mp5grenades"] = "ammo_ARgrenades",
+            ["weapon_mp5"] = "weapon_9mmar",
+            ["ammo_mp5clip"] = "ammo_9mmar",
+            ["ammo_mp5grenades"] = "ammo_argrenades",
             ["weapon_python"] = "weapon_357",
-            ["weapon_shockroach"] = "weapon_shockrifle"
+            ["weapon_shockroach"] = "weapon_shockrifle",
+
+            // Uppercase conversions.
+            ["weapon_9mmAR"] = "weapon_9mmar",
+            ["ammo_9mmAR"] = "ammo_9mmar",
+            ["ammo_ARgrenades"] = "ammo_argrenades",
+            ["monster_ShockTrooper_dead"] = "monster_shocktrooper_dead"
         }.ToImmutableDictionary();
 
         public void Apply(MapUpgradeContext context)
