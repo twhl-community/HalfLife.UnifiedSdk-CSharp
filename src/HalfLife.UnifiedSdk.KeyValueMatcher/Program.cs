@@ -12,11 +12,6 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
     {
         public static int Main(string[] args)
         {
-            var mapsDirectoryOption = new Option<DirectoryInfo>("--maps-directory", description: "Path to the maps directory to search")
-            {
-                IsRequired = true
-            };
-
             var printModeOption = new Option<PrintMode>("--print-mode",
                 getDefaultValue: () => PrintMode.KeyValue,
                 description: "What to print when a match is found");
@@ -25,21 +20,31 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
             var keyPatternOption = new Option<string?>("--key", description: "Key regex pattern");
             var valuePatternOption = new Option<string?>("--value", description: "Value regex pattern");
 
+            var mapsDirectoriesArgument = new Argument<IEnumerable<DirectoryInfo>>("maps-directory",
+                description: "One or more paths to the maps directories to search");
+
             var rootCommand = new RootCommand("Half-Life Unified SDK map batch search tool")
             {
-                mapsDirectoryOption,
                 printModeOption,
                 classNamePatternOption,
                 keyPatternOption,
-                valuePatternOption
+                valuePatternOption,
+                mapsDirectoriesArgument
             };
 
-            rootCommand.SetHandler((mapsDirectory, printMode, classNamePattern, keyPattern, valuePattern, logger) =>
+            rootCommand.SetHandler((printMode, classNamePattern, keyPattern, valuePattern, mapsDirectories, logger) =>
             {
-                if (!mapsDirectory.Exists)
+                if (!mapsDirectories.Any())
                 {
-                    logger.Error("The given maps directory \"{MapsDirectory}\" does not exist", mapsDirectory);
+                    logger.Information("No directories to search");
                     return;
+                }
+
+                var validatedMapsDirectories = mapsDirectories.ToLookup(p => p.Exists);
+
+                foreach (var directory in validatedMapsDirectories[false])
+                {
+                    logger.Warning("The given maps directory \"{MapsDirectory}\" does not exist", directory);
                 }
 
                 var matcher = new KeyValueMatcher
@@ -49,20 +54,24 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                     ValuePattern = valuePattern is not null ? new Regex(valuePattern) : null
                 };
 
-                foreach (var mapName in mapsDirectory.EnumerateFiles("*.bsp"))
+                foreach (var directory in validatedMapsDirectories[true])
                 {
-                    try
+                    foreach (var mapName in directory.EnumerateFiles("*.bsp"))
                     {
-                        var map = MapFormats.Deserialize(mapName.FullName);
+                        try
+                        {
+                            var map = MapFormats.Deserialize(mapName.FullName);
 
-                        PrintMatches(map, matcher, logger, printMode);
-                    }
-                    catch (IOException e)
-                    {
-                        logger.Error(e, "Error loading BSP file {MapName}", mapName.FullName);
+                            PrintMatches(map, matcher, logger, printMode);
+                        }
+                        catch (IOException e)
+                        {
+                            logger.Error(e, "Error loading BSP file {MapName}", mapName.FullName);
+                        }
                     }
                 }
-            }, mapsDirectoryOption, printModeOption, classNamePatternOption, keyPatternOption, valuePatternOption, LoggerBinder.Instance);
+            }, printModeOption, classNamePatternOption, keyPatternOption, valuePatternOption, mapsDirectoriesArgument,
+            LoggerBinder.Instance);
 
             return rootCommand.Invoke(args);
         }
