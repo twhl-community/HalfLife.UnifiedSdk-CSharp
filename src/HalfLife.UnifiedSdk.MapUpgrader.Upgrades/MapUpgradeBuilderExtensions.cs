@@ -25,6 +25,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new SetCustomHullForGenericMonstersUpgrade());
             builder.AddAction(new FixRenderColorFormatUpgrade());
             builder.AddAction(new RemoveDMDelayFromChargersUpgrade());
+            builder.AddAction(new ConvertBreakableItemUpgrade());
             return builder;
         }
 
