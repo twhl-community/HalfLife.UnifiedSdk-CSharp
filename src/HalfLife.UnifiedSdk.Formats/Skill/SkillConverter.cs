@@ -21,13 +21,9 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
             writer.Indentation = 1;
             writer.IndentChar = '\t';
 
-            writer.WriteStartArray();
-            writer.WriteStartObject();
+            writer.WriteComment(description);
 
-            writer.WritePropertyName("Description");
-            writer.WriteValue(description);
-
-            writer.WritePropertyName("Variables");
+            writer.WriteWhitespace(Environment.NewLine);
 
             writer.WriteStartObject();
 
@@ -103,10 +99,10 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
                     if (knownVariables.Count > 0)
                     {
                         writer.WriteWhitespace(Environment.NewLine);
-                        writer.WriteWhitespace("\t\t\t");
+                        writer.WriteWhitespace("\t");
                     }
 
-                    writer.WriteComment(StringUtilities.IndentLines(comments, 3, '\t', false));
+                    writer.WriteComment(StringUtilities.IndentLines(comments, 1, '\t', false));
                     comments = string.Empty;
                 }
 
@@ -145,10 +141,6 @@ namespace HalfLife.UnifiedSdk.Formats.Skill
             }
 
             writer.WriteEndObject();
-
-            writer.WriteEndObject();
-
-            writer.WriteEndArray();
         }
     }
 }
