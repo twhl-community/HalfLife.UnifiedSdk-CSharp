@@ -64,6 +64,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ChangeBlueShiftSentencesUpgrade());
             builder.AddAction(new BaXen3FixFlyBySoundsUpgrade());
             builder.AddAction(new BaSecurity2ChangeHologramModelUpgrade());
+            builder.AddAction(new BaOutroDisableTriggerAutoUpgrade());
             return builder;
         }
     }
