@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Games;
+using Newtonsoft.Json;
 using System.CommandLine;
 using System.Text.RegularExpressions;
 
@@ -33,18 +34,25 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
                     //Always use forward slashes.
                     var gameConfig = $"cfg/{simpleName}Config.json";
 
-                    var contents = $@"{{
-	""Includes"": [
-		""{gameConfig}""
-	]
-}}
-".ReplaceLineEndings();
-
-                    foreach (var map in game.CampaignMaps.Concat(game.TrainingMaps).Select(m => m.Name))
+                    foreach (var map in game.Maps.Select(m => m.Key))
                     {
                         var path = Path.Combine(destinationDirectory.FullName, map + ".json");
 
-                        File.WriteAllText(path, contents);
+                        using var writer = new JsonTextWriter(File.CreateText(path));
+
+                        writer.Formatting = Formatting.Indented;
+                        writer.Indentation = 1;
+                        writer.IndentChar = '\t';
+
+                        writer.WriteStartObject();
+
+                        writer.WritePropertyName("Includes");
+
+                        writer.WriteStartArray();
+                        writer.WriteValue(gameConfig);
+                        writer.WriteEndArray();
+
+                        writer.WriteEndObject();
                     }
                 }
             }, destinationDirectoryArgument);
