@@ -27,6 +27,11 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
                     ValveGames.BlueShift
                 };
 
+                Action<GameInfo, string, JsonTextWriter>[] decorators = new[]
+                {
+                    AddCTFConfiguration
+                };
+
                 foreach (var game in games)
                 {
                     var simpleName = whitespaceRegex.Replace(game.Name.Replace("-", ""), "");
@@ -52,12 +57,31 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
                         writer.WriteValue(gameConfig);
                         writer.WriteEndArray();
 
+                        foreach (var decorator in decorators)
+                        {
+                            decorator(game, map, writer);
+                        }
+
                         writer.WriteEndObject();
                     }
                 }
             }, destinationDirectoryArgument);
 
             return rootCommand.Invoke(args);
+        }
+
+        private static void AddCTFConfiguration(GameInfo game, string mapName, JsonTextWriter writer)
+        {
+            if (!mapName.StartsWith("op4ctf_"))
+            {
+                return;
+            }
+
+            writer.WritePropertyName("GameMode");
+            writer.WriteValue("ctf");
+
+            writer.WritePropertyName("AllowGameModeOverride");
+            writer.WriteValue(false);
         }
     }
 }

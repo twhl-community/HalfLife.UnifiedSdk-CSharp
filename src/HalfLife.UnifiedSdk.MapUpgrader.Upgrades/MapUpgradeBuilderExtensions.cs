@@ -51,6 +51,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new FixBlackOpsSpawnDelayUpgrade());
             builder.AddAction(new ChangeFuncTankOfToFuncTankUpgrade());
             builder.AddAction(new Of2a2FixGruntBodyUpgrade());
+            builder.AddAction(new RemoveGameModeSettingsUpgrade());
             return builder;
         }
 
