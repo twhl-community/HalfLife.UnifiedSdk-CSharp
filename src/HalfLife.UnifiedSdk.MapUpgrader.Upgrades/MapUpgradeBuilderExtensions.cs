@@ -26,6 +26,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new FixRenderColorFormatUpgrade());
             builder.AddAction(new RemoveDMDelayFromChargersUpgrade());
             builder.AddAction(new ConvertBreakableItemUpgrade());
+            builder.AddAction(new ReworkGamePlayerEquipUpgrade());
             return builder;
         }
 

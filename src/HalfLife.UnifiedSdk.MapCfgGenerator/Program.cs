@@ -1,5 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Games;
 using Newtonsoft.Json;
+using System.Collections.Immutable;
 using System.CommandLine;
 using System.Text.RegularExpressions;
 
@@ -27,9 +28,10 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
                     ValveGames.BlueShift
                 };
 
-                Action<GameInfo, string, JsonTextWriter>[] decorators = new[]
+                Action<GameInfo, string, List<Section>, JsonTextWriter>[] decorators = new[]
                 {
-                    AddCTFConfiguration
+                    AddCTFConfiguration,
+                    AddEmptySpawnInventory
                 };
 
                 foreach (var game in games)
@@ -57,9 +59,44 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
                         writer.WriteValue(gameConfig);
                         writer.WriteEndArray();
 
+                        List<Section> sections = new();
+
                         foreach (var decorator in decorators)
                         {
-                            decorator(game, map, writer);
+                            decorator(game, map, sections, writer);
+                        }
+
+                        if (sections.Count > 0)
+                        {
+                            writer.WritePropertyName("SectionGroups");
+                            writer.WriteStartArray();
+
+                            var sectionGroups = sections.GroupBy(s => s.Condition);
+
+                            if (sectionGroups.SingleOrDefault(g => g.Key.Length == 0) is { } unconditionalSectionGroup)
+                            {
+                                writer.WriteStartObject();
+
+                                WriteSections(unconditionalSectionGroup, writer);
+
+                                writer.WriteEndObject();
+                            }
+
+                            foreach (var sectionGroup in sectionGroups
+                                .Where(g => g.Key.Length > 0)
+                                .OrderBy(g => g.Key))
+                            {
+                                writer.WriteStartObject();
+
+                                writer.WritePropertyName("Condition");
+                                writer.WriteValue(sectionGroup.Key);
+
+                                WriteSections(sectionGroup, writer);
+
+                                writer.WriteEndObject();
+                            }
+
+                            writer.WriteEndArray();
                         }
 
                         writer.WriteEndObject();
@@ -70,7 +107,20 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
             return rootCommand.Invoke(args);
         }
 
-        private static void AddCTFConfiguration(GameInfo game, string mapName, JsonTextWriter writer)
+        private static void WriteSections(IEnumerable<Section> sections, JsonTextWriter writer)
+        {
+            writer.WritePropertyName("Sections");
+            writer.WriteStartObject();
+
+            foreach (var section in sections)
+            {
+                section.WriterCallback(writer);
+            }
+
+            writer.WriteEndObject();
+        }
+
+        private static void AddCTFConfiguration(GameInfo game, string mapName, List<Section> sections, JsonTextWriter writer)
         {
             if (!mapName.StartsWith("op4ctf_") && !mapName.StartsWith("op4cp_"))
             {
@@ -82,6 +132,39 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
 
             writer.WritePropertyName("AllowGameModeOverride");
             writer.WriteValue(false);
+        }
+
+        private static readonly ImmutableArray<string> MapsWithGamePlayerEquip = ImmutableArray.Create(
+            "op4cp_park",
+            "op4ctf_power",
+            "op4ctf_xendance",
+            "op4_meanie"
+            );
+
+        private static void AddEmptySpawnInventory(GameInfo game, string mapName, List<Section> sections, JsonTextWriter writer)
+        {
+            if (!MapsWithGamePlayerEquip.Contains(mapName))
+            {
+                return;
+            }
+
+            sections.Add(new(AddEmptySpawnInventoryCallback, "Multiplayer"));
+        }
+
+        private static void AddEmptySpawnInventoryCallback(JsonTextWriter writer)
+        {
+            writer.WritePropertyName("SpawnInventory");
+            writer.WriteStartObject();
+
+            writer.WriteComment("This map uses game_player_equip to set player inventory");
+
+            writer.WritePropertyName("Reset");
+            writer.WriteValue(true);
+
+            writer.WritePropertyName("HasSuit");
+            writer.WriteValue(true);
+
+            writer.WriteEndObject();
         }
     }
 }
