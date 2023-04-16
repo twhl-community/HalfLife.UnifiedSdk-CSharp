@@ -72,7 +72,7 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
 
         private static void AddCTFConfiguration(GameInfo game, string mapName, JsonTextWriter writer)
         {
-            if (!mapName.StartsWith("op4ctf_"))
+            if (!mapName.StartsWith("op4ctf_") && !mapName.StartsWith("op4cp_"))
             {
                 return;
             }
