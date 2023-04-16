@@ -1,4 +1,5 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
+﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using System.Collections.Immutable;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
@@ -30,9 +31,24 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
         {
             foreach (var entity in context.Map.Entities)
             {
-                if (ClassNames.TryGetValue(entity.ClassName, out var className))
                 {
-                    entity.ClassName = className;
+                    if (ClassNames.TryGetValue(entity.ClassName, out var className))
+                    {
+                        entity.ClassName = className;
+                    }
+                }
+
+                // Update references in this entity.
+                if (entity.ClassName == "game_player_equip")
+                {
+                    foreach (var kv in entity.WithoutClassName().ToList())
+                    {
+                        if (ClassNames.TryGetValue(kv.Key, out var className))
+                        {
+                            entity.Remove(kv.Key);
+                            entity.SetString(className, kv.Value);
+                        }
+                    }
                 }
             }
         }
