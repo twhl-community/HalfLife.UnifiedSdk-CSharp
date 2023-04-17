@@ -38,7 +38,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
 
         public void Apply(MapUpgradeContext context)
         {
-            foreach (var entity in context.Map.Entities.OfClass("func_breakable"))
+            foreach (var entity in context.Map.Entities
+                .Where(e => e.ClassName == "func_breakable" || e.ClassName == "func_pushable"))
             {
                 int index = entity.GetInteger(ItemKey, 0);
 
