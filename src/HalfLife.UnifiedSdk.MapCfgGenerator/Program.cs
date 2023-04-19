@@ -30,6 +30,7 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
 
                 Action<GameInfo, string, List<Section>, JsonTextWriter>[] decorators = new[]
                 {
+                    AddBarneySuit,
                     AddCTFConfiguration,
                     AddEmptySpawnInventory
                 };
@@ -116,6 +117,29 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
             {
                 section.WriterCallback(writer);
             }
+
+            writer.WriteEndObject();
+        }
+
+        private static void AddBarneySuit(GameInfo game, string mapName, List<Section> sections, JsonTextWriter writer)
+        {
+            if (mapName != "ba_tram1")
+            {
+                return;
+            }
+
+            sections.Add(new(AddBarneySuitCallback));
+        }
+
+        private static void AddBarneySuitCallback(JsonTextWriter writer)
+        {
+            writer.WritePropertyName("SpawnInventory");
+            writer.WriteStartObject();
+
+            writer.WriteComment("Give the player the HEV suit so they can see the HUD");
+
+            writer.WritePropertyName("HasSuit");
+            writer.WriteValue(true);
 
             writer.WriteEndObject();
         }
