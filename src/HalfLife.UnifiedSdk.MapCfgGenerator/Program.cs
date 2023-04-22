@@ -154,8 +154,8 @@ namespace HalfLife.UnifiedSdk.MapCfgGenerator
             writer.WritePropertyName("GameMode");
             writer.WriteValue("ctf");
 
-            writer.WritePropertyName("AllowGameModeOverride");
-            writer.WriteValue(false);
+            writer.WritePropertyName("LockGameMode");
+            writer.WriteValue(true);
         }
 
         private static readonly ImmutableArray<string> MapsWithGamePlayerEquip = ImmutableArray.Create(
