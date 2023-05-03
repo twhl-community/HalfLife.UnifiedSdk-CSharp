@@ -30,6 +30,15 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <summary>The <c>angles</c> key.</summary>
         public const string Angles = "angles";
 
+        /// <summary>The <c>rendermode</c> key.</summary>
+        public const string RenderMode = "rendermode";
+
+        /// <summary>The <c>renderamt</c> key.</summary>
+        public const string RenderAmount = "renderamt";
+
+        /// <summary>The <c>rendercolor</c> key.</summary>
+        public const string RenderColor = "rendercolor";
+
         /// <summary>The <c>worldspawn</c> class name.</summary>
         public const string WorldspawnClassName = "worldspawn";
 

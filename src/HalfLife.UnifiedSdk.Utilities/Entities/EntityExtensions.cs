@@ -126,6 +126,15 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets the <c>angles</c> value.</summary>
         public static Vector3 GetAngles(this Entity entity) => entity.GetVector3(KeyValueUtilities.Angles);
 
+        /// <summary>Gets the <c>rendermode</c> value.</summary>
+        public static RenderMode GetRenderMode(this Entity entity) => (RenderMode)entity.GetInteger(KeyValueUtilities.RenderMode);
+
+        /// <summary>Gets the <c>renderamt</c> value.</summary>
+        public static double GetRenderAmount(this Entity entity) => entity.GetDouble(KeyValueUtilities.RenderAmount);
+
+        /// <summary>Gets the <c>rendercolor</c> value.</summary>
+        public static Vector3 GetRenderColor(this Entity entity) => entity.GetVector3(KeyValueUtilities.RenderColor);
+
         /// <summary>Sets the <c>spawnflags</c> value.</summary>
         public static void SetSpawnFlags(this Entity entity, int spawnFlags) => entity.SetInteger(KeyValueUtilities.SpawnFlags, spawnFlags);
 
@@ -146,6 +155,15 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         /// <summary>Sets the <c>angles</c> value.</summary>
         public static void SetAngles(this Entity entity, Vector3 value) => entity.SetVector3(KeyValueUtilities.Angles, value);
+
+        /// <summary>Sets the <c>rendermode</c> value.</summary>
+        public static void SetRenderMode(this Entity entity, RenderMode value) => entity.SetInteger(KeyValueUtilities.RenderMode, (int)value);
+
+        /// <summary>Sets the <c>renderamount</c> value.</summary>
+        public static void SetRenderAmount(this Entity entity, double value) => entity.SetDouble(KeyValueUtilities.RenderAmount, value);
+
+        /// <summary>Sets the <c>rendercolor</c> value.</summary>
+        public static void SetRenderColor(this Entity entity, Vector3 value) => entity.SetVector3(KeyValueUtilities.RenderColor, value);
 
         /// <summary>
         /// Returns an enumerable without any <c>classname</c> keyvalues.

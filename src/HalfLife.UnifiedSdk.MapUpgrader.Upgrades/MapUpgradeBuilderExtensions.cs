@@ -33,6 +33,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         public static MapUpgradeBuilder AddHalfLifeUpgrades(this MapUpgradeBuilder builder)
         {
             builder.AddAction(new C2a5FixBarrelPushTriggersUpgrade());
+            builder.AddAction(new C4a3FixFlareSpritesUpgrade());
             return builder;
         }
 
