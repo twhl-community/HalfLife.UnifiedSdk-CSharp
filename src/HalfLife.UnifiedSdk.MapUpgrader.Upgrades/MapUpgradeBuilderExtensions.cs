@@ -54,6 +54,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ChangeFuncTankOfToFuncTankUpgrade());
             builder.AddAction(new Of2a2FixGruntBodyUpgrade());
             builder.AddAction(new RemoveGameModeSettingsUpgrade());
+            builder.AddAction(new Of1a1FixStretcherGunUpgrade());
             return builder;
         }
 
