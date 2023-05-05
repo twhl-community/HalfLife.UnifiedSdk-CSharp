@@ -33,7 +33,16 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
         }
         private static void UpdateEntity(Entity entity)
         {
-            entity.SetModel("models/rosenberg.mdl");
+            // The default model works fine for monster_rosenberg
+            if (entity.ClassName == "monster_rosenberg")
+            {
+                entity.Remove("model");
+            }
+            else
+            {
+                entity.SetModel("models/rosenberg.mdl");
+            }
+
             entity.Remove("body");
         }
     }
