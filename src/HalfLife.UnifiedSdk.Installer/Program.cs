@@ -47,7 +47,14 @@ namespace HalfLife.UnifiedSdk.Installer
                 {
                     new GameInstallData(ValveGames.HalfLife1),
                     new GameInstallData(ValveGames.OpposingForce, CopyOpposingForceSoundtrack),
-                    new GameInstallData(ValveGames.BlueShift, CopyBlueShiftSoundtrack)
+                    new GameInstallData(ValveGames.BlueShift, CopyBlueShiftSoundtrack),
+                    // Uplink uses the same mod directory name as Half-Life,
+                    // so we'll use a distinct name that an installation can be placed at.
+                    new GameInstallData(new(
+                        ValveGames.HalfLifeUplink.Engine,
+                        ValveGames.HalfLifeUplink.Name,
+                        "valve_uplink",
+                    () => ValveGames.HalfLifeUplink.Maps))
                 };
 
                 installer.Install(modDirectory.FullName, tool, games);
