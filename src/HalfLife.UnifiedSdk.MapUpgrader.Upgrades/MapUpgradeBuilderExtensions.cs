@@ -34,6 +34,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
         {
             builder.AddAction(new C2a5FixBarrelPushTriggersUpgrade());
             builder.AddAction(new C4a3FixFlareSpritesUpgrade());
+            builder.AddAction(new C3a2bFixWaterValvesUpgrade());
             return builder;
         }
 
