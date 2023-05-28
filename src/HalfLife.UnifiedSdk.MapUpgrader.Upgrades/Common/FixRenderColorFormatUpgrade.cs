@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Fixes the use of invalid render color formats in some maps.
     /// </summary>
-    internal sealed class FixRenderColorFormatUpgrade : IMapUpgradeAction
+    internal sealed class FixRenderColorFormatUpgrade : IMapUpgrade
     {
         private static readonly Regex InvalidFormatRegex = new(@"^(\d+), (\d+), (\d+)$");
 

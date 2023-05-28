@@ -12,7 +12,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// </summary>
     public sealed class MapUpgradeToolBuilder
     {
-        private readonly ImmutableList<MapUpgrade>.Builder _upgrades = ImmutableList.CreateBuilder<MapUpgrade>();
+        private readonly ImmutableList<MapUpgradeCollection>.Builder _upgrades = ImmutableList.CreateBuilder<MapUpgradeCollection>();
 
         private MapDiagnosticsEngine? _diagnosticsEngine;
 
@@ -52,7 +52,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// <param name="version">Version to associate to this upgrade.</param>
         /// <param name="callback">Callback to invoke.</param>
         /// <exception cref="ArgumentException">If the given version is already used by an existing upgrade.</exception>
-        public MapUpgradeToolBuilder AddUpgrade(SemVersion version, Action<MapUpgradeBuilder> callback)
+        public MapUpgradeToolBuilder AddUpgrades(SemVersion version, Action<MapUpgradeCollectionBuilder> callback)
         {
             ArgumentNullException.ThrowIfNull(version);
             ArgumentNullException.ThrowIfNull(callback);
@@ -62,7 +62,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
                 throw new ArgumentException("Only one upgrade may be associated with a specific version", nameof(version));
             }
 
-            MapUpgradeBuilder builder = new();
+            MapUpgradeCollectionBuilder builder = new();
 
             callback(builder);
 

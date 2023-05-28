@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife
     /// Prevents players from soft-locking the game by turning both valves at the same time in
     /// <c>c3a2b</c> (Lambda Core reactor water flow).
     /// </summary>
-    internal sealed class C3a2bFixWaterValvesUpgrade : MapSpecificUpgradeAction
+    internal sealed class C3a2bFixWaterValvesUpgrade : MapSpecificUpgrade
     {
         public C3a2bFixWaterValvesUpgrade()
             : base("c3a2b")

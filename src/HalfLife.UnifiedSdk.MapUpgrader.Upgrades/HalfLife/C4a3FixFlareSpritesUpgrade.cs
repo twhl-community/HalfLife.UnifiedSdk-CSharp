@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife
     /// <summary>
     /// Fixes the flare sprites shown during Nihilanth's death script using the wrong render mode.
     /// </summary>
-    internal sealed class C4a3FixFlareSpritesUpgrade : MapSpecificUpgradeAction
+    internal sealed class C4a3FixFlareSpritesUpgrade : MapSpecificUpgrade
     {
         public C4a3FixFlareSpritesUpgrade()
             : base("c4a3")

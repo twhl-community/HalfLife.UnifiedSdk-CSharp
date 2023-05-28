@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Fixes <c>monster_generic</c> entities that use <c>hgrunt_opfor.mdl</c> to use the correct body value.
     /// </summary>
-    internal sealed class Of2a2FixGruntBodyUpgrade : MapSpecificUpgradeAction
+    internal sealed class Of2a2FixGruntBodyUpgrade : MapSpecificUpgrade
     {
         public Of2a2FixGruntBodyUpgrade()
             : base("of2a2")

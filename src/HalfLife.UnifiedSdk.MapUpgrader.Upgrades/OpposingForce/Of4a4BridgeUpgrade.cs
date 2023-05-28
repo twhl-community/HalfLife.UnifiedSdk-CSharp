@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Fixes the Pit Worm's Nest bridge possibly breaking if triggered too soon.
     /// </summary>
-    internal sealed class Of4a4BridgeUpgrade : MapSpecificUpgradeAction
+    internal sealed class Of4a4BridgeUpgrade : MapSpecificUpgrade
     {
         public Of4a4BridgeUpgrade()
             : base("of4a4")

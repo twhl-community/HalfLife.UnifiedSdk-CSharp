@@ -28,7 +28,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         private readonly MapDiagnosticsEngine _diagnosticsEngine;
 
         /// <summary>Gets a sorted immutable list containing the upgrades used by this tool.</summary>
-        public ImmutableList<MapUpgrade> Upgrades { get; }
+        public ImmutableList<MapUpgradeCollection> Upgrades { get; }
 
         /// <summary>
         /// Latest version to upgrade to.
@@ -61,7 +61,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             }
         }
 
-        internal MapUpgradeTool(ImmutableList<MapUpgrade> upgrades, MapDiagnosticsEngine diagnosticsEngine)
+        internal MapUpgradeTool(ImmutableList<MapUpgradeCollection> upgrades, MapDiagnosticsEngine diagnosticsEngine)
         {
             Upgrades = upgrades;
             _diagnosticsEngine = diagnosticsEngine;

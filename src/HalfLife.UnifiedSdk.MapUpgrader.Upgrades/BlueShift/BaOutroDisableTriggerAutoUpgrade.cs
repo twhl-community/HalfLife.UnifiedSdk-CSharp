@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
     /// used to start the script on <c>ba_outro</c>.
     /// This fixes the script restarting on save load.
     /// </summary>
-    internal sealed class BaOutroDisableTriggerAutoUpgrade : MapSpecificUpgradeAction
+    internal sealed class BaOutroDisableTriggerAutoUpgrade : MapSpecificUpgrade
     {
         private const int RemoveOnFire = 1 << 0;
 

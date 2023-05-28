@@ -4,7 +4,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
-    internal sealed class ChangeRosenbergModelUpgrade : GameSpecificMapUpgradeAction
+    internal sealed class ChangeRosenbergModelUpgrade : GameSpecificMapUpgrade
     {
         public ChangeRosenbergModelUpgrade()
             : base(ValveGames.BlueShift)

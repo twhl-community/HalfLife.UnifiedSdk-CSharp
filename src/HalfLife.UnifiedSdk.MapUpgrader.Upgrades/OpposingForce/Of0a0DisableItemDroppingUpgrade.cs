@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Disables item dropping for a couple NPCs in the Opposing Force intro map so players can't get weapons from them if they die.
     /// </summary>
-    internal sealed class Of0a0DisableItemDroppingUpgrade : MapSpecificUpgradeAction
+    internal sealed class Of0a0DisableItemDroppingUpgrade : MapSpecificUpgrade
     {
         private static readonly ImmutableArray<string> NPCTargetNames = ImmutableArray.Create(
             "ichabod",

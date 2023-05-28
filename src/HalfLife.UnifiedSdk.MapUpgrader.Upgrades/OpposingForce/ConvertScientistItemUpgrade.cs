@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Converts the Opposing Force scientist <c>clipboard</c> and <c>stick</c> heads to use the <c>item</c> body group instead.
     /// </summary>
-    internal sealed class ConvertScientistItemUpgrade : GameSpecificMapUpgradeAction
+    internal sealed class ConvertScientistItemUpgrade : GameSpecificMapUpgrade
     {
         //This hardcoded stuff is pretty ugly, but there is no way around it without loading the model.
         private const int StudioCount = 1;

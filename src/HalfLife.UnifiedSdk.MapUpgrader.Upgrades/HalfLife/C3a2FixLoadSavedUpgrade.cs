@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife
     /// Increases the reload delay after killing the scientist in <c>c3a2</c>
     /// to allow the entire game over message to display.
     /// </summary>
-    internal sealed class C3a2FixLoadSavedUpgrade : MapSpecificUpgradeAction
+    internal sealed class C3a2FixLoadSavedUpgrade : MapSpecificUpgrade
     {
         public C3a2FixLoadSavedUpgrade()
             : base("c3a2")

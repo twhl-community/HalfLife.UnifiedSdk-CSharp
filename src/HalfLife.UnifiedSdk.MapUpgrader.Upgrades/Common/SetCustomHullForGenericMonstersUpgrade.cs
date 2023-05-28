@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Sets a custom hull size for <c>monster_generic</c> entities that use a model that was originally hard-coded to use one.
     /// </summary>
-    internal sealed class SetCustomHullForGenericMonstersUpgrade : IMapUpgradeAction
+    internal sealed class SetCustomHullForGenericMonstersUpgrade : IMapUpgrade
     {
         private static readonly ImmutableArray<string> ModelNames = ImmutableArray.Create(
             "models/player.mdl",

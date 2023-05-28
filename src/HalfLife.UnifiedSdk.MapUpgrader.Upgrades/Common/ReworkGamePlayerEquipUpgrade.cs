@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Changes all unnamed <c>game_player_equip</c> entities to be fired on player spawn.
     /// </summary>
-    internal sealed class ReworkGamePlayerEquipUpgrade : IMapUpgradeAction
+    internal sealed class ReworkGamePlayerEquipUpgrade : IMapUpgrade
     {
         private const int UseOnlyFlag = 1 << 0;
 

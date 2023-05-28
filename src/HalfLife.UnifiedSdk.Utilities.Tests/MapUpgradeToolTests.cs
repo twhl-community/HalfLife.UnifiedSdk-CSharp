@@ -23,9 +23,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
 
         private static Map LoadSimpleMapWithNoVersion() => LoadMap("Simple map with no version", KeyValueUtilities.EmptyMapString);
 
-        private static MapUpgradeTool ToolWithDelegate(Action<MapUpgradeContext> action)
+        private static MapUpgradeTool ToolWithDelegate(Action<MapUpgradeContext> upgrade)
         {
-            return MapUpgradeToolBuilder.Build(builder => builder.AddUpgrade(_testVersion, upgrade => upgrade.AddAction(action)));
+            return MapUpgradeToolBuilder.Build(builder => builder.AddUpgrades(_testVersion, collection => collection.AddUpgrade(upgrade)));
         }
 
         [Fact]
@@ -120,10 +120,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
             var upgradeTool = MapUpgradeToolBuilder.Build(builder =>
             {
                 //Version 1.0.0: set MaxRange to 4096 (default value in original fgd).
-                builder.AddUpgrade(_testVersion, upgrade => upgrade.AddAction((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096)));
+                builder.AddUpgrades(_testVersion, upgrade => upgrade.AddUpgrade((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 4096)));
 
                 //Version 2.0.0: set MaxRange to 32768.
-                builder.AddUpgrade(version2, upgrade => upgrade.AddAction((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768)));
+                builder.AddUpgrades(version2, upgrade => upgrade.AddUpgrade((context) => context.Map.Entities.Worldspawn.SetInteger("MaxRange", 32768)));
             });
 
             upgradeTool.Upgrade(new MapUpgradeCommand(map, ValveGames.HalfLife1));
@@ -163,14 +163,14 @@ namespace HalfLife.UnifiedSdk.Utilities.Tests
                 RunTests(upgradeTool, upgradeTool.Upgrades[0]);
             }
 
-            void RunTests(MapUpgradeTool upgradeTool, MapUpgrade action)
+            void RunTests(MapUpgradeTool upgradeTool, MapUpgradeCollection upgrade)
             {
                 Assert.Single(map.Entities);
 
                 Assert.Equal(3, map.Entities.Worldspawn.Count);
 
                 Assert.True(map.Entities.Worldspawn.ContainsKey(upgradeTool.GameVersionKey));
-                Assert.Equal(action.Version.ToString(), map.Entities.Worldspawn.GetString(upgradeTool.GameVersionKey));
+                Assert.Equal(upgrade.Version.ToString(), map.Entities.Worldspawn.GetString(upgradeTool.GameVersionKey));
 
                 Assert.True(map.Entities.Worldspawn.ContainsKey("MaxRange"));
                 Assert.Equal(32768, map.Entities.Worldspawn.GetInteger("MaxRange"));

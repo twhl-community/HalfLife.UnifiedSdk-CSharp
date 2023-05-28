@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife
     /// <summary>
     /// Fixes the barrels in <c>c2a5</c> not flying as high as they're supposed to on modern systems due to high framerates.
     /// </summary>
-    internal sealed class C2a5FixBarrelPushTriggersUpgrade : MapSpecificUpgradeAction
+    internal sealed class C2a5FixBarrelPushTriggersUpgrade : MapSpecificUpgrade
     {
         [Flags]
         private enum TriggerPushSpawnFlag

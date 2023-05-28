@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Removes the CTF game mode settings from Opposing Force maps.
     /// </summary>
-    internal sealed class RemoveGameModeSettingsUpgrade : GameSpecificMapUpgradeAction
+    internal sealed class RemoveGameModeSettingsUpgrade : GameSpecificMapUpgrade
     {
         public RemoveGameModeSettingsUpgrade()
             : base(ValveGames.OpposingForce)

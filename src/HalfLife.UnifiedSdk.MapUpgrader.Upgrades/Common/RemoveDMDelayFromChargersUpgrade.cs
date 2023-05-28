@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Removes the <c>dmdelay</c> keyvalue from charger entities. The original game ignores these.
     /// </summary>
-    internal sealed class RemoveDMDelayFromChargersUpgrade : IMapUpgradeAction
+    internal sealed class RemoveDMDelayFromChargersUpgrade : IMapUpgrade
     {
         private static readonly ImmutableArray<string> ClassNames = ImmutableArray.Create(
             "func_healthcharger",

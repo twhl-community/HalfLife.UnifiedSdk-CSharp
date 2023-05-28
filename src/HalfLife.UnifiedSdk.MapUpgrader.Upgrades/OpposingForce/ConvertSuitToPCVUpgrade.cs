@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Converts <c>item_suit</c>'s model to use <c>w_pcv.mdl</c> in Opposing Force maps.
     /// </summary>
-    internal sealed class ConvertSuitToPCVUpgrade : GameSpecificMapUpgradeAction
+    internal sealed class ConvertSuitToPCVUpgrade : GameSpecificMapUpgrade
     {
         public ConvertSuitToPCVUpgrade()
             : base(ValveGames.OpposingForce)

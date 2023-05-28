@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Renames the intro grunt animations.
     /// </summary>
-    internal sealed class RenameIntroGruntAnimationsUpgrade : IMapUpgradeAction
+    internal sealed class RenameIntroGruntAnimationsUpgrade : IMapUpgrade
     {
         private record GruntData(string ModelName, ImmutableDictionary<string, string> AnimationRemap);
 

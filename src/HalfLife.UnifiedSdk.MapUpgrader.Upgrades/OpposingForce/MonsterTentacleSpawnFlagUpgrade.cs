@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Converts the Opposing Force <c>monster_tentacle</c> "Use Lower Model" spawnflag to instead set a custom model on the entity,
     /// and changes other uses to use the alternate model.
     /// </summary>
-    internal sealed class MonsterTentacleSpawnFlagUpgrade : GameSpecificMapUpgradeAction
+    internal sealed class MonsterTentacleSpawnFlagUpgrade : GameSpecificMapUpgrade
     {
         private const int UseLowerModel = 1 << 6;
 

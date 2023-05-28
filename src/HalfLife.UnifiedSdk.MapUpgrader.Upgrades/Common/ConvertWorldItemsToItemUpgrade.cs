@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts <c>world_items</c> entities to their equivalent entity.
     /// </summary>
-    internal sealed class ConvertWorldItemsToItemUpgrade : IMapUpgradeAction
+    internal sealed class ConvertWorldItemsToItemUpgrade : IMapUpgrade
     {
         private static readonly ImmutableDictionary<int, string> IdToClassNameMap = new Dictionary<int, string>
         {

@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// Converts the obsolete <c>angle</c> keyvalue to <c>angles</c>.
     /// This is normally done by the engine, but to avoid having to account for both keyvalues in other upgrades this is done here.
     /// </summary>
-    internal sealed class ConvertAngleToAnglesUpgrade : IMapUpgradeAction
+    internal sealed class ConvertAngleToAnglesUpgrade : IMapUpgrade
     {
         private const string AngleKey = "angle";
 

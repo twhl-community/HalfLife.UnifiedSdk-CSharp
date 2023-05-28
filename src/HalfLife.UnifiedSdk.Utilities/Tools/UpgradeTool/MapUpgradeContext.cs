@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// Context for map upgrade events.
     /// </summary>
     /// <remarks>
-    /// To get the version being upgraded to by the currently executing delegate, use <see cref="MapUpgrade.Version"/>
+    /// To get the version being upgraded to by the currently executing delegate, use <see cref="MapUpgradeCollection.Version"/>
     /// </remarks>
     /// <param name="Tool">The tool performing the upgrade.</param>
     /// <param name="FromVersion">The version being upgraded from.</param>
@@ -24,7 +24,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         SemVersion FromVersion,
         SemVersion ToVersion,
         SemVersion OriginalVersion,
-        MapUpgrade Upgrade,
+        MapUpgradeCollection Upgrade,
         Map Map,
         GameInfo GameInfo);
 }

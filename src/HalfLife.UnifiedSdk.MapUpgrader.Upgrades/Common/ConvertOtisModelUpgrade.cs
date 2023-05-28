@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts the <c>monster_otis</c> model and body value to the appropriate keyvalues.
     /// </summary>
-    internal sealed class ConvertOtisModelUpgrade : IMapUpgradeAction
+    internal sealed class ConvertOtisModelUpgrade : IMapUpgrade
     {
         private const string OtisModelName = "models/otis.mdl";
         private const string IntroOtisModelName = "models/intro_otis.mdl";

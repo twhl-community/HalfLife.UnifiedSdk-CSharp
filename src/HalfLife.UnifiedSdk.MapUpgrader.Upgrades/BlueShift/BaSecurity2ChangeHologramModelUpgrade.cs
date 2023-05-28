@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
     /// <summary>
     /// Changes Gina model in ba_security2 to allow playing push cart sequence.
     /// </summary>
-    internal sealed class BaSecurity2ChangeHologramModelUpgrade : MapSpecificUpgradeAction
+    internal sealed class BaSecurity2ChangeHologramModelUpgrade : MapSpecificUpgrade
     {
         public BaSecurity2ChangeHologramModelUpgrade()
             : base("ba_security2")

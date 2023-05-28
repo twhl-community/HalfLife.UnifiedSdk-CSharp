@@ -11,7 +11,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// Since we're using the vanilla Half-Life model the angles need adjusting.
     /// This adjusts the angles to match the original model.
     /// </summary>
-    internal sealed class AdjustShotgunAnglesUpgrade : IMapUpgradeAction
+    internal sealed class AdjustShotgunAnglesUpgrade : IMapUpgrade
     {
         private const string ShotgunModelName = "models/w_shotgun.mdl";
         private static readonly Vector3 AngleAdjust = new(0, 180, 90);

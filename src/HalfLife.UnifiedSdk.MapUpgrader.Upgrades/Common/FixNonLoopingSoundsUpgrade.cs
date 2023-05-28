@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// Fixes <c>ambient_generic</c> entities using non-looping sounds
     /// to stop them from restarting when loading a save game.
     /// </summary>
-    internal sealed class FixNonLoopingSoundsUpgrade : IMapUpgradeAction
+    internal sealed class FixNonLoopingSoundsUpgrade : IMapUpgrade
     {
         private const string MessageKey = "message";
 

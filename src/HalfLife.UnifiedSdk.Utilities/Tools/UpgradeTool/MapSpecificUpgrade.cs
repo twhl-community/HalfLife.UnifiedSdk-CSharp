@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
@@ -7,7 +6,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// <summary>
     /// Helper class to apply an upgrade to a specific map.
     /// </summary>
-    public abstract class MapSpecificUpgradeAction : IMapUpgradeAction
+    public abstract class MapSpecificUpgrade : IMapUpgrade
     {
         /// <summary>
         /// The maps that this upgrade applies to.
@@ -18,7 +17,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// Creates an upgrade that applies only to the specified maps.
         /// </summary>
         /// <param name="mapNames"></param>
-        protected MapSpecificUpgradeAction(params string[] mapNames)
+        protected MapSpecificUpgrade(params string[] mapNames)
         {
             MapNames = mapNames.ToImmutableList();
         }
@@ -27,7 +26,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// Creates an upgrade that applies only to the specified maps.
         /// </summary>
         /// <param name="mapNames"></param>
-        protected MapSpecificUpgradeAction(IEnumerable<string> mapNames)
+        protected MapSpecificUpgrade(IEnumerable<string> mapNames)
         {
             MapNames = mapNames.ToImmutableList();
         }

@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
     /// <summary>
     /// Removes the HEV suit from <c>ba_tram1</c> (now given by map config).
     /// </summary>
-    internal sealed class BaTram1FixSuitUpgrade : MapSpecificUpgradeAction
+    internal sealed class BaTram1FixSuitUpgrade : MapSpecificUpgrade
     {
         public BaTram1FixSuitUpgrade()
             : base("ba_tram1")

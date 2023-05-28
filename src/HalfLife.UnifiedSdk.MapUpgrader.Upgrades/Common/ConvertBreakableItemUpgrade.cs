@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts <c>func_breakable</c>'s spawn object keyvalue from an index to a classname.
     /// </summary>
-    internal sealed class ConvertBreakableItemUpgrade : IMapUpgradeAction
+    internal sealed class ConvertBreakableItemUpgrade : IMapUpgrade
     {
         private const string ItemKey = "spawnobject";
 

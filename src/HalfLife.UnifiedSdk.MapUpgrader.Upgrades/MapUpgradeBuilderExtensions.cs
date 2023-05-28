@@ -8,71 +8,71 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
     public static class MapUpgradeBuilderExtensions
     {
-        public static MapUpgradeBuilder AddSharedUpgrades(this MapUpgradeBuilder builder)
+        public static MapUpgradeCollectionBuilder AddSharedUpgrades(this MapUpgradeCollectionBuilder builder)
         {
             //Must come before any other upgrades.
-            builder.AddAction(new ConvertAngleToAnglesUpgrade());
-            builder.AddAction(new RenameEntityClassNamesUpgrade());
+            builder.AddUpgrade(new ConvertAngleToAnglesUpgrade());
+            builder.AddUpgrade(new RenameEntityClassNamesUpgrade());
             // Must come before any upgrades that deal with the resulting entities!
-            builder.AddAction(new ConvertWorldItemsToItemUpgrade());
+            builder.AddUpgrade(new ConvertWorldItemsToItemUpgrade());
 
-            builder.AddAction(new AdjustShotgunAnglesUpgrade());
-            builder.AddAction(new ConvertOtisModelUpgrade());
-            builder.AddAction(new RenameMessagesUpgrade());
-            builder.AddAction(new ReworkMusicPlaybackUpgrade());
-            builder.AddAction(new ConvertWorldspawnGameTitleValueUpgrade());
-            builder.AddAction(new ConvertSoundIndicesToNamesUpgrade());
-            builder.AddAction(new SetCustomHullForGenericMonstersUpgrade());
-            builder.AddAction(new FixRenderColorFormatUpgrade());
-            builder.AddAction(new RemoveDMDelayFromChargersUpgrade());
-            builder.AddAction(new ConvertBreakableItemUpgrade());
-            builder.AddAction(new ReworkGamePlayerEquipUpgrade());
-            builder.AddAction(new FixNonLoopingSoundsUpgrade());
+            builder.AddUpgrade(new AdjustShotgunAnglesUpgrade());
+            builder.AddUpgrade(new ConvertOtisModelUpgrade());
+            builder.AddUpgrade(new RenameMessagesUpgrade());
+            builder.AddUpgrade(new ReworkMusicPlaybackUpgrade());
+            builder.AddUpgrade(new ConvertWorldspawnGameTitleValueUpgrade());
+            builder.AddUpgrade(new ConvertSoundIndicesToNamesUpgrade());
+            builder.AddUpgrade(new SetCustomHullForGenericMonstersUpgrade());
+            builder.AddUpgrade(new FixRenderColorFormatUpgrade());
+            builder.AddUpgrade(new RemoveDMDelayFromChargersUpgrade());
+            builder.AddUpgrade(new ConvertBreakableItemUpgrade());
+            builder.AddUpgrade(new ReworkGamePlayerEquipUpgrade());
+            builder.AddUpgrade(new FixNonLoopingSoundsUpgrade());
             return builder;
         }
 
-        public static MapUpgradeBuilder AddHalfLifeUpgrades(this MapUpgradeBuilder builder)
+        public static MapUpgradeCollectionBuilder AddHalfLifeUpgrades(this MapUpgradeCollectionBuilder builder)
         {
-            builder.AddAction(new C2a5FixBarrelPushTriggersUpgrade());
-            builder.AddAction(new C4a3FixFlareSpritesUpgrade());
-            builder.AddAction(new C3a2bFixWaterValvesUpgrade());
-            builder.AddAction(new C3a2FixLoadSavedUpgrade());
-            builder.AddAction(new C4a2FixNihilanthDialogueUpgrade());
+            builder.AddUpgrade(new C2a5FixBarrelPushTriggersUpgrade());
+            builder.AddUpgrade(new C4a3FixFlareSpritesUpgrade());
+            builder.AddUpgrade(new C3a2bFixWaterValvesUpgrade());
+            builder.AddUpgrade(new C3a2FixLoadSavedUpgrade());
+            builder.AddUpgrade(new C4a2FixNihilanthDialogueUpgrade());
             return builder;
         }
 
-        public static MapUpgradeBuilder AddOpposingForceUpgrades(this MapUpgradeBuilder builder)
+        public static MapUpgradeCollectionBuilder AddOpposingForceUpgrades(this MapUpgradeCollectionBuilder builder)
         {
-            builder.AddAction(new ConvertSuitToPCVUpgrade());
-            builder.AddAction(new ConvertScientistItemUpgrade());
-            builder.AddAction(new RenameOtisAnimationsUpgrade());
-            builder.AddAction(new MonsterTentacleSpawnFlagUpgrade());
-            builder.AddAction(new Of0a0DisableItemDroppingUpgrade());
-            builder.AddAction(new Of1a4bChangeLoaderSkinUpgrade());
-            builder.AddAction(new Of4a4BridgeUpgrade());
-            builder.AddAction(new RenameBlackOpsAnimationsUpgrade());
-            builder.AddAction(new AdjustBlackOpsSkinUpgrade());
-            builder.AddAction(new RenameIntroGruntAnimationsUpgrade());
-            builder.AddAction(new ConvertOtisBodyStateUpgrade());
-            builder.AddAction(new FixBlackOpsSpawnDelayUpgrade());
-            builder.AddAction(new ChangeFuncTankOfToFuncTankUpgrade());
-            builder.AddAction(new Of2a2FixGruntBodyUpgrade());
-            builder.AddAction(new RemoveGameModeSettingsUpgrade());
-            builder.AddAction(new Of1a1FixStretcherGunUpgrade());
+            builder.AddUpgrade(new ConvertSuitToPCVUpgrade());
+            builder.AddUpgrade(new ConvertScientistItemUpgrade());
+            builder.AddUpgrade(new RenameOtisAnimationsUpgrade());
+            builder.AddUpgrade(new MonsterTentacleSpawnFlagUpgrade());
+            builder.AddUpgrade(new Of0a0DisableItemDroppingUpgrade());
+            builder.AddUpgrade(new Of1a4bChangeLoaderSkinUpgrade());
+            builder.AddUpgrade(new Of4a4BridgeUpgrade());
+            builder.AddUpgrade(new RenameBlackOpsAnimationsUpgrade());
+            builder.AddUpgrade(new AdjustBlackOpsSkinUpgrade());
+            builder.AddUpgrade(new RenameIntroGruntAnimationsUpgrade());
+            builder.AddUpgrade(new ConvertOtisBodyStateUpgrade());
+            builder.AddUpgrade(new FixBlackOpsSpawnDelayUpgrade());
+            builder.AddUpgrade(new ChangeFuncTankOfToFuncTankUpgrade());
+            builder.AddUpgrade(new Of2a2FixGruntBodyUpgrade());
+            builder.AddUpgrade(new RemoveGameModeSettingsUpgrade());
+            builder.AddUpgrade(new Of1a1FixStretcherGunUpgrade());
             return builder;
         }
 
-        public static MapUpgradeBuilder AddBlueShiftUpgrades(this MapUpgradeBuilder builder)
+        public static MapUpgradeCollectionBuilder AddBlueShiftUpgrades(this MapUpgradeCollectionBuilder builder)
         {
-            builder.AddAction(new BaYard1FixDeadScientistModelUpgrade());
-            builder.AddAction(new BaYard4aSlavesUpgrade());
-            builder.AddAction(new RenameConsoleCivAnimationsUpgrade());
-            builder.AddAction(new ChangeRosenbergModelUpgrade());
-            builder.AddAction(new RemapRosenbergNoUseFlagUpgrade());
-            builder.AddAction(new ChangeBlueShiftSentencesUpgrade());
-            builder.AddAction(new BaSecurity2ChangeHologramModelUpgrade());
-            builder.AddAction(new BaOutroDisableTriggerAutoUpgrade());
-            builder.AddAction(new BaTram1FixSuitUpgrade());
+            builder.AddUpgrade(new BaYard1FixDeadScientistModelUpgrade());
+            builder.AddUpgrade(new BaYard4aSlavesUpgrade());
+            builder.AddUpgrade(new RenameConsoleCivAnimationsUpgrade());
+            builder.AddUpgrade(new ChangeRosenbergModelUpgrade());
+            builder.AddUpgrade(new RemapRosenbergNoUseFlagUpgrade());
+            builder.AddUpgrade(new ChangeBlueShiftSentencesUpgrade());
+            builder.AddUpgrade(new BaSecurity2ChangeHologramModelUpgrade());
+            builder.AddUpgrade(new BaOutroDisableTriggerAutoUpgrade());
+            builder.AddUpgrade(new BaTram1FixSuitUpgrade());
             return builder;
         }
     }

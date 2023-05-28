@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
     /// <summary>
     /// Fixes the Alien Slaves in ba_yard4a being resurrected by triggering them instead of the scripted_sequence keeping them in stasis.
     /// </summary>
-    internal sealed class BaYard4aSlavesUpgrade : MapSpecificUpgradeAction
+    internal sealed class BaYard4aSlavesUpgrade : MapSpecificUpgrade
     {
         public BaYard4aSlavesUpgrade()
             : base("ba_yard4a")

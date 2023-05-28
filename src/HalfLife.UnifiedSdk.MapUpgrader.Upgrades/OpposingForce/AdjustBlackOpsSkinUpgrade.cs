@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Adjust <c>monster_male_assassin</c> NPCs to use the correct head and skin value.
     /// </summary>
-    internal sealed class AdjustBlackOpsSkinUpgrade : IMapUpgradeAction
+    internal sealed class AdjustBlackOpsSkinUpgrade : IMapUpgrade
     {
         public void Apply(MapUpgradeContext context)
         {

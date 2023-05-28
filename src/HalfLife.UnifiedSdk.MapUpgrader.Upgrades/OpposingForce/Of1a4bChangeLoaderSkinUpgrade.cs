@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Changes the loader entity's skin in <c>of1a4b</c> to use the correct crate texture.
     /// </summary>
-    internal sealed class Of1a4bChangeLoaderSkinUpgrade : MapSpecificUpgradeAction
+    internal sealed class Of1a4bChangeLoaderSkinUpgrade : MapSpecificUpgrade
     {
         public Of1a4bChangeLoaderSkinUpgrade()
             : base("of1a4b")

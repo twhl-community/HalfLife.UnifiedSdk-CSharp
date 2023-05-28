@@ -7,13 +7,13 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
     public static class MapUpgradeToolFactory
     {
         /// <summary>
-        /// Creates an upgrade tool that applies the actions needed to upgrade a map to the latest version of the Unified SDK.
+        /// Creates an upgrade tool that applies the upgrades needed to upgrade a map to the latest version of the Unified SDK.
         /// </summary>
         public static MapUpgradeTool Create(ILogger logger, DiagnosticsLevel diagnosticsLevel)
         {
             return MapUpgradeToolBuilder.Build(builder =>
             {
-                builder.AddUpgrade(new SemVersion(1, 0, 0), upgrade =>
+                builder.AddUpgrades(new SemVersion(1, 0, 0), upgrade =>
                 {
                     upgrade
                         .AddSharedUpgrades()

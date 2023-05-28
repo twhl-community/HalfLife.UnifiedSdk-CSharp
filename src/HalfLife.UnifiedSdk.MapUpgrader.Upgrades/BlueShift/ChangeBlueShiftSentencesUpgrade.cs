@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
     /// <summary>
     /// Updates references to specific sentences to use the correct vanilla Half-Life sentence.
     /// </summary>
-    internal sealed class ChangeBlueShiftSentencesUpgrade : IMapUpgradeAction
+    internal sealed class ChangeBlueShiftSentencesUpgrade : IMapUpgrade
     {
         private static readonly ImmutableDictionary<string, string> SentenceMap = new Dictionary<string, string>
         {

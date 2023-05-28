@@ -5,7 +5,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// <summary>
     /// Helper class to apply an upgrade to a specific game.
     /// </summary>
-    public abstract class GameSpecificMapUpgradeAction : IMapUpgradeAction
+    public abstract class GameSpecificMapUpgrade : IMapUpgrade
     {
         /// <summary>
         /// The game that this upgrade applies to.
@@ -16,7 +16,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// Creates an upgrade that applies only to the specified game.
         /// </summary>
         /// <param name="gameInfo"></param>
-        protected GameSpecificMapUpgradeAction(GameInfo gameInfo)
+        protected GameSpecificMapUpgrade(GameInfo gameInfo)
         {
             GameInfo = gameInfo;
         }

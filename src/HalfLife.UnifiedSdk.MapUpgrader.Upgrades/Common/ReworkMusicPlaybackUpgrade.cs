@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Reworks how music is played to use <c>ambient_music</c> instead.
     /// </summary>
-    internal sealed class ReworkMusicPlaybackUpgrade : IMapUpgradeAction
+    internal sealed class ReworkMusicPlaybackUpgrade : IMapUpgrade
     {
         private const string TriggerOnceClassName = "trigger_once";
         private const string AmbientMusicClassName = "ambient_music";

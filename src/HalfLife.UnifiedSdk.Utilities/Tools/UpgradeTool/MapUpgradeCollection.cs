@@ -5,29 +5,29 @@ using System.Collections.Immutable;
 namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 {
     /// <summary>Represents an upgrade with events to apply changes.</summary>
-    public sealed class MapUpgrade : IComparable<MapUpgrade>
+    public sealed class MapUpgradeCollection : IComparable<MapUpgradeCollection>
     {
-        private readonly ImmutableList<IMapUpgradeAction> _actions;
+        private readonly ImmutableList<IMapUpgrade> _upgrades;
 
         /// <summary>Version this applies to.</summary>
         public SemVersion Version { get; }
 
-        internal MapUpgrade(SemVersion version, ImmutableList<IMapUpgradeAction> actions)
+        internal MapUpgradeCollection(SemVersion version, ImmutableList<IMapUpgrade> upgrades)
         {
             Version = version;
-            _actions = actions;
+            _upgrades = upgrades;
         }
 
         internal void PerformUpgrade(MapUpgradeContext context)
         {
-            foreach (var action in _actions)
+            foreach (var upgrade in _upgrades)
             {
-                action.Apply(context);
+                upgrade.Apply(context);
             }
         }
 
         /// <inheritdoc/>
-        public int CompareTo(MapUpgrade? other) => Version.ComparePrecedenceTo(other?.Version);
+        public int CompareTo(MapUpgradeCollection? other) => Version.ComparePrecedenceTo(other?.Version);
 
         /// <inheritdoc/>
         public override int GetHashCode() => Version.GetHashCode();

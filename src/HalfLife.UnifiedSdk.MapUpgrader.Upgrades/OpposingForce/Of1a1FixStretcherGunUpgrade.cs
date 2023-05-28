@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Updates the stretcher grunt's body value to make the grunt's weapon invisible.
     /// </summary>
-    internal sealed class Of1a1FixStretcherGunUpgrade : MapSpecificUpgradeAction
+    internal sealed class Of1a1FixStretcherGunUpgrade : MapSpecificUpgrade
     {
         public Of1a1FixStretcherGunUpgrade()
             : base("of1a1")

@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts all entities that use sounds or sentences by index to use sound filenames or sentence names instead.
     /// </summary>
-    internal sealed class ConvertSoundIndicesToNamesUpgrade : IMapUpgradeAction
+    internal sealed class ConvertSoundIndicesToNamesUpgrade : IMapUpgrade
     {
         private record struct KeyData(string KeyName, string DefaultValue, ImmutableArray<string> Names, Func<Entity, string?>? ValueGetter = null);
 

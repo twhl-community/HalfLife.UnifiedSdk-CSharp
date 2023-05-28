@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Converts <c>monster_otis</c> <c>bodystate</c> keyvalues to no longer include the <c>Random</c> value,
     /// which is equivalent to <c>Holstered</c>.
     /// </summary>
-    internal sealed class ConvertOtisBodyStateUpgrade : IMapUpgradeAction
+    internal sealed class ConvertOtisBodyStateUpgrade : IMapUpgrade
     {
         private const string BodyStateKey = "bodystate";
 

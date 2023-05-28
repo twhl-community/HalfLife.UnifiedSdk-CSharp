@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Renames the Opposing Force <c>func_tank</c> classes to their original versions.
     /// No other changes are needed, as the original versions have been updated to include the new functionality.
     /// </summary>
-    internal sealed class ChangeFuncTankOfToFuncTankUpgrade : IMapUpgradeAction
+    internal sealed class ChangeFuncTankOfToFuncTankUpgrade : IMapUpgrade
     {
         private const string OpposingForceSuffix = "_of";
 
