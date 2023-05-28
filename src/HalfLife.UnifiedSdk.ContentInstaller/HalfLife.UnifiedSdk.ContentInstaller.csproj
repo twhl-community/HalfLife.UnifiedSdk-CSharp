@@ -16,6 +16,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
     <Description>This tool copies, converts and upgrades Half-Life game assets for use in a mod.</Description>
+    <AssemblyName>ContentInstaller</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

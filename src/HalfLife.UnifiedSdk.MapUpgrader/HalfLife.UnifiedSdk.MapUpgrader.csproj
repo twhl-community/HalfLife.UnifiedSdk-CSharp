@@ -14,6 +14,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This tool upgrades Half-Life maps to the latest version of the Unified SDK.</Description>
+    <AssemblyName>MapUpgrader</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

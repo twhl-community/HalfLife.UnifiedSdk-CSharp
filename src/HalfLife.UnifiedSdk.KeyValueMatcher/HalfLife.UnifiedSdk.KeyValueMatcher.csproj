@@ -16,6 +16,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <AssemblyName>KeyValueMatcher</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

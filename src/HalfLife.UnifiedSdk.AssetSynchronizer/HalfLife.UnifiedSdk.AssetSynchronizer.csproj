@@ -16,6 +16,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
     <Description>This tool copies a set of directories to a target directory and monitors for changes while running.</Description>
+    <AssemblyName>AssetSynchronizer</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

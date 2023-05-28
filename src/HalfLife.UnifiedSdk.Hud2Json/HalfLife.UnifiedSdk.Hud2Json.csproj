@@ -16,6 +16,7 @@
     <PackageTags>halflife;half-life;valve;json</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+    <RootNamespace>Hud2Json</RootNamespace>
   </PropertyGroup>
     
   <ItemGroup>
