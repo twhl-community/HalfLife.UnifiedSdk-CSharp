@@ -11,13 +11,13 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// Since we're using the vanilla Half-Life model the angles need adjusting.
     /// This adjusts the angles to match the original model.
     /// </summary>
-    internal sealed class AdjustShotgunAnglesUpgrade : IMapUpgrade
+    internal sealed class AdjustShotgunAnglesUpgrade : MapUpgrade
     {
         private const string ShotgunModelName = "models/w_shotgun.mdl";
         private static readonly Vector3 AngleAdjust = new(0, 180, 90);
         private static readonly Vector3 Security2AngleAdjust = new(270, 180, 0);
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             if (context.GameInfo != ValveGames.OpposingForce && context.GameInfo != ValveGames.BlueShift)
             {

@@ -6,7 +6,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// <summary>
     /// Helper class to apply an upgrade to a specific map.
     /// </summary>
-    public abstract class MapSpecificUpgrade : IMapUpgrade
+    public abstract class MapSpecificUpgrade : MapUpgrade
     {
         /// <summary>
         /// The maps that this upgrade applies to.
@@ -31,20 +31,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             MapNames = mapNames.ToImmutableList();
         }
 
-        /// <summary>
-        /// Upgrades the given map if its name matches <see cref="MapNames"/>.
-        /// </summary>
-        public void Apply(MapUpgradeContext context)
+        /// <inheritdoc/>
+        protected override bool Filter(MapUpgradeContext context)
         {
-            if (MapNames.Contains(context.Map.BaseName))
-            {
-                ApplyCore(context);
-            }
+            return MapNames.Contains(context.Map.BaseName);
         }
-
-        /// <summary>
-        /// Performs the actual upgrade.
-        /// </summary>
-        protected abstract void ApplyCore(MapUpgradeContext context);
     }
 }

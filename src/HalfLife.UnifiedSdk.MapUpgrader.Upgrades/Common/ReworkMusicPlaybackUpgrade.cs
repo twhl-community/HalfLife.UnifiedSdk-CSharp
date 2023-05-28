@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Reworks how music is played to use <c>ambient_music</c> instead.
     /// </summary>
-    internal sealed class ReworkMusicPlaybackUpgrade : IMapUpgrade
+    internal sealed class ReworkMusicPlaybackUpgrade : MapUpgrade
     {
         private const string TriggerOnceClassName = "trigger_once";
         private const string AmbientMusicClassName = "ambient_music";
@@ -32,7 +32,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             Radius
         }
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             //Remap to ambient_music.
             foreach (var target in context.Map.Entities.OfClass("target_cdaudio"))

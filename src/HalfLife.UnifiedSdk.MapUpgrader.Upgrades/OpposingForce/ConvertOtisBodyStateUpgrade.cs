@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Converts <c>monster_otis</c> <c>bodystate</c> keyvalues to no longer include the <c>Random</c> value,
     /// which is equivalent to <c>Holstered</c>.
     /// </summary>
-    internal sealed class ConvertOtisBodyStateUpgrade : IMapUpgrade
+    internal sealed class ConvertOtisBodyStateUpgrade : MapUpgrade
     {
         private const string BodyStateKey = "bodystate";
 
@@ -18,7 +18,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
             Drawn = 1
         }
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var otis in context.Map.Entities.OfClass("monster_otis"))
             {

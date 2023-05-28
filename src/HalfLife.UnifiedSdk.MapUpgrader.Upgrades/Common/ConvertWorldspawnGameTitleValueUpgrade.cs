@@ -7,11 +7,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts the <c>gametitle</c> keyvalue to a string containing the game name.
     /// </summary>
-    internal sealed class ConvertWorldspawnGameTitleValueUpgrade : IMapUpgrade
+    internal sealed class ConvertWorldspawnGameTitleValueUpgrade : MapUpgrade
     {
         private const string GameTitleKey = "gametitle";
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             var worldspawn = context.Map.Entities.Worldspawn;
 

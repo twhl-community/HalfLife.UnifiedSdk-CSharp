@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts all entities that use sounds or sentences by index to use sound filenames or sentence names instead.
     /// </summary>
-    internal sealed class ConvertSoundIndicesToNamesUpgrade : IMapUpgrade
+    internal sealed class ConvertSoundIndicesToNamesUpgrade : MapUpgrade
     {
         private record struct KeyData(string KeyName, string DefaultValue, ImmutableArray<string> Names, Func<Entity, string?>? ValueGetter = null);
 
@@ -212,7 +212,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                 ["func_tracktrain"] = ImmutableArray.Create(new KeyData("sounds", DefaultTrackTrainSound, TrackTrainMoveSounds))
             }.ToImmutableDictionary();
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var entity in context.Map.Entities)
             {

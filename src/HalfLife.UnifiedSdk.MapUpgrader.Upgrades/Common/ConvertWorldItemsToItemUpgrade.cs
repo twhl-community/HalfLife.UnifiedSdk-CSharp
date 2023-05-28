@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts <c>world_items</c> entities to their equivalent entity.
     /// </summary>
-    internal sealed class ConvertWorldItemsToItemUpgrade : IMapUpgrade
+    internal sealed class ConvertWorldItemsToItemUpgrade : MapUpgrade
     {
         private static readonly ImmutableDictionary<int, string> IdToClassNameMap = new Dictionary<int, string>
         {
@@ -17,7 +17,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             [45] = "item_suit"
         }.ToImmutableDictionary();
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var entity in context.Map.Entities.OfClass("world_items").ToList())
             {

@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Renames certain animations referenced by <c>scripted_sequence</c>s targeting <c>monster_otis</c>
     /// or entities using its model to use the new animation names.
     /// </summary>
-    internal sealed class RenameOtisAnimationsUpgrade : IMapUpgrade
+    internal sealed class RenameOtisAnimationsUpgrade : MapUpgrade
     {
         private static readonly ImmutableDictionary<string, string> AnimationRemap = new Dictionary<string, string>
         {
@@ -16,7 +16,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
             { "wave", "otis_wave" }
         }.ToImmutableDictionary();
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             ScriptedSequenceUtilities.RenameAnimations(context, "monster_otis", "models/otis.mdl", AnimationRemap);
         }

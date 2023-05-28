@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Renames certain animations referenced by <c>scripted_sequence</c>s targeting <c>monster_male_assassin</c>
     /// or entities using its model to use the new animation names.
     /// </summary>
-    internal sealed class RenameBlackOpsAnimationsUpgrade : IMapUpgrade
+    internal sealed class RenameBlackOpsAnimationsUpgrade : MapUpgrade
     {
         private static readonly ImmutableDictionary<string, string> AnimationRemap = new Dictionary<string, string>
         {
@@ -16,7 +16,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
             { "straferight", "straferight_cine" }
         }.ToImmutableDictionary();
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             ScriptedSequenceUtilities.RenameAnimations(context, "monster_male_assassin", "models/massn.mdl", AnimationRemap);
         }

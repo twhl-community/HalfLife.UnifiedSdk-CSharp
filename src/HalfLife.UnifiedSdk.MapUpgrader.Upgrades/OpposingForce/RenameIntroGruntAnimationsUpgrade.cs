@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// <summary>
     /// Renames the intro grunt animations.
     /// </summary>
-    internal sealed class RenameIntroGruntAnimationsUpgrade : IMapUpgrade
+    internal sealed class RenameIntroGruntAnimationsUpgrade : MapUpgrade
     {
         private record GruntData(string ModelName, ImmutableDictionary<string, string> AnimationRemap);
 
@@ -28,7 +28,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
                 .Add("cower", "intro_sitting_cower2"))
             );
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var data in GruntDatas)
             {

@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts <c>func_breakable</c>'s spawn object keyvalue from an index to a classname.
     /// </summary>
-    internal sealed class ConvertBreakableItemUpgrade : IMapUpgrade
+    internal sealed class ConvertBreakableItemUpgrade : MapUpgrade
     {
         private const string ItemKey = "spawnobject";
 
@@ -36,7 +36,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             "weapon_penguin"
             );
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var entity in context.Map.Entities
                 .Where(e => e.ClassName == "func_breakable" || e.ClassName == "func_pushable"))

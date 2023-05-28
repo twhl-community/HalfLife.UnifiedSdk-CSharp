@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
     /// Renames the Opposing Force <c>func_tank</c> classes to their original versions.
     /// No other changes are needed, as the original versions have been updated to include the new functionality.
     /// </summary>
-    internal sealed class ChangeFuncTankOfToFuncTankUpgrade : IMapUpgrade
+    internal sealed class ChangeFuncTankOfToFuncTankUpgrade : MapUpgrade
     {
         private const string OpposingForceSuffix = "_of";
 
@@ -22,7 +22,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
         }
         .ToImmutableDictionary(k => k + OpposingForceSuffix, v => v);
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             if (context.GameInfo != ValveGames.OpposingForce)
             {

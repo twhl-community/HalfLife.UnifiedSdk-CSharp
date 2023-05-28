@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Renames the messages used in <c>env_message</c> entities and <c>worldspawn</c> to use a game-specific prefix.
     /// </summary>
-    internal sealed class RenameMessagesUpgrade : IMapUpgrade
+    internal sealed class RenameMessagesUpgrade : MapUpgrade
     {
         private const string MessageKey = "message";
         private const string WorldspawnKey = "chaptertitle";
@@ -30,7 +30,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             new Regex("^HZBARNEY$")
             );
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             var prefix = context.GameInfo.ModDirectory.ToUpperInvariant() + '_';
 

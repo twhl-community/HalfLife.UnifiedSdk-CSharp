@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Renames weapon and item classnames to their primary name.
     /// </summary>
-    internal sealed class RenameEntityClassNamesUpgrade : IMapUpgrade
+    internal sealed class RenameEntityClassNamesUpgrade : MapUpgrade
     {
         private static readonly ImmutableDictionary<string, string> ClassNames = new Dictionary<string, string>
         {
@@ -27,7 +27,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             ["monster_ShockTrooper_dead"] = "monster_shocktrooper_dead"
         }.ToImmutableDictionary();
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var entity in context.Map.Entities)
             {

@@ -6,11 +6,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Fixes the use of invalid render color formats in some maps.
     /// </summary>
-    internal sealed class FixRenderColorFormatUpgrade : IMapUpgrade
+    internal sealed class FixRenderColorFormatUpgrade : MapUpgrade
     {
         private static readonly Regex InvalidFormatRegex = new(@"^(\d+), (\d+), (\d+)$");
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var entity in context.Map.Entities)
             {

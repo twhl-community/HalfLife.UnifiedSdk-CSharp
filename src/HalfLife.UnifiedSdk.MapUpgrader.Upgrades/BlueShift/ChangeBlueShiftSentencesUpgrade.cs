@@ -8,7 +8,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
     /// <summary>
     /// Updates references to specific sentences to use the correct vanilla Half-Life sentence.
     /// </summary>
-    internal sealed class ChangeBlueShiftSentencesUpgrade : IMapUpgrade
+    internal sealed class ChangeBlueShiftSentencesUpgrade : MapUpgrade
     {
         private static readonly ImmutableDictionary<string, string> SentenceMap = new Dictionary<string, string>
         {
@@ -70,7 +70,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
         }.Select(s => new KeyValuePair<string, string>("!" + s, "!BS" + s)))
         .ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             if (context.GameInfo != ValveGames.BlueShift)
             {

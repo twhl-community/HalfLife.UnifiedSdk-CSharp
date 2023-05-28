@@ -10,7 +10,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// </summary>
     public sealed class MapUpgradeCollectionBuilder
     {
-        private readonly ImmutableList<IMapUpgrade>.Builder _upgrades = ImmutableList.CreateBuilder<IMapUpgrade>();
+        private readonly ImmutableList<MapUpgrade>.Builder _upgrades = ImmutableList.CreateBuilder<MapUpgrade>();
 
         internal MapUpgradeCollectionBuilder()
         {
@@ -25,7 +25,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         /// Adds a new upgrade.
         /// </summary>
         /// <param name="upgrade">Upgrade to add.</param>
-        public MapUpgradeCollectionBuilder AddUpgrade(IMapUpgrade upgrade)
+        public MapUpgradeCollectionBuilder AddUpgrade(MapUpgrade upgrade)
         {
             ArgumentNullException.ThrowIfNull(upgrade);
             _upgrades.Add(upgrade);

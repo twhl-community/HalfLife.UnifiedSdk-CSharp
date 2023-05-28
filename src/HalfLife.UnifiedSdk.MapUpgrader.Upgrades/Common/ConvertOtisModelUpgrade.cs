@@ -7,7 +7,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
     /// <summary>
     /// Converts the <c>monster_otis</c> model and body value to the appropriate keyvalues.
     /// </summary>
-    internal sealed class ConvertOtisModelUpgrade : IMapUpgrade
+    internal sealed class ConvertOtisModelUpgrade : MapUpgrade
     {
         private const string OtisModelName = "models/otis.mdl";
         private const string IntroOtisModelName = "models/intro_otis.mdl";
@@ -27,7 +27,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
             BlackHeadWithHair
         }
 
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             foreach (var otis in context.Map.Entities.OfClass("monster_otis"))
             {

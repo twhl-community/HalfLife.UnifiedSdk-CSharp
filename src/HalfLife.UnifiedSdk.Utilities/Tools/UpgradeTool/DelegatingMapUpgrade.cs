@@ -5,7 +5,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// <summary>
     /// An upgrade that invokes the given delegate to apply upgrades.
     /// </summary>
-    public sealed class DelegatingMapUpgrade : IMapUpgrade
+    public sealed class DelegatingMapUpgrade : MapUpgrade
     {
         private readonly Action<MapUpgradeContext> _upgrade;
 
@@ -20,7 +20,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
         }
 
         /// <inheritdoc/>
-        public void Apply(MapUpgradeContext context)
+        protected override void ApplyCore(MapUpgradeContext context)
         {
             _upgrade(context);
         }

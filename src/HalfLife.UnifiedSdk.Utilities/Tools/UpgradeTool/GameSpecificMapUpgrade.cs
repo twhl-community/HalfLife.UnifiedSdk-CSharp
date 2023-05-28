@@ -5,7 +5,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// <summary>
     /// Helper class to apply an upgrade to a specific game.
     /// </summary>
-    public abstract class GameSpecificMapUpgrade : IMapUpgrade
+    public abstract class GameSpecificMapUpgrade : MapUpgrade
     {
         /// <summary>
         /// The game that this upgrade applies to.
@@ -21,20 +21,10 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
             GameInfo = gameInfo;
         }
 
-        /// <summary>
-        /// Upgrades the given map if the game matches <see cref="GameInfo"/>.
-        /// </summary>
-        public void Apply(MapUpgradeContext context)
+        /// <inheritdoc/>
+        protected override bool Filter(MapUpgradeContext context)
         {
-            if (context.GameInfo == GameInfo)
-            {
-                ApplyCore(context);
-            }
+            return context.GameInfo == GameInfo;
         }
-
-        /// <summary>
-        /// Performs the actual upgrade.
-        /// </summary>
-        protected abstract void ApplyCore(MapUpgradeContext context);
     }
 }

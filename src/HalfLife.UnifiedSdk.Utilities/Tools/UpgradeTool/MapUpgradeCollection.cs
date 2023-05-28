@@ -7,12 +7,12 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
     /// <summary>Represents an upgrade with events to apply changes.</summary>
     public sealed class MapUpgradeCollection : IComparable<MapUpgradeCollection>
     {
-        private readonly ImmutableList<IMapUpgrade> _upgrades;
+        private readonly ImmutableList<MapUpgrade> _upgrades;
 
         /// <summary>Version this applies to.</summary>
         public SemVersion Version { get; }
 
-        internal MapUpgradeCollection(SemVersion version, ImmutableList<IMapUpgrade> upgrades)
+        internal MapUpgradeCollection(SemVersion version, ImmutableList<MapUpgrade> upgrades)
         {
             Version = version;
             _upgrades = upgrades;
