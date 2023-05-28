@@ -16,13 +16,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife
         protected override void ApplyCore(MapUpgradeContext context)
         {
             // The sound is set to play on map start; this turns it off.
-            var triggerAuto = context.Map.Entities.FirstOrDefault(e => e.GetTarget() == "c4a2_startaudio");
-
-            if (triggerAuto is not null)
-            {
-                triggerAuto.SetInteger("triggerstate", 1);
-                //context.Map.Entities.Remove(triggerAuto);
-            }
+            context.Map.Entities.FirstOrDefault(e => e.GetTarget() == "c4a2_startaudio")?.SetInteger("triggerstate", 1);
         }
     }
 }
