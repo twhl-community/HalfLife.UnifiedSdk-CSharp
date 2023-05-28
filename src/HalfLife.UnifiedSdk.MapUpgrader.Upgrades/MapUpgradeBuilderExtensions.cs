@@ -27,6 +27,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new RemoveDMDelayFromChargersUpgrade());
             builder.AddAction(new ConvertBreakableItemUpgrade());
             builder.AddAction(new ReworkGamePlayerEquipUpgrade());
+            builder.AddAction(new FixNonLoopingSoundsUpgrade());
             return builder;
         }
 
@@ -36,6 +37,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new C4a3FixFlareSpritesUpgrade());
             builder.AddAction(new C3a2bFixWaterValvesUpgrade());
             builder.AddAction(new C3a2FixLoadSavedUpgrade());
+            builder.AddAction(new C4a2FixNihilanthDialogueUpgrade());
             return builder;
         }
 
@@ -68,7 +70,6 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddAction(new ChangeRosenbergModelUpgrade());
             builder.AddAction(new RemapRosenbergNoUseFlagUpgrade());
             builder.AddAction(new ChangeBlueShiftSentencesUpgrade());
-            builder.AddAction(new BaXen3FixFlyBySoundsUpgrade());
             builder.AddAction(new BaSecurity2ChangeHologramModelUpgrade());
             builder.AddAction(new BaOutroDisableTriggerAutoUpgrade());
             builder.AddAction(new BaTram1FixSuitUpgrade());
