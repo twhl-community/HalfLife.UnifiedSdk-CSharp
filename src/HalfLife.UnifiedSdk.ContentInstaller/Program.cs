@@ -3,7 +3,7 @@ using HalfLife.UnifiedSdk.Utilities.Games;
 using HalfLife.UnifiedSdk.Utilities.Logging;
 using System.CommandLine;
 
-namespace HalfLife.UnifiedSdk.Installer
+namespace HalfLife.UnifiedSdk.ContentInstaller
 {
     internal static class Program
     {

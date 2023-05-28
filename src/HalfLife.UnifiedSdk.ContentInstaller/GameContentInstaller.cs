@@ -3,7 +3,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using Serilog;
 
-namespace HalfLife.UnifiedSdk.Installer
+namespace HalfLife.UnifiedSdk.ContentInstaller
 {
     /// <summary>
     /// Installs game content to a mod.

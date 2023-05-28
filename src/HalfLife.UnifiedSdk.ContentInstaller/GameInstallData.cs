@@ -1,6 +1,6 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Games;
 
-namespace HalfLife.UnifiedSdk.Installer
+namespace HalfLife.UnifiedSdk.ContentInstaller
 {
     /// <summary>Defines a single game as a source of content.</summary>
     /// <param name="Info"><see cref="GameInfo"/> object containing information about the game.</param>
