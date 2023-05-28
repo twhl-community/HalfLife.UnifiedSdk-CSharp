@@ -1,4 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.Utilities.Entities;
+using HalfLife.UnifiedSdk.Utilities.Tools;
 using System.Text.RegularExpressions;
 
 namespace HalfLife.UnifiedSdk.KeyValueMatcher
@@ -14,6 +15,12 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
 
         public Regex? ValuePattern { get; set; }
 
+        public string? FlagsToMatch { get; set; }
+
+        public FlagsMatchMode FlagsMatchMode { get; set; } = FlagsMatchMode.Inclusive;
+
+        public int Flags { get; set; }
+
         public KeyValuePair<string, string>? Match(Entity entity)
         {
             if (ClassNamePattern?.IsMatch(entity.ClassName) == false)
@@ -21,16 +28,51 @@ namespace HalfLife.UnifiedSdk.KeyValueMatcher
                 return null;
             }
 
-            if (KeyPattern is null && ValuePattern is null)
+            if (KeyPattern is null && ValuePattern is null && FlagsToMatch is null)
             {
-                return new("classname", entity.ClassName);
+                return new(KeyValueUtilities.ClassName, entity.ClassName);
             }
 
-            var result = entity.WithoutClassName().FirstOrDefault(kv => KeyPattern?.IsMatch(kv.Key) != false && ValuePattern?.IsMatch(kv.Value) != false);
+            KeyValuePair<string, string> result = new();
 
-            if (result.Key is null)
+            if (KeyPattern is not null || ValuePattern is not null)
             {
-                return null;
+                result = entity.WithoutClassName()
+                    .FirstOrDefault(kv => KeyPattern?.IsMatch(kv.Key) != false && ValuePattern?.IsMatch(kv.Value) != false);
+
+                if (result.Key is null)
+                {
+                    return null;
+                }
+            }
+
+            // Additionally filter by flags if provided.
+            if (FlagsToMatch is not null)
+            {
+                var flags = entity.GetInteger(FlagsToMatch);
+
+                bool containsFlag = (flags & Flags) != 0;
+
+                if (FlagsMatchMode == FlagsMatchMode.Inclusive)
+                {
+                    if (!containsFlag)
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (containsFlag)
+                    {
+                        return null;
+                    }
+                }
+
+                // No key to match against, so use flags instead.
+                if (result.Key is null)
+                {
+                    result = new(FlagsToMatch, flags.ToString());
+                }
             }
 
             return result;

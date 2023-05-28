@@ -40,10 +40,16 @@ namespace HalfLife.UnifiedSdk.Utilities.Logging
         /// <inheritdoc/>
         protected override ILogger GetBoundValue(BindingContext bindingContext)
         {
+            return CreateLogger(_getLogEventLevel(bindingContext));
+        }
+
+        /// <summary>Creates a logger with the given minimum level.</summary>
+        public static ILogger CreateLogger(LogEventLevel minimumLevel)
+        {
             return new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.Debug()
-                .MinimumLevel.Is(_getLogEventLevel(bindingContext))
+                .MinimumLevel.Is(minimumLevel)
                 .CreateLogger();
         }
     }
