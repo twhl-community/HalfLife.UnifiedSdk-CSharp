@@ -10,27 +10,34 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeBSPFile
         public override bool IsWorldspawn { get; }
 
         public BSPEntity(EntityList entityList, Sledge.Formats.Bsp.Objects.Entity entity, bool isWorldspawn)
-            : base(entityList, entity.KeyValues.ToImmutableDictionary(kv => kv.Key, kv => kv.Value))
+            : base(entityList, entity.SortedKeyValues.ToImmutableList())
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;
         }
 
-        protected override void SetKeyValue(string key, string value)
+        protected override void SetKeyValue(int index, string key, string value, bool overwrite)
         {
-            Entity.KeyValues[key] = value;
+            if (overwrite)
+            {
+                Entity.SortedKeyValues[index] = new(key, value);
+            }
+            else
+            {
+                Entity.SortedKeyValues.Insert(index, new(key, value));
+            }
         }
 
-        protected override void RemoveKeyValue(string key)
+        protected override void RemoveKeyValue(int index, string key)
         {
-            Entity.KeyValues.Remove(key);
+            Entity.SortedKeyValues.RemoveAt(index);
         }
 
         protected override void RemoveAllKeyValues()
         {
             //Never remove the classname.
             var className = Entity.ClassName;
-            Entity.KeyValues.Clear();
+            Entity.SortedKeyValues.Clear();
             Entity.ClassName = className;
         }
     }

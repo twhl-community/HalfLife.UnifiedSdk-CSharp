@@ -3,6 +3,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 
 namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
@@ -14,16 +15,16 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
         public override bool IsWorldspawn { get; }
 
         public MapFileEntity(EntityList entityList, Sledge.Formats.Map.Objects.Entity entity, bool isWorldspawn)
-            : base(entityList, entity.Properties
+            : base(entityList, entity.SortedProperties
                 .Append(new KeyValuePair<string, string>(KeyValueUtilities.ClassName, entity.ClassName))
                 .Append(new KeyValuePair<string, string>(KeyValueUtilities.SpawnFlags, entity.SpawnFlags.ToString()))
-                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value))
+                .ToImmutableList())
         {
             Entity = entity;
             IsWorldspawn = isWorldspawn;
         }
 
-        protected override void SetKeyValue(string key, string value)
+        protected override void SetKeyValue(int index, string key, string value, bool overwrite)
         {
             switch (key)
             {
@@ -36,12 +37,23 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
                     break;
 
                 default:
-                    Entity.Properties[key] = value;
-                    break;
+                    {
+                        index = GetAdjustedIndex(index);
+
+                        if (overwrite)
+                        {
+                            Entity.SortedProperties[index] = new(key, value);
+                        }
+                        else
+                        {
+                            Entity.SortedProperties.Insert(index, new(key, value));
+                        }
+                        break;
+                    }
             }
         }
 
-        protected override void RemoveKeyValue(string key)
+        protected override void RemoveKeyValue(int index, string key)
         {
             switch (key)
             {
@@ -53,14 +65,36 @@ namespace HalfLife.UnifiedSdk.Utilities.Serialization.SledgeMapFile
                     break;
 
                 default:
-                    Entity.Properties.Remove(key);
+                    index = GetAdjustedIndex(index);
+                    Entity.SortedProperties.RemoveAt(index);
                     break;
             }
         }
 
         protected override void RemoveAllKeyValues()
         {
-            Entity.Properties.Clear();
+            Entity.SortedProperties.Clear();
+        }
+
+        private int GetAdjustedIndex(int index)
+        {
+            var classnameIndex = IndexOf(KeyValueUtilities.ClassName);
+            var spawnflagsIndex = IndexOf(KeyValueUtilities.SpawnFlags);
+
+            Debug.Assert(index != classnameIndex);
+            Debug.Assert(index != spawnflagsIndex);
+
+            if (classnameIndex < index)
+            {
+                --index;
+            }
+
+            if (spawnflagsIndex != -1 && spawnflagsIndex <= index)
+            {
+                --index;
+            }
+
+            return index;
         }
     }
 }

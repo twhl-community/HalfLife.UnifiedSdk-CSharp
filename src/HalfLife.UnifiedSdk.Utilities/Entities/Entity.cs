@@ -9,25 +9,19 @@ using System.Linq;
 namespace HalfLife.UnifiedSdk.Utilities.Entities
 {
     /// <summary>
-    /// Encapsulates an entity and provides all of its keyvalues as two sets of dictionaries: a read-only original and a mutable current set.
+    /// Encapsulates an entity and provides all of its keyvalues as two sets of lists: a read-only original and a mutable current set.
     /// </summary>
-    public abstract class Entity : IDictionary<string, string>
+    public abstract class Entity : IList<KeyValuePair<string, string>>
     {
         private readonly EntityList _entityList;
 
-        private readonly Dictionary<string, string> _currentKeyValues;
+        private readonly List<KeyValuePair<string, string>> _currentKeyValues;
 
-        /// <summary>The keyvalues that the entity had stored in the map</summary>
-        public ImmutableDictionary<string, string> OriginalKeyValues { get; }
+        /// <summary>The keyvalues that the entity had stored in the map.</summary>
+        public ImmutableList<KeyValuePair<string, string>> OriginalKeyValues { get; }
 
         /// <summary>Number of keyvalues in this entity, including the class name.</summary>
         public int Count => _currentKeyValues.Count;
-
-        /// <inheritdoc/>
-        public ICollection<string> Keys => _currentKeyValues.Keys;
-
-        /// <inheritdoc/>
-        public ICollection<string> Values => _currentKeyValues.Values;
 
         /// <inheritdoc/>
         public bool IsReadOnly => false;
@@ -35,8 +29,15 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets or sets the keyvalue with the given <paramref name="key"/>.</summary>
         public string this[string key]
         {
-            get => _currentKeyValues[key];
+            get => GetStringOrNull(key) ?? throw new KeyNotFoundException(nameof(key));
             set => SetString(key, value);
+        }
+
+        /// <inheritdoc/>
+        public KeyValuePair<string, string> this[int index]
+        {
+            get => _currentKeyValues[index];
+            set => Insert(index, value);
         }
 
         /// <summary>The entity's class name.</summary>
@@ -53,13 +54,13 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// Creates a new entity with the given keyvalues that is part of the given entity list.
         /// </summary>
         /// <exception cref="ArgumentException">If the classname is missing or contains only whitespace.</exception>
-        protected Entity(EntityList entityList, ImmutableDictionary<string, string> keyValues)
+        protected Entity(EntityList entityList, ImmutableList<KeyValuePair<string, string>> keyValues)
         {
             _entityList = entityList;
 
             OriginalKeyValues = keyValues;
 
-            _currentKeyValues = OriginalKeyValues.ToDictionary(kv => kv.Key, kv => kv.Value);
+            _currentKeyValues = OriginalKeyValues.ToList();
 
             if (string.IsNullOrWhiteSpace(ClassName))
             {
@@ -67,25 +68,31 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             }
         }
 
-        /// <inheritdoc/>
-        public bool ContainsKey(string key) => _currentKeyValues.ContainsKey(key);
+        /// <summary>Returns whether any keyvalue contains <paramref name="key"/>.</summary>
+        public bool ContainsKey(string key) => _currentKeyValues.Find(kv => kv.Key == key).Key is not null;
 
-        /// <inheritdoc/>
+        /// <summary>Returns whether any keyvalue contains <paramref name="value"/>.</summary>
         public bool ContainsValue(string value)
         {
             ArgumentNullException.ThrowIfNull(value);
-            return _currentKeyValues.ContainsValue(value);
+            return _currentKeyValues.Find(kv => kv.Value == value).Key is not null;
         }
 
-        /// <inheritdoc/>
-        public bool TryGetValue(string key, [MaybeNullWhen(false)] out string value) => _currentKeyValues.TryGetValue(key, out value);
+        /// <summary>Gets the first occurrence of <paramref name="key"/>.</summary>
+        public bool TryGetValue(string key, [MaybeNullWhen(false)] out string value)
+        {
+            value = GetStringOrNull(key);
+            return value is not null;
+        }
 
         /// <summary>Gets the value of the given <paramref name="key"/> if it exists, <see langword="null"/> otherwise.</summary>
         public string? GetStringOrNull(string key)
         {
-            if (_currentKeyValues.TryGetValue(key, out var value))
+            var result = _currentKeyValues.Find(kv => kv.Key == key);
+
+            if (result.Key is not null)
             {
-                return value;
+                return result.Value;
             }
 
             return null;
@@ -117,6 +124,26 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
             ArgumentNullException.ThrowIfNull(key);
             ArgumentNullException.ThrowIfNull(value);
 
+            ValidateKeyValue(key, value);
+
+            // Replace first occurrence; ignore duplicates.
+            int index = _currentKeyValues.FindIndex(kv => kv.Key == key);
+
+            bool overwrite = index != -1;
+
+            if (index == -1)
+            {
+                index = _currentKeyValues.Count;
+            }
+
+            InternalInsert(index, new(key, value), overwrite);
+        }
+
+        private void ValidateKeyValue(string key, string value)
+        {
+            ArgumentNullException.ThrowIfNull(key);
+            ArgumentNullException.ThrowIfNull(value);
+
             if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ArgumentException("Key must be valid", nameof(key));
@@ -139,17 +166,28 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
                     throw new ArgumentException($"Cannot change classname of entity with class {ClassName} to worldspawn", nameof(value));
                 }
             }
-
-            _currentKeyValues.TryGetValue(key, out var previousValue);
-
-            _currentKeyValues[key] = value;
-            SetKeyValue(key, value);
-
-            _entityList.ChangedKeyValue(this, key, previousValue, value);
         }
 
-        /// <inheritdoc/>
-        /// <exception cref="ArgumentException"><paramref name="key"/> is <c>worldspawn</c></exception>
+        private void InternalInsert(int index, KeyValuePair<string, string> item, bool overwrite)
+        {
+            string? previousValue = index != _currentKeyValues.Count ? _currentKeyValues[index].Value : null;
+
+            if (overwrite)
+            {
+                _currentKeyValues[index] = item;
+            }
+            else
+            {
+                _currentKeyValues.Insert(index, item);
+            }
+
+            SetKeyValue(index, item.Key, item.Value, overwrite);
+
+            _entityList.ChangedKeyValue(this, item.Key, previousValue, item.Value);
+        }
+
+        /// <summary>Removes all occurrences of <paramref name="key"/> from the entity.</summary>
+        /// <exception cref="ArgumentException"><paramref name="key"/> is <c>classname</c></exception>
         public bool Remove(string key)
         {
             ArgumentNullException.ThrowIfNull(key);
@@ -161,8 +199,21 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
             _entityList.InternalRemovingKeyValue(this, key);
 
-            RemoveKeyValue(key);
-            return _currentKeyValues.Remove(key);
+            bool removedAny = false;
+
+            for (int i = _currentKeyValues.Count - 1; i >= 0; --i)
+            {
+                var kv = _currentKeyValues[i];
+
+                if (kv.Key == key)
+                {
+                    removedAny = true;
+                    RemoveKeyValue(i, key);
+                    _currentKeyValues.RemoveAt(i);
+                }
+            }
+
+            return removedAny;
         }
 
         /// <summary>Removes all keyvalues except for the class name.</summary>
@@ -170,34 +221,23 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         {
             var className = ClassName;
             _currentKeyValues.Clear();
-            _currentKeyValues.Add(KeyValueUtilities.ClassName, className);
+            _currentKeyValues.Add(new(KeyValueUtilities.ClassName, className));
 
             _entityList.InternalRemovingAllKeyValues(this);
 
             RemoveAllKeyValues();
         }
 
-        /// <inheritdoc/>
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => _currentKeyValues.GetEnumerator();
+        /// <summary>Returns an enumerator that iterates through the <see cref="Entity"/>.</summary>
+        public List<KeyValuePair<string, string>>.Enumerator GetEnumerator() => _currentKeyValues.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        IEnumerator<KeyValuePair<string, string>> IEnumerable<KeyValuePair<string, string>>.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc cref="SetString(string, string)"/>
         /// <seealso cref="SetString(string, string)"/>
         public void Add(string key, string value) => SetString(key, value);
-
-        /// <inheritdoc/>
-        public bool TryAdd(string key, string value)
-        {
-            if (_currentKeyValues.ContainsKey(key))
-            {
-                return false;
-            }
-
-            SetString(key, value);
-
-            return true;
-        }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -220,25 +260,80 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         void ICollection<KeyValuePair<string, string>>.CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
         {
-            ((IDictionary<string, string>)_currentKeyValues).CopyTo(array, arrayIndex);
+            _currentKeyValues.CopyTo(array, arrayIndex);
         }
 
         bool ICollection<KeyValuePair<string, string>>.Remove(KeyValuePair<string, string> item)
         {
-            //ICollection.Remove requires both key and value to match, so do this for consistency.
-            if (!_currentKeyValues.Contains(item))
+            var index = _currentKeyValues.FindIndex(kv => kv.Key == item.Key && kv.Value == item.Value);
+
+            if (index == -1)
             {
                 return false;
             }
 
-            return Remove(item.Key);
+            RemoveAt(index);
+
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public int IndexOf(KeyValuePair<string, string> item)
+        {
+            ArgumentNullException.ThrowIfNull(item);
+            ArgumentNullException.ThrowIfNull(item.Key);
+            ArgumentNullException.ThrowIfNull(item.Value);
+
+            return _currentKeyValues.IndexOf(item);
+        }
+
+        /// <inheritdoc cref="IndexOf(KeyValuePair{string, string})"/>
+        public int IndexOf(string key)
+        {
+            ArgumentNullException.ThrowIfNull(key);
+            return _currentKeyValues.FindIndex(kv => kv.Key == key);
+        }
+
+        /// <inheritdoc/>
+        public void Insert(int index, KeyValuePair<string, string> item)
+        {
+            if (index < 0 || index > _currentKeyValues.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Index out of range");
+            }
+
+            ArgumentNullException.ThrowIfNull(item);
+
+            ValidateKeyValue(item.Key, item.Value);
+            InternalInsert(index, item, false);
+        }
+
+        /// <inheritdoc/>
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= _currentKeyValues.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Index out of range");
+            }
+
+            var key = _currentKeyValues[index].Key;
+
+            if (key == KeyValueUtilities.ClassName)
+            {
+                throw new ArgumentException("Cannot remove classname key", nameof(index));
+            }
+
+            _entityList.InternalRemovingKeyValue(this, key);
+
+            RemoveKeyValue(index, key);
+            _currentKeyValues.RemoveAt(index);
         }
 
         /// <summary>Sets the keyvalue in the underlying entity object.</summary>
-        protected abstract void SetKeyValue(string key, string value);
+        protected abstract void SetKeyValue(int index, string key, string value, bool overwrite);
 
         /// <summary>Removes the keyvalue from the underlying entity object.</summary>
-        protected abstract void RemoveKeyValue(string key);
+        protected abstract void RemoveKeyValue(int index, string key);
 
         /// <summary>Removes all keyvalues except for the classname.</summary>
         protected abstract void RemoveAllKeyValues();
