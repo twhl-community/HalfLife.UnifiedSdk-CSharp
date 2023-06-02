@@ -1,6 +1,5 @@
 ﻿using HalfLife.UnifiedSdk.AssetSynchronizer.Config;
 using HalfLife.UnifiedSdk.Utilities.Logging;
-using Newtonsoft.Json;
 using Serilog;
 using System.Collections.Immutable;
 using System.CommandLine;
@@ -39,8 +38,18 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                 }
 
                 {
+                    using var cancellationTokenSource = new CancellationTokenSource();
+                    var fileCopier = new FileCopier(logger, cancellationTokenSource.Token);
+
+                    var copyThread = new Thread(fileCopier.Run)
+                    {
+                        IsBackground = true
+                    };
+
+                    copyThread.Start();
+
                     var watchers = manifest
-                        .Select(f => new Watcher(logger, f.Source, f.Destination, f.Pattern, f.Recursive))
+                        .Select(f => new Watcher(logger, fileCopier, f.Source, f.Destination, f.Pattern, f.Recursive))
                         .ToImmutableList();
 
                     logger.Information("Watching for file changes");
@@ -53,6 +62,11 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
                     {
                         watcher.Dispose();
                     }
+
+                    cancellationTokenSource.Cancel();
+
+                    // Wait for pending copy commands to finish.
+                    copyThread.Join();
                 }
 
                 logger.Information("Done");

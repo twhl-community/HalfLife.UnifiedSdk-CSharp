@@ -9,20 +9,26 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
     {
         private readonly ILogger _logger;
 
+        private readonly FileCopier _fileCopier;
+
         private readonly FileSystemWatcher _watcher;
 
-        private readonly string _destination;
+        public string SourcePath => _watcher.Path;
 
-        public Watcher(ILogger logger, string source, string destination, string pattern, bool recursive)
+        public string DestinationPath { get; }
+
+        public Watcher(ILogger logger, FileCopier fileCopier, string source, string destination, string pattern, bool recursive)
         {
             _logger = logger;
+            _fileCopier = fileCopier;
 
             _watcher = new FileSystemWatcher(source, pattern)
             {
                 NotifyFilter = NotifyFilters.FileName
                     | NotifyFilters.LastWrite,
 
-                IncludeSubdirectories = recursive
+                IncludeSubdirectories = recursive,
+                InternalBufferSize = 64 * 1024, // Max is 64 KB
             };
 
             _watcher.Changed += OnChanged;
@@ -30,7 +36,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
             _watcher.Renamed += OnRenamed;
             _watcher.Error += OnError;
 
-            _destination = destination;
+            DestinationPath = destination;
 
             _watcher.EnableRaisingEvents = true;
         }
@@ -52,21 +58,7 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
 
         private void CopyFile(string fileName)
         {
-            //Rebase the filename to the destination.
-            var relativePath = Path.GetRelativePath(_watcher.Path, fileName);
-            var destinationFileName = Path.Combine(_destination, relativePath);
-
-            try
-            {
-                Directory.CreateDirectory(_destination);
-                File.Copy(fileName, destinationFileName, true);
-            }
-            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
-            {
-                //If anything goes wrong the user should know about it so they can correct the problem.
-                //E.g. trying to copy a file but a directory with the same name exists.
-                WatcherHelpers.PrintException(_logger, e);
-            }
+            _fileCopier.Add(new(this, fileName));
         }
 
         public void Dispose()
