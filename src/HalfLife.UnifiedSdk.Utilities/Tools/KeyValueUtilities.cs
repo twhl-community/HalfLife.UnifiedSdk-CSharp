@@ -21,6 +21,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <summary>The <c>target</c> key.</summary>
         public const string Target = "target";
 
+        /// <summary>The <c>globalname</c> key.</summary>
+        public const string GlobalName = "globalname";
+
         /// <summary>The <c>delay</c> key.</summary>
         public const string Delay = "delay";
 

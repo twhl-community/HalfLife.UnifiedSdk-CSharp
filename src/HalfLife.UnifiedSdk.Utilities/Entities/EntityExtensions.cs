@@ -117,6 +117,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
         /// <summary>Gets the <c>target</c> value.</summary>
         public static string GetTarget(this Entity entity) => entity.GetString(KeyValueUtilities.Target);
 
+        /// <summary>Gets the <c>globalname</c> value.</summary>
+        public static string GetGlobalName(this Entity entity) => entity.GetString(KeyValueUtilities.GlobalName);
+
         /// <summary>Gets the <c>delay</c> value.</summary>
         public static double GetDelay(this Entity entity) => entity.GetDouble(KeyValueUtilities.Delay);
 
@@ -146,6 +149,9 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
         /// <summary>Sets the <c>target</c> value.</summary>
         public static void SetTarget(this Entity entity, string target) => entity.SetString(KeyValueUtilities.Target, target);
+
+        /// <summary>Sets the <c>globalname</c> value.</summary>
+        public static void SetGlobalName(this Entity entity, string globalName) => entity.SetString(KeyValueUtilities.GlobalName, globalName);
 
         /// <summary>Sets the <c>delay</c> value.</summary>
         public static void SetDelay(this Entity entity, double delay) => entity.SetDouble(KeyValueUtilities.Delay, delay);
