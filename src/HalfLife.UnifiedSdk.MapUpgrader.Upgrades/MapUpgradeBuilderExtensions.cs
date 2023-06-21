@@ -39,7 +39,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new C3a2bFixWaterValvesUpgrade());
             builder.AddUpgrade(new C3a2FixLoadSavedUpgrade());
             builder.AddUpgrade(new C4a2FixNihilanthDialogueUpgrade());
-            builder.AddUpgrade(new C2a5FixCrateGlobalName());
+            builder.AddUpgrade(new C2a5FixCrateGlobalNameUpgrade());
             return builder;
         }
 

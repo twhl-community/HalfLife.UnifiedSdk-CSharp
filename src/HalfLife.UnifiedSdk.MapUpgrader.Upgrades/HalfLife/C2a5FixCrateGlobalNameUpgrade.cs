@@ -9,9 +9,9 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.HalfLife
     /// The globalname is left over from copy pasting the entity from the crates in the tunnel earlier in the map
     /// and causes these crates to disappear.
     /// </summary>
-    internal sealed class C2a5FixCrateGlobalName : MapSpecificUpgrade
+    internal sealed class C2a5FixCrateGlobalNameUpgrade : MapSpecificUpgrade
     {
-        public C2a5FixCrateGlobalName()
+        public C2a5FixCrateGlobalNameUpgrade()
             : base("c2a5")
         {
         }
