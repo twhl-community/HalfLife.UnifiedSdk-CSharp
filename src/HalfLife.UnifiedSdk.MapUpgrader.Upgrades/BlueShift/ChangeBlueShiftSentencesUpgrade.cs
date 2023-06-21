@@ -15,6 +15,10 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
             // The NA group is for No Access, EA is for Enable Access.
             // BS incorrectly adds an access granted sentence to the NA group.
             { "!NA1", "!EA0" },
+            // ba_tram2 uses these two; they don't exist in Blue Shift,
+            // but do in Half-Life and refer to Freeman and the HEV suit.
+            { "!SC_HELLO6", "NULLSENT" },
+            { "!SC_HELLO8", "NULLSENT" },
         }
         // Renames HOLO_* sentences to BSHOLO_*.
         .Concat(new[]
