@@ -209,6 +209,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                 ["func_platrot"] = PlatData,
                 ["func_trackchange"] = PlatData,
                 ["func_trackautochange"] = PlatData,
+                ["env_spritetrain"] = PlatData,
                 ["func_tracktrain"] = ImmutableArray.Create(new KeyData("sounds", DefaultTrackTrainSound, TrackTrainMoveSounds))
             }.ToImmutableDictionary();
 
