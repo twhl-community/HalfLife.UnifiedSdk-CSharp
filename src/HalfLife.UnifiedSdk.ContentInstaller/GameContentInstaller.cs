@@ -123,12 +123,76 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
             return everythingNeededExists;
         }
 
+        private void InstallConfigFiles(string rootDirectory)
+        {
+            // HACK: if there is no config file, install a default one.
+            // TODO: this should work like Steam's depot system where files are marked as userconfig
+            // to allow initial copies to be installed without overwriting on subsequent installs.
+
+            _logger.Information("Installing configuration files");
+
+            var configFileNames = new Dictionary<string, string>
+            {
+                ["default_config.cfg"] = "config.cfg"
+            };
+
+            foreach (var (sourceFileName, destinationFileName) in configFileNames)
+            {
+                var absoluteSourceFileName = Path.Combine(rootDirectory, sourceFileName);
+                var absoluteDestinationFileName = Path.Combine(rootDirectory, destinationFileName);
+
+                if (!File.Exists(absoluteDestinationFileName))
+                {
+                    _logger.Information("Installing default configuration file \"{ConfigFileName}\"",
+                        destinationFileName);
+
+                    if (!IsDryRun)
+                    {
+                        try
+                        {
+                            File.Move(absoluteSourceFileName, absoluteDestinationFileName);
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.Error(e, "Error renaming configuration file \"{ConfigFileName}\"",
+                                absoluteSourceFileName);
+                        }
+                    }
+                }
+                else
+                {
+                    _logger.Information(
+                        "Skipping installation of configuration file \"{ConfigFileName}\": file already exists",
+                        destinationFileName);
+
+                    if (!IsDryRun)
+                    {
+                        try
+                        {
+                            File.Delete(absoluteSourceFileName);
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.Error(e, "Error deleting default configuration file \"{ConfigFileName}\"",
+                                absoluteSourceFileName);
+                        }
+                    }
+                }
+            }
+        }
+
         public static bool IsGameInstalled(string rootDirectory, string modDirectory)
         {
             var liblistLocation = Path.GetFullPath(Path.Combine(rootDirectory, "..", modDirectory, ModUtilities.LiblistFileName));
             return File.Exists(liblistLocation);
         }
 
+        /// <summary>
+        /// Install files to a given mod directory.
+        /// </summary>
+        /// <param name="rootDirectory">Absolute path to the mod directory to install to.</param>
+        /// <param name="upgradeTool">Upgrade tool to use for upgrading maps.</param>
+        /// <param name="games">Games to install content from.</param>
         public void Install(string rootDirectory, MapUpgradeTool upgradeTool, IEnumerable<GameInstallData> games)
         {
             //Sanity check in case things go seriously wrong somehow.
@@ -139,6 +203,8 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
             }
 
             _logger.Information("Installing content to mod directory \"{RootDirectory}\".", rootDirectory);
+
+            InstallConfigFiles(rootDirectory);
 
             foreach (var game in games)
             {
