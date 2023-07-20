@@ -4,7 +4,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
     /// <summary>
-    /// Changes incorrect dead scientist head (Rosenberg) in ba_yard1 to use the same as in ba_yard4 (Glasses).
+    /// Changes incorrect dead scientist head (Rosenberg) in <c>ba_yard1</c> to use the same as in <c>ba_yard4</c> (Glasses).
     /// </summary>
     internal sealed class BaYard1FixDeadScientistModelUpgrade : MapSpecificUpgrade
     {

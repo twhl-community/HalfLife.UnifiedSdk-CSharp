@@ -4,7 +4,7 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.BlueShift
 {
     /// <summary>
-    /// Changes Gina model in ba_security2 to allow playing push cart sequence.
+    /// Changes Gina model in <c>ba_security2</c> to allow playing push cart sequence.
     /// </summary>
     internal sealed class BaSecurity2ChangeHologramModelUpgrade : MapSpecificUpgrade
     {
