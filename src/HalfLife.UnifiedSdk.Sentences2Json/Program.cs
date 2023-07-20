@@ -15,7 +15,8 @@ namespace HalfLife.UnifiedSdk.Sentences2Json
 
             var outputFileName = new Option<FileInfo?>("--output-filename",
                 getDefaultValue: () => null,
-                "If provided, the name of the file to write the sentences.json contents to");
+                "If provided, the name of the file to write the sentences.json contents to.\n" +
+                "Otherwise the file is saved to the source directory with the same name and 'json' extension.");
 
             var rootCommand = new RootCommand("Half-Life Unified SDK sentences.txt to sentences.json converter")
             {
