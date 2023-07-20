@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Content
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.Sentences2Json", "src\HalfLife.UnifiedSdk.Sentences2Json\HalfLife.UnifiedSdk.Sentences2Json.csproj", "{799EFE3E-02C8-4096-9BB7-7FCAC21ED59C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalfLife.UnifiedSdk.MapUpgraderDocGenerator", "src\HalfLife.UnifiedSdk.MapUpgraderDocGenerator\HalfLife.UnifiedSdk.MapUpgraderDocGenerator.csproj", "{2440426F-4A81-421D-A262-66B08AF37ABF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{799EFE3E-02C8-4096-9BB7-7FCAC21ED59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{799EFE3E-02C8-4096-9BB7-7FCAC21ED59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{799EFE3E-02C8-4096-9BB7-7FCAC21ED59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2440426F-4A81-421D-A262-66B08AF37ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2440426F-4A81-421D-A262-66B08AF37ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2440426F-4A81-421D-A262-66B08AF37ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2440426F-4A81-421D-A262-66B08AF37ABF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{64FA22B3-99E5-4D2F-9565-EF1D568E1C84} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
 		{E3DFCB9A-388E-4ABC-82DB-29673D41630C} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
 		{799EFE3E-02C8-4096-9BB7-7FCAC21ED59C} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
+		{2440426F-4A81-421D-A262-66B08AF37ABF} = {3F19AEBE-37C0-437E-AD24-529E820FCDE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A8903C6-2AEF-4B94-8DBD-C978E383F5C4}
