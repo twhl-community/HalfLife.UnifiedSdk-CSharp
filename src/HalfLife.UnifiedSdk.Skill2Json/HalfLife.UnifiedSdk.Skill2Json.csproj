@@ -6,16 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Authors>SamVanheer</Authors>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
     <Description>This program converts original Half-Life skill.cfg files to the Unified SDK's skill.json format.</Description>
-    <Copyright>2022 Sam Vanheer</Copyright>
+    <Copyright>2023 Sam Vanheer</Copyright>
     <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>halflife;half-life;valve;json</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Initial public release.</PackageReleaseNotes>
     <AssemblyName>Skill2Json</AssemblyName>
   </PropertyGroup>
 

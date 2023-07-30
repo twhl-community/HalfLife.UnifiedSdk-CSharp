@@ -7,14 +7,14 @@
     <Nullable>enable</Nullable>
     <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
-    <Copyright>2022 Sam Vanheer</Copyright>
-    <Version>0.1.0</Version>
+    <Copyright>2023 Sam Vanheer</Copyright>
+    <Version>1.0.0</Version>
     <Authors>SamVanheer</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <PackageTags>halflife;half-life;valve;json</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Initial beta release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Initial public release.</PackageReleaseNotes>
     <Description>This tool copies a set of directories to a target directory and monitors for changes while running.</Description>
     <AssemblyName>AssetSynchronizer</AssemblyName>
   </PropertyGroup>
