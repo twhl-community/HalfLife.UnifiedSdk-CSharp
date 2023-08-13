@@ -62,10 +62,7 @@ namespace HalfLife.UnifiedSdk.Utilities.Entities
 
             _currentKeyValues = OriginalKeyValues.ToList();
 
-            if (string.IsNullOrWhiteSpace(ClassName))
-            {
-                throw new ArgumentException("Cannot set classname to null or empty strings", nameof(keyValues));
-            }
+            // Don't validate classnames here; some maps have bad classnames and we need to be able to load them.
         }
 
         /// <summary>Returns whether any keyvalue contains <paramref name="key"/>.</summary>
