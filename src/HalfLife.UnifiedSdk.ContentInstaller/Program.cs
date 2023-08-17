@@ -9,7 +9,10 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
     {
         public static int Main(string[] args)
         {
-            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory");
+            var modDirectoryOption = new Option<DirectoryInfo>("--mod-directory", description: "Path to the mod directory")
+            {
+                IsRequired = true
+            };
             var dryRunOption = new Option<bool>("--dry-run", description: "If provided no file changes will be written to disk");
             var diagnosticsLevelOption = new Option<DiagnosticsLevel>("--diagnostics-level",
                 getDefaultValue: () => DiagnosticsLevel.Disabled,
@@ -54,7 +57,8 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
                         ValveGames.HalfLifeUplink.Engine,
                         ValveGames.HalfLifeUplink.Name,
                         "valve_uplink",
-                    () => ValveGames.HalfLifeUplink.Maps))
+                    () => ValveGames.HalfLifeUplink.Maps),
+                    IsRequired: false)
                 };
 
                 installer.Install(modDirectory.FullName, tool, games);

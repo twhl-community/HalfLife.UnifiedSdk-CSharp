@@ -213,9 +213,12 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
                 // This isn't a fatal error. Users should be able to install as much content as they can.
                 if (!IsGameInstalled(rootDirectory, game.Info.ModDirectory))
                 {
-                    _logger.Error("Could not find \"{LiblistFileName}\" for {GameName}. Make sure the game is installed.",
-                        ModUtilities.LiblistFileName, game.Info.Name);
-                    _logger.Error("Skipping this game.");
+                    if (game.IsRequired)
+                    {
+                        _logger.Warning("Could not find \"{LiblistFileName}\" for {GameName}. Make sure the game is installed.",
+                            ModUtilities.LiblistFileName, game.Info.Name);
+                        _logger.Warning("Skipping this game.");
+                    }
                     continue;
                 }
 

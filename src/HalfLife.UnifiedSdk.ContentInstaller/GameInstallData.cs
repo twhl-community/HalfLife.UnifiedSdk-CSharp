@@ -7,7 +7,9 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
     /// <param name="AdditionalCopySteps">
     /// If not null, this action will be invoked to perform any additional copy steps.
     /// Provides the source and destination mod directories</param>
+    /// <param name="IsRequired">If <see langword="true"/> a missing installation is logged as a warning.</param>
     internal sealed record class GameInstallData(
         GameInfo Info,
-        Action<string, string>? AdditionalCopySteps = null);
+        Action<string, string>? AdditionalCopySteps = null,
+        bool IsRequired = true);
 }
