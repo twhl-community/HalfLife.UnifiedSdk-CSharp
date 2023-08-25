@@ -61,6 +61,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new Of2a2FixGruntBodyUpgrade());
             builder.AddUpgrade(new RemoveGameModeSettingsUpgrade());
             builder.AddUpgrade(new Of1a1FixStretcherGunUpgrade());
+            builder.AddUpgrade(new OfBoot1FixOspreyScriptUpgrade());
             return builder;
         }
 
