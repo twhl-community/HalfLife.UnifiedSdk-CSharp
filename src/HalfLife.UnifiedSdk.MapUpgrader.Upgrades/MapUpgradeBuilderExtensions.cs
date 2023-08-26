@@ -57,7 +57,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new RenameIntroGruntAnimationsUpgrade());
             builder.AddUpgrade(new ConvertOtisBodyStateUpgrade());
             builder.AddUpgrade(new FixBlackOpsSpawnDelayUpgrade());
+
+            // Note: these 2 must be added in this order.
+            builder.AddUpgrade(new DisableFuncTankOfPersistenceUpgrade());
             builder.AddUpgrade(new ChangeFuncTankOfToFuncTankUpgrade());
+
             builder.AddUpgrade(new Of2a2FixGruntBodyUpgrade());
             builder.AddUpgrade(new RemoveGameModeSettingsUpgrade());
             builder.AddUpgrade(new Of1a1FixStretcherGunUpgrade());
