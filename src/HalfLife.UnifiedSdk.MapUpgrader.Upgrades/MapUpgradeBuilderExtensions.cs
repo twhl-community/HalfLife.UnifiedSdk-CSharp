@@ -67,6 +67,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new Of1a1FixStretcherGunUpgrade());
             builder.AddUpgrade(new OfBoot1FixOspreyScriptUpgrade());
             builder.AddUpgrade(new Of6a5FixGenewormArriveSoundUpgrade());
+            builder.AddUpgrade(new Of5a2FixXenBullsquidScriptsUpgrade());
             return builder;
         }
 
