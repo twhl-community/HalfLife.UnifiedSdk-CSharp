@@ -81,6 +81,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new BaSecurity2ChangeHologramModelUpgrade());
             builder.AddUpgrade(new BaOutroDisableTriggerAutoUpgrade());
             builder.AddUpgrade(new BaTram1FixSuitUpgrade());
+            builder.AddUpgrade(new BaPower2RemoveChapterTitleUpgrade());
             return builder;
         }
     }
