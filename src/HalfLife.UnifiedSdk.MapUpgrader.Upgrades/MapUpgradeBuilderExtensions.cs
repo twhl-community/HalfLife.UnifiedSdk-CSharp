@@ -29,6 +29,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new ReworkGamePlayerEquipUpgrade());
             builder.AddUpgrade(new FixNonLoopingSoundsUpgrade());
             builder.AddUpgrade(new PruneExcessMultiManagerKeysUpgrade());
+            builder.AddUpgrade(new AdjustMaxRangeUpgrade());
             return builder;
         }
 
