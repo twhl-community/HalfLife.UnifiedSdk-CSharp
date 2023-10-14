@@ -85,6 +85,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new BaTram1FixSuitUpgrade());
             builder.AddUpgrade(new BaPower2RemoveChapterTitleUpgrade());
             builder.AddUpgrade(new BaOutroFixGruntsBodyUpgrade());
+            builder.AddUpgrade(new BaCanal1FixAlienSlaveSpawnsUpgrade());
             return builder;
         }
     }
