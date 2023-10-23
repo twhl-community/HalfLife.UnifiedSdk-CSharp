@@ -6,8 +6,16 @@ using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
+    /// <summary>
+    /// Extensions for building a map upgrade collection.
+    /// </summary>
     public static class MapUpgradeBuilderExtensions
     {
+        /// <summary>
+        /// Adds shared upgrades.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static MapUpgradeCollectionBuilder AddSharedUpgrades(this MapUpgradeCollectionBuilder builder)
         {
             //Must come before any other upgrades.
@@ -34,6 +42,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             return builder;
         }
 
+        /// <summary>
+        /// Adds upgrades for Half-Life.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static MapUpgradeCollectionBuilder AddHalfLifeUpgrades(this MapUpgradeCollectionBuilder builder)
         {
             builder.AddUpgrade(new C2a5FixBarrelPushTriggersUpgrade());
@@ -45,6 +58,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             return builder;
         }
 
+        /// <summary>
+        /// Adds upgrades for Opposing Force.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static MapUpgradeCollectionBuilder AddOpposingForceUpgrades(this MapUpgradeCollectionBuilder builder)
         {
             builder.AddUpgrade(new ConvertSuitToPCVUpgrade());
@@ -73,6 +91,11 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             return builder;
         }
 
+        /// <summary>
+        /// Adds upgrades for Blue Shift.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static MapUpgradeCollectionBuilder AddBlueShiftUpgrades(this MapUpgradeCollectionBuilder builder)
         {
             builder.AddUpgrade(new BaYard1FixDeadScientistModelUpgrade());

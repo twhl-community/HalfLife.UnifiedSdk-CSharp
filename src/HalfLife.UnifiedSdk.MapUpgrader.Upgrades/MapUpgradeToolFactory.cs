@@ -4,6 +4,9 @@ using Serilog;
 
 namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
 {
+    /// <summary>
+    /// Factory for creating an upgrade tool.
+    /// </summary>
     public static class MapUpgradeToolFactory
     {
         /// <summary>
