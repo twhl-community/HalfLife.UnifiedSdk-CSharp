@@ -33,7 +33,7 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
                     texture.Palette[(i * 3) + 2]))
                 .ToArray();
 
-            Image<Rgb24> image = Image.LoadPixelData(pixels, (int)texture.Width, (int)texture.Height);
+            Image<Rgb24> image = Image.LoadPixelData<Rgb24>(pixels, (int)texture.Width, (int)texture.Height);
 
             var absoluteFileName = Path.Combine(_destinationDirectory, fileName);
 
