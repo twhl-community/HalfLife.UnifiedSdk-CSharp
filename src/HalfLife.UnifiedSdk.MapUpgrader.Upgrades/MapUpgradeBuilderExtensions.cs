@@ -30,6 +30,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new FixNonLoopingSoundsUpgrade());
             builder.AddUpgrade(new PruneExcessMultiManagerKeysUpgrade());
             builder.AddUpgrade(new AdjustMaxRangeUpgrade());
+            builder.AddUpgrade(new ConvertBarneyModelUpgrade());
             return builder;
         }
 
@@ -86,6 +87,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new BaPower2RemoveChapterTitleUpgrade());
             builder.AddUpgrade(new BaOutroFixGruntsBodyUpgrade());
             builder.AddUpgrade(new BaCanal1FixAlienSlaveSpawnsUpgrade());
+            builder.AddUpgrade(new BaTram1FixScientistHeadUpgrade());
+            builder.AddUpgrade(new BaTram2FixScientistSkinColorUpgrade());
             return builder;
         }
     }

@@ -52,6 +52,33 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                 otis.SetInteger("sleeves", (int)sleeves);
             }
 
+            foreach (var otis in context.Map.Entities.OfClass("monster_otis_dead"))
+            {
+                if (!otis.ContainsKey("body"))
+                {
+                    continue;
+                }
+
+                var body = otis.GetInteger("body");
+
+                var bodystate = body switch
+                {
+                    1 => 2, // drawn
+                    2 => 0, // donut (blank)
+                    _ => 1 // holstered
+                };
+
+                otis.SetInteger("bodystate", bodystate);
+
+                if (body == 2)
+                {
+                    // donut
+                    otis.SetInteger("item", 2);
+                }
+
+                otis.Remove("body");
+            }
+
             //Only Blue Shift uses Otis models separately from monster_otis so this section only applies to that game.
             if (context.GameInfo == ValveGames.BlueShift)
             {
@@ -62,8 +89,8 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.Common
                     //Remap old submodels to new ones. Hardcoded to the body values used in Blue Shift to keep things simple.
                     body = body switch
                     {
-                        2 => 15,
-                        _ => 3,
+                        2 => 13,
+                        _ => 1,
                     };
 
                     entity.SetInteger("body", body);
