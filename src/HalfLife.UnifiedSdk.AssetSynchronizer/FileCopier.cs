@@ -8,8 +8,6 @@ namespace HalfLife.UnifiedSdk.AssetSynchronizer
     /// </summary>
     internal sealed class FileCopier
     {
-        private const int MaxRetries = 3;
-
         private readonly ILogger _logger;
 
         private readonly CancellationToken _cancellationToken;

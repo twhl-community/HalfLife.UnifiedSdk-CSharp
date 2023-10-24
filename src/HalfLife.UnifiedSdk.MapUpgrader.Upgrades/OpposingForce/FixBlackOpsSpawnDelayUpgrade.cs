@@ -18,10 +18,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades.OpposingForce
         {
             var monstermaker = context.Map.Entities.FirstOrDefault(e => e.ClassName == "monstermaker" && e.GetTargetName() == "assassin4_spawn");
 
-            if (monstermaker is not null)
-            {
-                monstermaker.SetDouble("delay", 0);
-            }
+            monstermaker?.SetDouble("delay", 0);
         }
     }
 }

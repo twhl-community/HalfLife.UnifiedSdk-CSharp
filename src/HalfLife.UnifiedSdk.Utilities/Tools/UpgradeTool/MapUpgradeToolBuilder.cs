@@ -37,11 +37,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool
 
         private MapUpgradeTool BuildCore()
         {
-            if (_diagnosticsEngine is null)
-            {
-                //Build a default engine that does nothing.
-                _diagnosticsEngine = MapDiagnosticsEngine.Create(Logger.None, _ => { });
-            }
+            //Build a default engine that does nothing.
+            _diagnosticsEngine ??= MapDiagnosticsEngine.Create(Logger.None, _ => { });
 
             return new MapUpgradeTool(_upgrades.ToImmutable().Sort(), _diagnosticsEngine);
         }

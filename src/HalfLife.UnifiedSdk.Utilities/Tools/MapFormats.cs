@@ -69,12 +69,8 @@ namespace HalfLife.UnifiedSdk.Utilities.Tools
         /// <exception cref="IOException">An IO error occurred during deserialization.</exception>
         public static Map Deserialize(string fileName, Stream stream)
         {
-            var extension = Path.GetExtension(fileName);
-
-            if (extension is null)
-            {
+            var extension = Path.GetExtension(fileName) ??
                 throw new ArgumentException("Filename has no extension", nameof(fileName));
-            }
 
             if (!Serializers.TryGetValue(extension, out var serializer))
             {
