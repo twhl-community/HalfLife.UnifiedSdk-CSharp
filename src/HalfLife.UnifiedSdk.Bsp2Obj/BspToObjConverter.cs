@@ -233,10 +233,8 @@ namespace HalfLife.UnifiedSdk.Bsp2Obj
 
         private IEnumerable<ObjTriplet> GetEdgeVertices(Face face, TextureInfo textureInfo, MipTexture texture, Vector3 origin)
         {
-            // Vertices need to be reversed to match the OBJ format.
             foreach (var vertex in Enumerable
                 .Range(face.FirstEdge, face.NumEdges)
-                .Reverse()
                 .Select(GetVertex))
             {
                 // Indices are 1-based.
