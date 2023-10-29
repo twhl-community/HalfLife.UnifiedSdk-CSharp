@@ -39,6 +39,7 @@ namespace HalfLife.UnifiedSdk.MapUpgrader.Upgrades
             builder.AddUpgrade(new PruneExcessMultiManagerKeysUpgrade());
             builder.AddUpgrade(new AdjustMaxRangeUpgrade());
             builder.AddUpgrade(new ConvertBarneyModelUpgrade());
+            builder.AddUpgrade(new ChangeBell1SoundAndPitch());
             return builder;
         }
 
