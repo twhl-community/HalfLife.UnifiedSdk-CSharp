@@ -1,5 +1,4 @@
-﻿using HalfLife.UnifiedSdk.Utilities.Games;
-using HalfLife.UnifiedSdk.Utilities.Tools;
+﻿using HalfLife.UnifiedSdk.Utilities.Tools;
 using HalfLife.UnifiedSdk.Utilities.Tools.UpgradeTool;
 using Serilog;
 
@@ -10,9 +9,6 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
     /// </summary>
     internal sealed class GameContentInstaller
     {
-        private const string NodExtension = ".nod";
-        private const string NrpExtension = ".nrp";
-
         private readonly ILogger _logger;
 
         /// <summary>
@@ -55,7 +51,6 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
 
             _logger.Information("Copying maps from \"{SourceMapsDirectory}\" to \"{DestinationMapsDirectory}\"",
                 sourceMapsDirectory, destinationMapsDirectory);
-            _logger.Information("Node graph files in destination for maps being copied will be deleted.");
 
             //Process maps in sorted order to make it easier to read the output and spot problems.
             foreach (var map in mapsToInstall.OrderBy(m => m.Name))
@@ -76,10 +71,6 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
                 {
                     using var stream = File.Open(destinationMapName, FileMode.Create, FileAccess.Write);
                     mapData.Serialize(stream);
-
-                    //Delete any node graph files that exist.
-                    File.Delete(Path.Combine(destinationGraphsDirectory, map.Name + NodExtension));
-                    File.Delete(Path.Combine(destinationGraphsDirectory, map.Name + NrpExtension));
                 }
             }
 
@@ -228,6 +219,17 @@ namespace HalfLife.UnifiedSdk.ContentInstaller
 
                 _logger.Information("Finished installing {GameName} content.", game.Info.Name);
             }
+
+            _logger.Information("Updating last modified time for node graphs");
+
+            foreach (var fileName in Directory.EnumerateFiles(Path.Combine(rootDirectory, "maps", "graphs")))
+            {
+                _logger.Information("Updating {FileName}", fileName);
+
+                File.SetLastWriteTimeUtc(fileName, DateTime.UtcNow);
+            }
+
+            _logger.Information("Finishing updating node graphs");
         }
     }
 }
