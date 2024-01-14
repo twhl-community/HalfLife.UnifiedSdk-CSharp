@@ -8,7 +8,7 @@
     <Authors>SamVanheer</Authors>
     <Version>1.0.0</Version>
     <Description>This program converts original Half-Life sentences.txt files to the Unified SDK's sentences.json format.</Description>
-    <Copyright>2023 Sam Vanheer</Copyright>
+    <Copyright>2024 Sam Vanheer</Copyright>
     <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>

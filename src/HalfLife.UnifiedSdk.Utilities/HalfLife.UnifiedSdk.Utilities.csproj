@@ -7,7 +7,7 @@
     <Version>1.0.0</Version>
     <Authors>SamVanheer</Authors>
     <Description>Contains utility functionality for opening, analyzing, modifying, converting and upgrading Half-Life 1 maps made for the GoldSource engine.</Description>
-    <Copyright>2023 Sam Vanheer</Copyright>
+    <Copyright>2024 Sam Vanheer</Copyright>
     <PackageProjectUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/SamVanheer/HalfLife.UnifiedSdk-CSharp</RepositoryUrl>
